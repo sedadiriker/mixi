@@ -29,15 +29,19 @@
     /* display: none; */
     background-color: transparent !important;
     /* border: 2px solid red !important; */
-    width: 10px !important;
     position: absolute !important;
-    top: 35%;
+    top: 25%;
+    height: 20px;
     right: 20px;
-    z-index: 0;
+    z-index: 1;
     border: none !important;
 }
 .gsc-search-button svg {
     display: none !important;
+}
+
+.gsc-input{
+    outline: none !important;
 }
 
 .search-arrow {

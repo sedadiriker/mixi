@@ -86,7 +86,7 @@ const Home = () => {
 
       if (searchArrow) {
         if (showSettings) {
-          searchArrow.style.top = '23%'; 
+          searchArrow.style.top = '28%'; 
         } else {
           searchArrow.style.top = '48%'; 
         }
