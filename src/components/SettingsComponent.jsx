@@ -17,7 +17,7 @@ const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef,show
                   className="appearance-none h-4 w-4 border border-gray-300 rounded-full checked:bg-gray-600 checked:border-transparent focus:outline-none"
                 />
                 <span className="ml-2 text-[12px] text-gray-500" style={{ letterSpacing: "1px" }}>
-                  Google Pro
+                  Google 
                 </span>
               </label>
             </div>
