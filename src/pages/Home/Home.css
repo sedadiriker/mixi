@@ -20,8 +20,9 @@
 .search-container{
     position: relative;
     width: 50%;
+    min-height: 70px;
     margin: auto;
-    /* border: 1px solid green; */
+    border: 1px solid green;
 
 }
 .gsc-search-button, .gsc-search-button-v2{
@@ -41,7 +42,6 @@
 
 .search-arrow {
     position: absolute;
-    top: 50%; 
     right: 40px;
     transform: translateY(-50%) rotate(-90deg); 
     font-size: 0; 
@@ -91,13 +91,13 @@
  
 .settings {
     transition: opacity 0.3s ease, transform 0.3s ease;
-    opacity: 0; /* Başlangıçta görünmez */
-    transform: translateY(-10px); /* Yukarıdan kayma efekti */
+    opacity: 0; 
+    transform: translateY(-10px);
   }
   
   .settings.visible {
-    opacity: 1; /* Görünür hale getir */
-    transform: translateY(0); /* Orijinal konuma döner */
+    opacity: 1; 
+    transform: translateY(0); 
   }
   
   

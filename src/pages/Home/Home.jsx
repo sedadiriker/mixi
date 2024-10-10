@@ -75,6 +75,25 @@ const Home = () => {
       }
     }
   };
+  useEffect(() => {
+    const updateArrowPosition = () => {
+        const searchArrow = document.querySelector('.search-arrow');
+
+        if (searchArrow) {
+            if (showSettings) {
+                searchArrow.style.top = '23%'; // showSettings true ise %30
+            } else {
+                searchArrow.style.top = '48%'; // showSettings false ise %50
+            }
+        }
+    };
+
+    updateArrowPosition(); // Başlangıçta konumu ayarla
+
+    return () => {
+        // Gerekirse cleanup işlemleri
+    };
+}, [showSettings]); // showSettings değiştiğinde konumu güncelle
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
@@ -88,14 +107,14 @@ const Home = () => {
             alt="Logo"
           />
         </div>
-        <div className={`search-container relative`}
+        <div className={`search-container`}
              onMouseEnter={() => setShowSettings(true)} // Ayarları göster
              onMouseLeave={() => setShowSettings(false)} // Ayarları gizle
         >
           <div className="gcse-search">
-            <div id="gsc-i-id1"></div>
+            <div id="gsc-i-id1 relative"></div>
           </div>
-          <div className="search-arrow">Ara</div>
+          <div className="search-arrow"></div>
 
           {/* SettingsComponent burada gösterilecek */}
           {showSettings && (
