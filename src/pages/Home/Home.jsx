@@ -6,7 +6,7 @@ import SettingsComponent from "../../components/SettingsComponent";
 import Chatbot from "../../components/Chatbot/Chatbot";
 
 const Home = () => {
-  const [selectedEngine, setSelectedEngine] = useState("google");
+  const [selectedEngine, setSelectedEngine] = useState("google-gpt4"); // Varsayılan olarak google-gpt4
   const [showSettings, setShowSettings] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -75,67 +75,71 @@ const Home = () => {
       }
     }
   };
+
+  useEffect(() => {
+    fetchGptResponse("Merhaba");
+  }, []); 
+
   useEffect(() => {
     const updateArrowPosition = () => {
-        const searchArrow = document.querySelector('.search-arrow');
+      const searchArrow = document.querySelector('.search-arrow');
 
-        if (searchArrow) {
-            if (showSettings) {
-                searchArrow.style.top = '23%'; // showSettings true ise %30
-            } else {
-                searchArrow.style.top = '48%'; // showSettings false ise %50
-            }
+      if (searchArrow) {
+        if (showSettings) {
+          searchArrow.style.top = '23%'; 
+        } else {
+          searchArrow.style.top = '48%'; 
         }
+      }
     };
 
-    updateArrowPosition(); // Başlangıçta konumu ayarla
-
+    updateArrowPosition(); 
     return () => {
-        // Gerekirse cleanup işlemleri
+      // Cleanup function
     };
-}, [showSettings]); // showSettings değiştiğinde konumu güncelle
+  }, [showSettings]); 
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
-    <main className={`search-main flex-grow p-4 ${isVisible ? "mt-[-5rem]" : "mt-20"}`}>
-      <div>
-        <div className="w-full">
-          <img
-            className="m-auto mt-10 logo"
-            src="images/logo.png"
-            width={130}
-            alt="Logo"
-          />
-        </div>
-        <div className={`search-container`}
-             onMouseEnter={() => setShowSettings(true)} // Ayarları göster
-             onMouseLeave={() => setShowSettings(false)} // Ayarları gizle
-        >
-          <div className="gcse-search">
-            <div id="gsc-i-id1 relative"></div>
-          </div>
-          <div className="search-arrow"></div>
-
-          {/* SettingsComponent burada gösterilecek */}
-          {showSettings && (
-            <SettingsComponent
-              ref={settingsRef}
-              selectedEngine={selectedEngine}
-              setSelectedEngine={setSelectedEngine}
-              showSettings={showSettings}
+      <main className={`search-main flex-grow p-4 ${isVisible ? "mt-[-5rem]" : "mt-20"}`}>
+        <div>
+          <div className="w-full">
+            <img
+              className="m-auto mt-10 logo"
+              src="images/logo.png"
+              width={130}
+              alt="Logo"
             />
-          )}
-        </div>
-      </div>
+          </div>
+          <div className={`search-container`}
+               onMouseEnter={() => setShowSettings(true)}
+               onMouseLeave={() => setShowSettings(false)} 
+          >
+            <div className="gcse-search">
+              <div id="gsc-i-id1 relative"></div>
+            </div>
+            <div className="search-arrow"></div>
 
-      {/* GPT Yanıtı */}
-      <div className="gpt-response">
-        <h3>GPT Response:</h3>
-        <p>{gptResponse}</p>
-      </div>
-    </main>
-    <Footer hasSearchResults={isVisible} />
-  </div>
+            {/* SettingsComponent burada gösterilecek */}
+            {showSettings && (
+              <SettingsComponent
+                ref={settingsRef}
+                selectedEngine={selectedEngine}
+                setSelectedEngine={setSelectedEngine}
+                showSettings={showSettings}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* GPT Yanıtı */}
+        <div className="gpt-response">
+          <h3>GPT Yanıtı:</h3>
+          <p>{gptResponse}</p>
+        </div>
+      </main>
+      <Footer hasSearchResults={isVisible} />
+    </div>
   );
 };
 

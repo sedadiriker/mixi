@@ -5,7 +5,7 @@ const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef,show
   return (
     <>
     <div className={`settings ${showSettings ? "visible" : "hidden"}`} ref={settingsRef}>
-        <div className="mb-4 mt-5 w-[45%] m-auto">
+        <div className="mb-4 mt-5 w-[85%] m-auto">
           <div className="grid grid-cols-3  gap-x-[1rem]">
             <div>
               <label className="flex items-center">
