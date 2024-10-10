@@ -1,0 +1,59 @@
+.todo-options {
+    position: relative;
+    padding: 12px 10px;
+    height: 100%;
+  }
+  
+  .settings-icon {
+    position: absolute;
+    top: -25px; /* İkonun konumunu ayarlayın */
+    right: -5px; /* İkonun konumunu ayarlayın */
+    font-size: 12px; /* İkon boyutunu ayarlayın */
+    color: transparent; /* Başlangıçta görünmez */
+    transition: color 0.3s; /* Geçiş animasyonu ekleyin */
+    cursor: pointer;
+  }
+  
+  .todo-options:hover .settings-icon {
+    color:#808080; /* Üzerine gelindiğinde görünür hale gelir */
+  }
+  
+
+  .custom-checkbox {
+    width: 15px;
+    height: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.542);
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    margin-right: 8px;
+    background-color: transparent;
+  }
+  
+  .custom-checkbox i {
+    color: white; /* Tik işareti rengi */
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    opacity: 0; /* İlk başta görünmez */
+    font-size: 18px;
+  }
+  
+  .custom-checkbox.checked i {
+    opacity: 1; /* İşaretlendiğinde görünür */
+  }
+  
+  
+  .custom-checkbox.checked {
+    background-color: gray; /* Background color when checked */
+  }
+  
+  
+  
+  input[type="checkbox"]:checked + .custom-checkbox:after {
+    opacity: 1; /* Show when checked */
+  }
+
+  

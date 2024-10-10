@@ -1,0 +1,123 @@
+
+.image-widget .modal-overlay-images {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #C8C6C6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.image-widget .modal-content-image {
+  background: black;
+  padding: 20px;
+  border-radius: 10px;
+  width: 40%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.image-container {
+  position: relative;
+}
+.settings-icon-image {
+  position: absolute;
+  top: -25px;
+  right: -5px;
+  font-size: 12px;
+  color: transparent;
+  cursor: pointer;
+  transition: color 0.3s;
+  z-index: 10000;
+}
+
+.image-container:hover .settings-icon-image {
+  color: #808080;
+}
+
+.modal-content-image {
+  background: rgba(0, 0, 0, 0.705);
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  position: relative;
+}
+
+.image-widget .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+.image-widget .slider {
+  height: 125px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  transition: transform 0.3s ease-in-out;
+}
+.image-widget .slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-widget .image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.image-widget .image-preview {
+  position: relative;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 80px;
+  height: 80px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-widget .remove-icon {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  color: black;
+  cursor: pointer;
+  font-size: 20px;
+  display: none;
+  font-weight: bold;
+}
+
+.image-preview:hover .remove-icon {
+  display: block;
+}
+
+.image-widget {
+  position: relative;
+  overflow: hidden;
+  padding: 5px;
+  height: 125px;
+}
+
+
+.image-widget .modal-overlay-images {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Diğer stiller aynen kalabilir */

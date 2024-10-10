@@ -1,0 +1,183 @@
+.footer-widget-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px 0px;
+    background-color: black;
+    color: white;
+    bottom: 0;
+    margin: auto;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 93%;
+}
+.toggle-footer {
+    position: absolute;
+    z-index: 5;
+    top: -5px; 
+    right: 25px; 
+    cursor: pointer;
+    font-size: 20px;
+    color: #343434; 
+}
+
+.toggle-footer-2{
+  position: absolute;
+  z-index: 5;
+  bottom: -8px; 
+  right: 25px; 
+  cursor: pointer;
+  font-size: 20px;
+  color: #343434; 
+}
+
+.footer-widget-container.collapsed {
+  height: 50px; 
+}
+
+.footer-widget-container.expanded ,.footer-widget-container.collapsed2{
+  transition: height 0.3s ease;
+  height: 175px;
+}
+.footer-widget-container.expanded2 {
+  transition: height 0.3s ease;
+  height: 80vh;
+  border: 1px solid red;
+}
+.footer-widget-container.expanded {
+  transition: height 0.3s ease;
+  height: 175px;
+}
+
+.footer-widget-container .widget-header {
+  cursor: pointer; /* Başlık alanına tıklanabilir görünüm */
+}
+
+.footer-widget-container.collapsed .widget-body {
+  opacity: 0; /* Başlangıçta görünmez */
+  height: 0; /* Yükseklik sıfır, gizle */
+  /* overflow: hidden; Taşmayı önler */
+  transition: opacity 0.3s ease, height 0.3s ease; /* Geçiş efektleri */
+}
+
+.footer-widget-container.expanded .widget-body {
+  opacity: 1; /* Tamamen görünür */
+  height: auto;
+  /* overflow: hidden;  */
+  transition: opacity 0.3s ease, height 0.3s ease; /* Geçiş efektleri */
+}
+
+
+
+/* Oklar */
+.footer-widget-container .arrow-right ,.arrow-left{    
+    font-size: 0; /* Varsayılan boyutu sıfırla */
+    width: 0; /* Genişliği sıfırla */
+    height: 0; /* Yüksekliği sıfırla */
+    border-left: 10px solid transparent; /* Sol üçgen için şeffaf kenar */
+    border-right: 10px solid transparent; /* Sağ üçgen için şeffaf kenar */
+    border-top: 15px solid black; /* Üst üçgenin rengi (sol ve sağ ok için) */
+    cursor: pointer;
+    position: absolute;
+}
+#left-arrow {
+  left: -30px; /* Sol tarafta konumlandır */
+  transform: translateY(-50%) rotate(90deg); /* Dikey olarak ortala ve sola döndür */
+
+}
+
+#right-arrow {
+  right: -30px; /* Sağ tarafta konumlandır */
+  transform: translateY(-50%) rotate(-90deg); /* Dikey olarak ortala ve sağa döndür */
+
+}
+
+/* Widget Slider */
+.widget-slider {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%; /* Yükseklik otomatik ayarlansın */
+    position: relative;
+}
+
+.widget-container {
+    display: flex;
+    transition: transform 0.3s ease; /* Geçiş efekti */
+    justify-content: space-between; /* Widget'lar arasında eşit boşluk bırakır */
+    width: 100%;
+    height: 100%; /* %100 genişlik */
+}
+
+
+.footer-widget-container .widget {
+  flex: 1 0 calc(20% - 10px); /* %20 genişlik ve aralarındaki boşluk */
+  margin: 0 5px; /* Yan boşluklar */
+  padding: 10px 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+
+/* Responsive ayar için */
+@media (max-width: 800px) {
+    .widget {
+        flex: 0 1 calc((100% / 2) - 2px); /* Küçük ekranlarda iki sütuna geçiş */
+    }
+}
+
+@media (max-width: 500px) {
+    .widget {
+        flex: 0 1 calc(100% - 2px); /* Çok küçük ekranlarda tek sütuna geçiş */
+    }
+}
+
+/* Border efektini sağlamak için */
+.footer-widget-container .widget:not(:last-child) {
+    position: relative; /* Pozisyon ayarlaması */
+}
+
+.footer-widget-container .widget:not(:last-child):after {
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: -5px; /* Border'ı widget'ın sağında konumlandır */
+    width: 1px; /* Border genişliği */
+    height: 100%; /* Yüksekliği widget yüksekliği kadar yap */
+    background: linear-gradient(to bottom, #8A8A8A, rgba(138, 138, 138, 0)); /* Yukarıdan aşağıya doğru açılan gradient */
+}
+
+
+.widget-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #abababbb;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+    font-weight: 100;
+}
+
+.widget-body{
+    width: 100%;
+    gap: 5px;
+    & .pomodoro-cont{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+
+
+
+
+
+
+
+
+
