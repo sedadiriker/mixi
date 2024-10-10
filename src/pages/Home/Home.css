@@ -88,4 +88,16 @@
     padding: 1rem;
 }
 
+ 
+.settings {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0; /* Başlangıçta görünmez */
+    transform: translateY(-10px); /* Yukarıdan kayma efekti */
+  }
+  
+  .settings.visible {
+    opacity: 1; /* Görünür hale getir */
+    transform: translateY(0); /* Orijinal konuma döner */
+  }
+  
   

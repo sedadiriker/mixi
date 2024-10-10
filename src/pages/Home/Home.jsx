@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import "./Home.css";
@@ -10,7 +10,8 @@ const Home = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [gptResponse, setGptResponse] = useState(""); 
+  const [gptResponse, setGptResponse] = useState("");
+  const settingsRef = useRef(null);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -25,7 +26,7 @@ const Home = () => {
         setIsVisible(visible);
 
         const search = document.getElementById("gsc-i-id1");
-        setSearchTerm(search.value); 
+        setSearchTerm(search.value);
         fetchGptResponse(search.value);
       }
     });
@@ -48,7 +49,8 @@ const Home = () => {
       clearInterval(checkForSearchResultsContainer);
     };
   }, []);
-const apikey = process.env.REACT_APP_openapikey
+
+  const apikey = process.env.REACT_APP_openapikey;
   const fetchGptResponse = async (term) => {
     if (term) {
       try {
@@ -67,7 +69,7 @@ const apikey = process.env.REACT_APP_openapikey
           })
         });
         const data = await response.json();
-        setGptResponse(data.choices[0].message.content); // Yanıtı state'e set et
+        setGptResponse(data.choices[0].message.content);
       } catch (error) {
         console.error("Hata:", error);
       }
@@ -76,38 +78,45 @@ const apikey = process.env.REACT_APP_openapikey
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
-      <main className={`search-main flex-grow p-4 ${isVisible ? "mt-[-5rem]" : "mt-20"}`}>
-        <div>
-          <div className="w-full">
-            <img
-              className="m-auto mt-10 logo"
-              src="images/logo.png"
-              width={130}
-              alt="Logo"
-            />
+    <main className={`search-main flex-grow p-4 ${isVisible ? "mt-[-5rem]" : "mt-20"}`}>
+      <div>
+        <div className="w-full">
+          <img
+            className="m-auto mt-10 logo"
+            src="images/logo.png"
+            width={130}
+            alt="Logo"
+          />
+        </div>
+        <div className={`search-container relative`}
+             onMouseEnter={() => setShowSettings(true)} // Ayarları göster
+             onMouseLeave={() => setShowSettings(false)} // Ayarları gizle
+        >
+          <div className="gcse-search">
+            <div id="gsc-i-id1"></div>
           </div>
-          <div className={`search-container relative`}>
-            <div className="gcse-search"></div>
-            <div className="search-arrow">Ara</div>
-          </div>
-          {/* <div>          <Chatbot /></div> */}
+          <div className="search-arrow">Ara</div>
+
+          {/* SettingsComponent burada gösterilecek */}
           {showSettings && (
             <SettingsComponent
+              ref={settingsRef}
               selectedEngine={selectedEngine}
               setSelectedEngine={setSelectedEngine}
               showSettings={showSettings}
             />
           )}
         </div>
-        
-        {/* GPT Yanıtı */}
-        <div className="gpt-response">
-          <h3>GPT Response:</h3>
-          <p>{gptResponse}</p>
-        </div>
-      </main>
-      <Footer hasSearchResults={isVisible} />
-    </div>
+      </div>
+
+      {/* GPT Yanıtı */}
+      <div className="gpt-response">
+        <h3>GPT Response:</h3>
+        <p>{gptResponse}</p>
+      </div>
+    </main>
+    <Footer hasSearchResults={isVisible} />
+  </div>
   );
 };
 

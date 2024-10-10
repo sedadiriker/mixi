@@ -1,12 +1,12 @@
 import React from 'react';
 import CustomSelect from './CustomSelect';
 
-const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef }) => {
+const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef,showSettings }) => {
   return (
     <>
-      <div ref={settingsRef}>
-        <div className="mb-4 mt-10 w-[48%] m-auto">
-          <div className="grid grid-cols-3 gap-2 gap-x-[3rem]">
+    <div className={`settings ${showSettings ? "visible" : "hidden"}`} ref={settingsRef}>
+        <div className="mb-4 mt-10 w-[80%] m-auto">
+          <div className="grid grid-cols-3  gap-x-[1rem]">
             <div>
               <label className="flex items-center">
                 <input
@@ -18,34 +18,6 @@ const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef }) =
                 />
                 <span className="ml-2 text-[12px] text-gray-500" style={{ letterSpacing: "1px" }}>
                   Google Pro
-                </span>
-              </label>
-            </div>
-            <div>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  value="yandex-pro"
-                  checked={selectedEngine === "yandex-pro"}
-                  onChange={() => setSelectedEngine("yandex-pro")}
-                  className="appearance-none h-4 w-4 border border-gray-300 rounded-full checked:bg-gray-600 checked:border-transparent focus:outline-none"
-                />
-                <span className="ml-2 text-[12px] text-gray-500" style={{ letterSpacing: "1px" }}>
-                  Yandex Pro
-                </span>
-              </label>
-            </div>
-            <div>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  value="bing-pro"
-                  checked={selectedEngine === "bing-pro"}
-                  onChange={() => setSelectedEngine("bing-pro")}
-                  className="appearance-none h-4 w-4 border border-gray-300 rounded-full checked:bg-gray-600 checked:border-transparent focus:outline-none"
-                />
-                <span className="ml-2 text-[12px] text-gray-500" style={{ letterSpacing: "1px" }}>
-                  Bing Pro
                 </span>
               </label>
             </div>
@@ -77,6 +49,21 @@ const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef }) =
                 </span>
               </label>
             </div>
+            {/*<div>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  value="yandex-pro"
+                  checked={selectedEngine === "yandex-pro"}
+                  onChange={() => setSelectedEngine("yandex-pro")}
+                  className="appearance-none h-4 w-4 border border-gray-300 rounded-full checked:bg-gray-600 checked:border-transparent focus:outline-none"
+                />
+                <span className="ml-2 text-[12px] text-gray-500" style={{ letterSpacing: "1px" }}>
+                  Yandex Pro
+                </span>
+              </label>
+            </div> */}
+            {/* 
             <div>
               <label className="flex items-center">
                 <input
@@ -90,8 +77,8 @@ const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef }) =
                   Google + Gemini
                 </span>
               </label>
-            </div>
-            <div>
+            </div> */}
+            {/* <div>
               <label className="flex items-center">
                 <input
                   type="radio"
@@ -132,7 +119,21 @@ const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef }) =
                   MixiMind Mega
                 </span>
               </label>
-            </div>
+            </div> */}
+                        {/* <div>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  value="bing-pro"
+                  checked={selectedEngine === "bing-pro"}
+                  onChange={() => setSelectedEngine("bing-pro")}
+                  className="appearance-none h-4 w-4 border border-gray-300 rounded-full checked:bg-gray-600 checked:border-transparent focus:outline-none"
+                />
+                <span className="ml-2 text-[12px] text-gray-500" style={{ letterSpacing: "1px" }}>
+                  Bing Pro
+                </span>
+              </label>
+            </div> */}
           </div>
         </div>
         <hr className="w-[50%] m-auto" />
