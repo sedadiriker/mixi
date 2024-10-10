@@ -83,21 +83,24 @@ const Home = () => {
   useEffect(() => {
     const updateArrowPosition = () => {
       const searchArrow = document.querySelector('.search-arrow');
-
+  
       if (searchArrow) {
-        if (showSettings) {
-          searchArrow.style.top = '28%'; 
+        if (selectedEngine === "global-search") {
+          searchArrow.style.top = '18.5%'; 
+        } else if (showSettings) {
+          searchArrow.style.top = '27.5%'; 
         } else {
           searchArrow.style.top = '48%'; 
         }
       }
     };
-
+  
     updateArrowPosition(); 
     return () => {
       // Cleanup function
     };
-  }, [showSettings]); 
+  }, [showSettings, selectedEngine]); // selectedEngine'i bağımlılıklar listesine ekleyin
+  
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
