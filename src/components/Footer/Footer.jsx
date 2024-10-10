@@ -28,7 +28,7 @@ const Footer = ({ hasSearchResults }) => {
     ],
     [
       { id: "news", title: "NEWS", content:<News/> },
-      { id: "todo", title: "TODO", content: <TodoList/> },
+      { id: "todo", title: "TO DO LIST", content: <TodoList/> },
       { id: "shortcuts", title: "SHORTCUTS", content: <Shortcuts/> },
       { id: "alarms", title: "ALARM", content: <Alarms/> },
       { id: "analog-clock", title: "CLOCK", content: <AnalogClock/> },
