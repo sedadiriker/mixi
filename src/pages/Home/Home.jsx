@@ -6,13 +6,15 @@ import SettingsComponent from "../../components/SettingsComponent";
 import Chatbot from "../../components/Chatbot/Chatbot";
 
 const Home = () => {
-  const [selectedEngine, setSelectedEngine] = useState("google-gpt4"); // Varsayılan olarak google-gpt4
+  const [selectedEngine, setSelectedEngine] = useState("google-gpt4"); // Default to google-gpt4
   const [showSettings, setShowSettings] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [gptResponse, setGptResponse] = useState("");
+  const [selectedLanguage, setselectedLanguage] = useState("English")
   const settingsRef = useRef(null);
 
+  console.log(searchTerm);
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://cse.google.com/cse.js?cx=45d2ff09083bc5958";
@@ -40,7 +42,7 @@ const Home = () => {
     }, 100);
 
     script.onload = () => {
-      // console.log("Google CSE yüklendi");
+      // console.log("Google CSE loaded");
     };
 
     return () => {
@@ -71,7 +73,7 @@ const Home = () => {
         const data = await response.json();
         setGptResponse(data.choices[0].message.content);
       } catch (error) {
-        console.error("Hata:", error);
+        console.error("Error:", error);
       }
     }
   };
@@ -83,7 +85,7 @@ const Home = () => {
   useEffect(() => {
     const updateArrowPosition = () => {
       const searchArrow = document.querySelector('.search-arrow');
-  
+
       if (searchArrow) {
         if (selectedEngine === "global-search") {
           searchArrow.style.top = '18.5%'; 
@@ -94,13 +96,12 @@ const Home = () => {
         }
       }
     };
-  
+
     updateArrowPosition(); 
     return () => {
       // Cleanup function
     };
-  }, [showSettings, selectedEngine]); // selectedEngine'i bağımlılıklar listesine ekleyin
-  
+  }, [showSettings, selectedEngine]); // Added selectedEngine to dependencies
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
@@ -119,27 +120,31 @@ const Home = () => {
                onMouseLeave={() => setShowSettings(false)} 
           >
             <div className="gcse-search">
-              <div id="gsc-i-id1 relative"></div>
+              <div id="gsc-i-id1" className="relative"></div>
             </div>
             <div className="search-arrow"></div>
 
-            {/* SettingsComponent burada gösterilecek */}
+            {/* SettingsComponent will be shown here */}
             {showSettings && (
               <SettingsComponent
                 ref={settingsRef}
                 selectedEngine={selectedEngine}
                 setSelectedEngine={setSelectedEngine}
                 showSettings={showSettings}
+                selectedLanguage={selectedLanguage}
+                setSelectedLanguage={setselectedLanguage}
               />
             )}
           </div>
         </div>
 
-        {/* GPT Yanıtı */}
-        <div className="gpt-response">
-          <h3>GPT Yanıtı:</h3>
-          <p>{gptResponse}</p>
-        </div>
+        {/* GPT Response - only show if selectedEngine is not global-search */}
+        {selectedEngine !== "global-search" && (
+          <div className="gpt-response">
+            <h3>GPT Yanıtı:</h3>
+            <p>{gptResponse}</p>
+          </div>
+        )}
       </main>
       <Footer hasSearchResults={isVisible} />
     </div>

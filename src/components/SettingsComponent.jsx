@@ -1,9 +1,16 @@
 import React from 'react';
 import CustomSelect from './CustomSelect';
 
-const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef,showSettings }) => {
+const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef,showSettings,selectedLanguage,setSelectedLanguage }) => {
+
+  const handleLanguageChange = (newLanguage) => {
+    setSelectedLanguage(newLanguage);
+    console.log("Seçilen dil değiştirildi:", newLanguage);
+ 
+  };
+
   return (
-    <>
+    <div>
     <div className={`settings ${showSettings ? "visible" : "hidden"}`} ref={settingsRef}>
         <div className="mb-4 mt-5 w-[85%] m-auto">
           <div className="grid grid-cols-3  gap-x-[1rem]">
@@ -141,10 +148,10 @@ const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef,show
 
       {selectedEngine === "global-search" && (
         <div>
-          <CustomSelect />
+          <CustomSelect selectedLanguage={selectedLanguage} onLanguageChange={handleLanguageChange} />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
