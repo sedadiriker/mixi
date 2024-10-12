@@ -216,11 +216,11 @@ const Home = () => {
               <form onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
-                  className={`global-input absolute top-[-7px] left-0 z-20 ${isVisible ? "py-2 px-2" : "py-2 px-2"}`}
+                  className={`global-input absolute top-[-7px] left-0 z-20 ${isVisible ? "py-2 px-2" : "py-1 px-2"}`}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <button type="submit">Search</button>
+                <button type="submit"></button>
               </form>
               <div className="search-arrow"></div>
               {showIframe && (

@@ -61,6 +61,7 @@
   border-top: 15px solid black;
   cursor: pointer;
   position: absolute;
+  z-index: 12321423;
 }
 .gscb_a {
   /* border: 1px solid red !important; */
