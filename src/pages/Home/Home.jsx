@@ -150,10 +150,8 @@ const Home = () => {
         const translatedText = result.choices[0].message.content.trim();
         console.log(`Çevrilen metin: ${translatedText}`);
 
-        // iframe içinde arama sonuçlarını aç
-        const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(
-          translatedText
-        )}`;
+        const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(translatedText)}&output=search`;
+
 
         if (iframeRef.current) {
           iframeRef.current.src = searchUrl; // iframe'in src değerini ayarla
@@ -181,16 +179,7 @@ const Home = () => {
       setIsVisible(true)
     }
   };
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (iframeRef.current && gptResponse) {
-        const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(gptResponse)}`;
-        iframeRef.current.src = searchUrl;
-      }
-    }, 1000); // 100 ms bekle
-  
-    return () => clearTimeout(timer); 
-  }, [gptResponse, isVisible]);
+
   
 
   return (
@@ -211,7 +200,8 @@ const Home = () => {
           </div>
           {selectedEngine === "global-search" ? (
             <div
-              className={`search-container ${isVisible ? "mt-[-5rem]" : ""}`}
+            style={{zIndex:"423432535"}}
+              className={`relative  search-container ${isVisible ? "mt-[-5rem]" : ""}`}
               onMouseEnter={() => {
                 setShowSettings(true);
                 updateArrowPosition(); // Ayar menüsü açıldığında oku günceller
@@ -225,7 +215,7 @@ const Home = () => {
               <form onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
-                  className=" global-input"
+                  className=" global-input absolute top-0 left-0 z-20"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -233,7 +223,7 @@ const Home = () => {
               </form>
               <div className="search-arrow"></div>
               {showIframe && (
-                <div className="iframe-container">
+                <div className="zindex-0 iframe-container absolute top-[-10px] left-0 w-[100%]">
                   <iframe
                     ref={iframeRef}
                     title="Search Results"
@@ -241,8 +231,7 @@ const Home = () => {
                       searchTerm
                     )}`}
                     width="100%"
-                    height="600px"
-                    style={{ border: "none" }}
+                    style={{ border: "none", height:"79vh" ,zIndex:"0"}}
                   />
                 </div>
               )}
