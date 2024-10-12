@@ -111,7 +111,6 @@
 
 .global-input{
   position: absolute;
-  top: 10px;
   left: 0;
   width: 96%;
   border: 1px solid rgba(0, 0, 0, 0.127);

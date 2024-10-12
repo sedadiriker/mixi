@@ -248,7 +248,7 @@ const Home = () => {
               <form onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
-                  className={`global-input absolute top-0 left-0 z-20 mt-[-3px] ${isVisible ? "py-2 px-2" : "py-1 px-2"}`}
+                  className={`global-input absolute top-1 left-0 z-20 mt-[-3px] ${isVisible ? "py-[10px] px-2" : "py-1 px-2"}`}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 
