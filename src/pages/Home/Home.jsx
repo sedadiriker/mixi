@@ -82,26 +82,26 @@ const Home = () => {
     fetchGptResponse("Merhaba");
   }, []); 
 
-  useEffect(() => {
-    const updateArrowPosition = () => {
-      const searchArrow = document.querySelector('.search-arrow');
-
-      if (searchArrow) {
-        if (selectedEngine === "global-search") {
-          searchArrow.style.top = '18.5%'; 
-        } else if (showSettings) {
-          searchArrow.style.top = '27.5%'; 
-        } else {
-          searchArrow.style.top = '48%'; 
-        }
+  const updateArrowPosition = () => {
+    const searchArrow = document.querySelector('.search-arrow');
+    if (searchArrow) {
+      if (selectedEngine === "global-search" && showSettings) {
+        searchArrow.style.top = '13%'; // Hem global-search hem de ayar menüsü açıkken %13
+      } else if (selectedEngine === "global-search") {
+        searchArrow.style.top = '48%'; // Sadece global-search seçiliyse %48
+      } else if (showSettings) {
+        searchArrow.style.top = '27.5%'; // Sadece ayar menüsü açıkken %27.5
+      } else {
+        searchArrow.style.top = '48%'; // Diğer durumlarda %48
       }
-    };
+      console.log("Current arrow position:", searchArrow.style.top);
+    }
+  };
+  
 
+  useEffect(() => {
     updateArrowPosition(); 
-    return () => {
-      // Cleanup function
-    };
-  }, [showSettings, selectedEngine]); // Added selectedEngine to dependencies
+  }, [showSettings, selectedEngine]);
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
@@ -116,8 +116,14 @@ const Home = () => {
             />
           </div>
           <div className={`search-container`}
-               onMouseEnter={() => setShowSettings(true)}
-               onMouseLeave={() => setShowSettings(false)} 
+               onMouseEnter={() => {
+                setShowSettings(true); 
+                updateArrowPosition(); // Ayar menüsü açıldığında oku günceller
+              }}
+              onMouseLeave={() => {
+                setShowSettings(false); 
+                updateArrowPosition(); // Ayar menüsü kapandığında oku eski pozisyonuna getirir
+              }} 
           >
             <div className="gcse-search">
               <div id="gsc-i-id1" className="relative"></div>
