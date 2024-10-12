@@ -105,7 +105,7 @@ const Home = () => {
         if (form) {
           form.classList.add("hidden");
         }
-        searchArrow.style.top = "12%";
+        searchArrow.style.top = "40%";
       } else {
         if (form) {
           form.classList.remove("hidden");
@@ -173,7 +173,7 @@ const Home = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    setShowSettings(false); // Hide settings when search is initiated
+    setShowSettings(false);
     if (selectedEngine === "global-search") {
       translateWithGPT(searchTerm);
       setShowIframe(true);
@@ -216,9 +216,10 @@ const Home = () => {
               <form onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
-                  className={`global-input absolute top-[-7px] left-0 z-20 ${isVisible ? "py-2 px-2" : "py-1 px-2"}`}
+                  className={`global-input absolute top-0 left-0 z-20 mt-[-3px] ${isVisible ? "py-2 px-2" : "py-1 px-2"}`}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                
                 />
                 <button type="submit"></button>
               </form>
