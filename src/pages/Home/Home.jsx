@@ -173,6 +173,7 @@ const Home = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    setShowSettings(false); // Hide settings when search is initiated
     if (selectedEngine === "global-search") {
       translateWithGPT(searchTerm);
       setShowIframe(true);
@@ -215,7 +216,7 @@ const Home = () => {
               <form onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
-                  className=" global-input absolute top-0 left-0 z-20"
+                  className={`global-input absolute top-[-7px] left-0 z-20 ${isVisible ? "py-2 px-2" : "py-2 px-2"}`}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
