@@ -94,7 +94,7 @@ const Home = () => {
 
   const updateArrowPosition = () => {
     const searchArrow = document.querySelector(".search-arrow");
-    const form = document.querySelector(".gsc-search-box"); // Form elemanını al
+    const form = document.querySelector(".gsc-search-box");
 
     if (searchArrow) {
         if (selectedEngine === "global-search") {
@@ -106,15 +106,13 @@ const Home = () => {
             if (form) {
                 form.classList.remove("hidden");
             }
-            // Eğer showSettings true ise
             if (showSettings) {
-                searchArrow.style.top = "27.5%"; // Ayar menüsü açıkken %12
+                searchArrow.style.top = "27.5%"; 
             } else {
-                searchArrow.style.top = "48%"; // Diğer durumlarda %48
+                searchArrow.style.top = "48%"; 
             }
         }
         
-        console.log("Current arrow position:", searchArrow.style.top);
     }
 };
 
@@ -127,7 +125,7 @@ async function translateWithGPT(query) {
     messages: [
       {
         role: "user",
-        content: `Translate this phrase: "${query}" to ${selectedLanguage}. Just return the translated text.`,
+        content: `Bu ifadeyi: "${query}" ${selectedLanguage} diline çevirin. Lütfen yalnızca çevrilen metni döndürün, ek bir kelime veya karakter olmadan.`,
       },
     ],
     max_tokens: 100,
@@ -146,13 +144,11 @@ async function translateWithGPT(query) {
     const result = await response.json();
 
     if (result.choices && result.choices.length > 0) {
-      const translatedText = result.choices[0].message.content.trim();
+      const translatedText = result.choices[0].message.content.trim(); 
       console.log(`Çevrilen metin: ${translatedText}`);
 
-      const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(
-        translatedText
-      )}`;
-      window.open(searchUrl, "_self");
+      const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(translatedText)}`;
+      window.open(searchUrl, "_self"); 
     } else {
       console.error("Çeviri alınamadı:", result);
     }
@@ -160,7 +156,6 @@ async function translateWithGPT(query) {
     console.error("API isteği sırasında hata:", error);
   }
 }
-
 
   useEffect(() => {
     updateArrowPosition();
