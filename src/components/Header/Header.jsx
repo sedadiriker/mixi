@@ -10,9 +10,8 @@ import {
   faCog,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
 
-const Header = () => {
+const Header = ({showLogo,onLogoClick}) => {
   const [selectedWidget, setSelectedWidget] = useState("clock");
   const [showSettingsButton, setShowSettingsButton] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -71,6 +70,18 @@ const Header = () => {
             <FontAwesomeIcon icon={faCog} className="text-black text-[10px]" />
           </button>
         )}
+      </div>
+
+      <div onClick={onLogoClick}  style={{marginRight:"17rem", width:"100px", height:"50px",cursor:"pointer"}}
+>
+      {showLogo && (
+        <img
+          className="logo"
+          src="images/logo.png"
+          alt="Logo"
+          style={{width:"100%", height:"100%", objectFit:"cover"}}
+        />
+      )}
       </div>
 
       {showPopup && (

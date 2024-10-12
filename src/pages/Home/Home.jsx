@@ -182,10 +182,34 @@ const Home = () => {
     }
   };
 
-  
+  function handleLogoClick() {
+    // Arama kutusunu sıfırlama
+    const searchInput = document.getElementById("gsc-i-id1");
+    if (searchInput) {
+        searchInput.value = ""; // Input alanını temizle
+        setSearchTerm(""); // Arama state'ini temizle
+    }
+
+    // İlgili state'leri temizleme
+    setIsVisible(false); // Arama sonuçlarını gizle
+
+    // CSE sonuçlarını gizleme
+    const searchResultsContainer = document.querySelector(".gsc-results-wrapper-nooverlay");
+    if (searchResultsContainer) {
+        // CSE sonuçlarını gizlemek için sınıfı güncelleyin
+        searchResultsContainer.classList.remove("gsc-results-wrapper-visible"); // Sonuçları gizle
+    }
+
+    // Eğer iframe kullanıyorsanız iframe'i de sıfırlayın
+    if (iframeRef.current) {
+        iframeRef.current.src = ""; // iframe'i sıfırla
+        setShowIframe(false); // iframe'i görünmez yap
+    }
+}
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
+      <Header showLogo={true} onLogoClick={handleLogoClick} />
       <main
         className={`search-main flex-grow p-4 ${
           isVisible ? "mt-[-5rem]" : "mt-20"
