@@ -16,7 +16,8 @@ const Home = () => {
 
   const settingsRef = useRef(null);
   const iframeRef = useRef(null); // iframe referansı
-  console.log("Iframe Ref:", iframeRef.current);
+  // console.log("Iframe Ref:", iframeRef.current);
+  console.log(isVisible,"visible")
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -204,12 +205,16 @@ const Home = () => {
             style={{zIndex:"423432535"}}
               className={`relative  search-container ${isVisible ? "mt-[-5rem]" : ""}`}
               onMouseEnter={() => {
-                setShowSettings(true);
-                updateArrowPosition(); // Ayar menüsü açıldığında oku günceller
+                if (!isVisible) {
+                  setShowSettings(true);
+                  updateArrowPosition(); // Ayar menüsü açıldığında oku günceller
+                }
               }}
               onMouseLeave={() => {
-                setShowSettings(false);
-                updateArrowPosition(); // Ayar menüsü kapandığında oku eski pozisyonuna getirir
+                if (!isVisible) {
+                  setShowSettings(false);
+                  updateArrowPosition(); // Ayar menüsü kapandığında oku eski pozisyonuna getirir
+                }
               }}
             >
               <div className="gcse-search relative"></div>
@@ -239,7 +244,7 @@ const Home = () => {
               )}
 
               {/* SettingsComponent will be shown here */}
-              {showSettings && (
+              {showSettings && !isVisible && (
                 <SettingsComponent
                   ref={settingsRef}
                   selectedEngine={selectedEngine}
@@ -268,7 +273,7 @@ const Home = () => {
               <div className="search-arrow"></div>
 
               {/* SettingsComponent will be shown here */}
-              {showSettings && (
+              {showSettings && !isVisible && (
                 <SettingsComponent
                   ref={settingsRef}
                   selectedEngine={selectedEngine}
