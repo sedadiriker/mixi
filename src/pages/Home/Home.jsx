@@ -314,8 +314,8 @@ const Home = () => {
         {/* GPT Response - only show if selectedEngine is not global-search */}
         {selectedEngine !== "global-search" && (
           <div className="gpt-response">
-            <h3>GPT Yanıtı:</h3>
-            <p>{gptResponse}</p>
+            <h3 className="py-4">GPT Answer</h3>
+            <p className="text-center">{gptResponse}</p>
           </div>
         )}
       </main>
