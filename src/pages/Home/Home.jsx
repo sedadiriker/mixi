@@ -17,7 +17,7 @@ const Home = () => {
   const settingsRef = useRef(null);
   const iframeRef = useRef(null); // iframe referansı
   // console.log("Iframe Ref:", iframeRef.current);
-  console.log(isVisible,"visible")
+  // console.log(searchTerm,"searchterm")
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -183,29 +183,32 @@ const Home = () => {
   };
 
   function handleLogoClick() {
-    // Arama kutusunu sıfırlama
+    // Clear the search input
     const searchInput = document.getElementById("gsc-i-id1");
     if (searchInput) {
-        searchInput.value = ""; // Input alanını temizle
-        setSearchTerm(""); // Arama state'ini temizle
+        searchInput.value = ""; // Clear the input field
+        setSearchTerm(""); // Clear the search state
     }
 
-    // İlgili state'leri temizleme
-    setIsVisible(false); // Arama sonuçlarını gizle
+    // Clear relevant states
+    setIsVisible(false); // Hide search results
 
-    // CSE sonuçlarını gizleme
+    // Clear GPT response
+    setGptResponse(""); // Clear the GPT response
+
+    // Hide CSE results
     const searchResultsContainer = document.querySelector(".gsc-results-wrapper-nooverlay");
     if (searchResultsContainer) {
-        // CSE sonuçlarını gizlemek için sınıfı güncelleyin
-        searchResultsContainer.classList.remove("gsc-results-wrapper-visible"); // Sonuçları gizle
+        searchResultsContainer.classList.remove("gsc-results-wrapper-visible"); // Hide results
     }
 
-    // Eğer iframe kullanıyorsanız iframe'i de sıfırlayın
+    // Reset the iframe if using it
     if (iframeRef.current) {
-        iframeRef.current.src = ""; // iframe'i sıfırla
-        setShowIframe(false); // iframe'i görünmez yap
+        iframeRef.current.src = ""; // Reset iframe
+        setShowIframe(false); // Hide iframe
     }
 }
+
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
@@ -315,7 +318,7 @@ const Home = () => {
         {selectedEngine !== "global-search" && (
           <div className="gpt-response">
             <h3 className="py-4">GPT Answer</h3>
-            <p className="text-center">{gptResponse}</p>
+            <p className="text-justify">{gptResponse}</p>
           </div>
         )}
       </main>
