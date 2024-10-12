@@ -209,7 +209,7 @@ const Home = () => {
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
-      <Header showLogo={true} onLogoClick={handleLogoClick} />
+      <Header showLogo={isVisible} onLogoClick={handleLogoClick} />
       <main
         className={`search-main flex-grow p-4 ${
           isVisible ? "mt-[-5rem]" : "mt-20"

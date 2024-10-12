@@ -72,7 +72,7 @@ const Header = ({showLogo,onLogoClick}) => {
         )}
       </div>
 
-      <div onClick={onLogoClick}  style={{marginRight:"17rem", width:"100px", height:"50px",cursor:"pointer"}}
+      <div onClick={onLogoClick}  style={{marginRight:"16.5rem", width:"100px", height:"50px",cursor:"pointer"}}
 >
       {showLogo && (
         <img
