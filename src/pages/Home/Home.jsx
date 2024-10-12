@@ -177,7 +177,8 @@ const Home = () => {
     e.preventDefault();
     if (selectedEngine === "global-search") {
       translateWithGPT(searchTerm);
-      setShowIframe(true); // Show iframe after translation
+      setShowIframe(true);
+      setIsVisible(true)
     }
   };
   useEffect(() => {
@@ -188,7 +189,7 @@ const Home = () => {
       }
     }, 1000); // 100 ms bekle
   
-    return () => clearTimeout(timer); // Temizle
+    return () => clearTimeout(timer); 
   }, [gptResponse, isVisible]);
   
 
@@ -210,7 +211,7 @@ const Home = () => {
           </div>
           {selectedEngine === "global-search" ? (
             <div
-              className={`search-container`}
+              className={`search-container ${isVisible ? "mt-[-5rem]" : ""}`}
               onMouseEnter={() => {
                 setShowSettings(true);
                 updateArrowPosition(); // Ayar menüsü açıldığında oku günceller
