@@ -257,7 +257,7 @@ const Home = () => {
               </form>
               <div className="search-arrow"></div>
               {showIframe && (
-                <div className="zindex-0 iframe-container absolute top-[-5px] left-0 w-[100%]">
+                <div className="zindex-0 iframe-container absolute top-[-5px] left-0 w-[97%]">
                   <iframe
                     ref={iframeRef}
                     title="Search Results"
