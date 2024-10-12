@@ -212,7 +212,7 @@ const Home = () => {
       <Header showLogo={isVisible} onLogoClick={handleLogoClick} />
       <main
         className={`search-main flex-grow p-4 ${
-          isVisible ? "mt-[-5rem]" : "mt-20"
+          isVisible ? "mt-[-4.5rem]" : "mt-20"
         }`}
       >
         <div>
@@ -254,7 +254,7 @@ const Home = () => {
               </form>
               <div className="search-arrow"></div>
               {showIframe && (
-                <div className="zindex-0 iframe-container absolute top-[-10px] left-0 w-[100%]">
+                <div className="zindex-0 iframe-container absolute top-[-5px] left-0 w-[100%]">
                   <iframe
                     ref={iframeRef}
                     title="Search Results"
@@ -262,7 +262,7 @@ const Home = () => {
                       searchTerm
                     )}`}
                     width="100%"
-                    style={{ border: "none", height:"79vh" ,zIndex:"0"}}
+                    style={{ border: "none", height:"77vh" ,zIndex:"0"}}
                   />
                 </div>
               )}
