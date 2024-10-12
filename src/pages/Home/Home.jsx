@@ -12,7 +12,11 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [gptResponse, setGptResponse] = useState("");
   const [selectedLanguage, setselectedLanguage] = useState("English");
+  const [showIframe, setShowIframe] = useState(false); // New state variable
+
   const settingsRef = useRef(null);
+  const iframeRef = useRef(null); // iframe referansı
+  console.log("Iframe Ref:", iframeRef.current);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -97,65 +101,73 @@ const Home = () => {
     const form = document.querySelector(".gsc-search-box");
 
     if (searchArrow) {
-        if (selectedEngine === "global-search") {
-            if (form) {
-                form.classList.add("hidden"); 
-            }
-            searchArrow.style.top = "12%";
-        } else {
-            if (form) {
-                form.classList.remove("hidden");
-            }
-            if (showSettings) {
-                searchArrow.style.top = "27.5%"; 
-            } else {
-                searchArrow.style.top = "48%"; 
-            }
+      if (selectedEngine === "global-search") {
+        if (form) {
+          form.classList.add("hidden");
         }
-        
+        searchArrow.style.top = "12%";
+      } else {
+        if (form) {
+          form.classList.remove("hidden");
+        }
+        if (showSettings) {
+          searchArrow.style.top = "27.5%";
+        } else {
+          searchArrow.style.top = "48%";
+        }
+      }
     }
-};
-
-async function translateWithGPT(query) {
-  const apiKey = `${apikey}`; 
-  const url = 'https://api.openai.com/v1/chat/completions';
-
-  const data = {
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "user",
-        content: `Bu ifadeyi: "${query}" ${selectedLanguage} diline çevirin. Lütfen yalnızca çevrilen metni döndürün, ek bir kelime veya karakter olmadan.`,
-      },
-    ],
-    max_tokens: 100,
   };
 
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(data),
-    });
+  const translateWithGPT = async (query) => {
+    const apiKey = `${apikey}`;
+    const url = "https://api.openai.com/v1/chat/completions";
 
-    const result = await response.json();
+    const data = {
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content: `Bu ifadeyi: "${query}" ${selectedLanguage} diline çevirin. Lütfen yalnızca çevrilen metni döndürün, ek bir kelime veya karakter olmadan.`,
+        },
+      ],
+      max_tokens: 100,
+    };
 
-    if (result.choices && result.choices.length > 0) {
-      const translatedText = result.choices[0].message.content.trim(); 
-      console.log(`Çevrilen metin: ${translatedText}`);
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(data),
+      });
 
-      const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(translatedText)}`;
-      window.open(searchUrl, "_self"); 
-    } else {
-      console.error("Çeviri alınamadı:", result);
+      const result = await response.json();
+
+      if (result.choices && result.choices.length > 0) {
+        const translatedText = result.choices[0].message.content.trim();
+        console.log(`Çevrilen metin: ${translatedText}`);
+
+        // iframe içinde arama sonuçlarını aç
+        const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(
+          translatedText
+        )}`;
+
+        if (iframeRef.current) {
+          iframeRef.current.src = searchUrl; // iframe'in src değerini ayarla
+
+        } else {
+          console.error("Iframe referansı alınamadı.");
+        }
+      } else {
+        console.error("Çeviri alınamadı:", result);
+      }
+    } catch (error) {
+      console.error("API isteği sırasında hata:", error);
     }
-  } catch (error) {
-    console.error("API isteği sırasında hata:", error);
-  }
-}
+  };
 
   useEffect(() => {
     updateArrowPosition();
@@ -165,8 +177,21 @@ async function translateWithGPT(query) {
     e.preventDefault();
     if (selectedEngine === "global-search") {
       translateWithGPT(searchTerm);
+      setShowIframe(true); // Show iframe after translation
     }
   };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (iframeRef.current && gptResponse) {
+        const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(gptResponse)}`;
+        iframeRef.current.src = searchUrl;
+      }
+    }, 1000); // 100 ms bekle
+  
+    return () => clearTimeout(timer); // Temizle
+  }, [gptResponse, isVisible]);
+  
+
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
       <main
@@ -195,8 +220,7 @@ async function translateWithGPT(query) {
                 updateArrowPosition(); // Ayar menüsü kapandığında oku eski pozisyonuna getirir
               }}
             >
-              <div className="gcse-search relative">
-              </div>
+              <div className="gcse-search relative"></div>
               <form onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
@@ -207,6 +231,20 @@ async function translateWithGPT(query) {
                 <button type="submit">Search</button>
               </form>
               <div className="search-arrow"></div>
+              {showIframe && (
+                <div className="iframe-container">
+                  <iframe
+                    ref={iframeRef}
+                    title="Search Results"
+                    src={`https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(
+                      searchTerm
+                    )}`}
+                    width="100%"
+                    height="600px"
+                    style={{ border: "none" }}
+                  />
+                </div>
+              )}
 
               {/* SettingsComponent will be shown here */}
               {showSettings && (
