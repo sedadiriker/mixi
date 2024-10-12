@@ -40,6 +40,13 @@
 .gsc-input {
   outline: none !important;
 }
+.hidden {
+  display: none !important;
+}
+.block{
+  display: block !important;
+}
+
 
 .search-arrow {
   position: absolute;
@@ -99,4 +106,17 @@
 .settings.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.global-input{
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 96%;
+  border: 1px solid rgba(0, 0, 0, 0.127);
+  padding: 5px;
+  outline: none;
+}
+.margin-top-global{
+  margin-top: 3rem;
 }
