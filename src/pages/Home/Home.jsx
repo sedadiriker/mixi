@@ -6,18 +6,20 @@ import SettingsComponent from "../../components/SettingsComponent";
 import Chatbot from "../../components/Chatbot/Chatbot";
 
 const Home = () => {
-  const [selectedEngine, setSelectedEngine] = useState("google-gpt4"); // Default to google-gpt4
+  const [selectedEngine, setSelectedEngine] = useState("google-gpt4"); 
   const [showSettings, setShowSettings] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [gptResponse, setGptResponse] = useState("");
   const [selectedLanguage, setselectedLanguage] = useState("English");
-  const [searchResults, setSearchResults] = useState([]); // Arama sonuçlarını saklamak için yeni durum
-  const [imageResults, setImageResults] = useState([]); // Görsel sonuçları saklamak için yeni durum
+  const [searchResults, setSearchResults] = useState([]); 
+  const [imageResults, setImageResults] = useState([]); 
 console.log(searchResults)
-  const [translatedText, setTranslatedText] = useState("");
+  // const [translatedText, setTranslatedText] = useState("");
 
   const settingsRef = useRef(null);
+  const searchRef = useRef(null);
+
 console.log(isVisible,"visible")
 
   useEffect(() => {
@@ -31,16 +33,29 @@ console.log(isVisible,"visible")
         ".gsc-results-wrapper-nooverlay"
       );
       if (searchResultsContainer) {
-        const visible = searchResultsContainer.classList.contains(
+        const isCurrentlyVisible = searchResultsContainer.classList.contains(
           "gsc-results-wrapper-visible"
         );
-        setIsVisible(visible);
-
+    
+        // Sadece durum değiştiğinde güncelleyin
+        if (isCurrentlyVisible !== isVisible) {
+          setIsVisible(isCurrentlyVisible);
+        }
+    
         const search = document.getElementById("gsc-i-id1");
-        setSearchTerm(search.value);
-        fetchGptResponse(search.value);
+        if (search) {
+          const searchTerm = search.value;
+          if (searchTerm !== searchTerm) {
+            setSearchTerm(searchTerm);
+            fetchGptResponse(searchTerm);
+          }
+        }
       }
     });
+    
+    // Observer'ı uygun öğe üzerinde başlatmayı unutmayın
+    observer.observe(document, { childList: true, subtree: true });
+    
 
     const checkForSearchResultsContainer = setInterval(() => {
       const searchResultsContainer = document.querySelector(
@@ -61,7 +76,6 @@ console.log(isVisible,"visible")
     };
 
     return () => {
-      // document.body.removeChild(script);
       observer.disconnect();
       clearInterval(checkForSearchResultsContainer);
     };
@@ -101,14 +115,14 @@ console.log(isVisible,"visible")
   const fetchSearchResults = async (query) => {
     if (!query) {
       console.error("Arama terimi boş.");
-      return; // Arama terimi boşsa işleme devam etme
+      return; 
     }
     try {
       const response = await fetch(`https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}`);
       const data = await response.json();
   
       if (data.items) {
-        setSearchResults(data.items); // API'den alınan sonuçları state'e kaydet
+        setSearchResults(data.items); 
       } else {
         console.error("No results found");
       }
@@ -139,7 +153,7 @@ console.log(isVisible,"visible")
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     setShowSettings(false);
-    
+    setIsVisible(true)
     if (selectedEngine === "global-search") {
       const translated = await translateWithGPT(searchTerm);
       if (translated) {
@@ -150,6 +164,7 @@ console.log(isVisible,"visible")
         console.error("Çeviri başarısız, arama yapılmadı.");
       }
     }
+    console.log("çalıştı-handle")
   };
   
   
@@ -207,7 +222,7 @@ console.log(isVisible,"visible")
       if (result.choices && result.choices.length > 0) {
         const text = result.choices[0].message.content.trim();
         console.log(`Çevrilen metin: ${text}`);
-        setTranslatedText(text); // Çeviriyi state'e kaydet
+        // setTranslatedText(text); // Çeviriyi state'e kaydet
         return text; // Çevirilen metni döndür
       } else {
         console.error("Çeviri alınamadı:", result);
@@ -244,7 +259,22 @@ console.log(isVisible,"visible")
  
   
   };
-  
+  const handleSearchResultClick = (e) => {
+    e.stopPropagation();
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsVisible(false); // Dışarı tıklandığında görünürlüğü false yap
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
@@ -266,7 +296,7 @@ console.log(isVisible,"visible")
           {selectedEngine === "global-search" ? (
             <div
             style={{zIndex:"423432535"}}
-              className={`relative  search-container ${isVisible ? "mt-[-5rem]" : ""}`}
+              className={`search-container`}
               onMouseEnter={() => {
                   setShowSettings(true);
                   updateArrowPosition(); 
@@ -334,8 +364,9 @@ console.log(isVisible,"visible")
             </div>
           )}
         </div>
+        <div>
         {selectedEngine === "global-search" && isVisible && (
-              <div className="search-results">
+              <div className="search-results" onClick={handleSearchResultClick}>
                 <h3>Arama Sonuçları</h3>
                 <ul>
                   {searchResults.map((result) => (
@@ -361,6 +392,7 @@ console.log(isVisible,"visible")
                 </ul>
               </div>
         )}
+        </div>
         {/* GPT Response - only show if selectedEngine is not global-search */}
         {selectedEngine !== "global-search" && (
           <div className="gpt-response">
