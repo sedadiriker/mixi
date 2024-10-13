@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import CustomSelect from './CustomSelect';
 
-const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef,showSettings,selectedLanguage,setSelectedLanguage }) => {
+const SettingsComponent = forwardRef(({ selectedEngine, setSelectedEngine, showSettings, selectedLanguage, setSelectedLanguage }, ref) => {
 
   const handleLanguageChange = (newLanguage) => {
     setSelectedLanguage(newLanguage);
@@ -11,7 +11,7 @@ const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef,show
 
   return (
     <div>
-    <div className={`settings ${showSettings ? "visible" : "hidden"}`} ref={settingsRef}>
+    <div className={`settings ${showSettings ? "visible" : "hidden"}`} ref={ref}>
         <div className="mb-4 mt-5 w-[85%] m-auto">
           <div className="grid grid-cols-3  gap-x-[1rem]">
             <div>
@@ -153,6 +153,6 @@ const SettingsComponent = ({ selectedEngine, setSelectedEngine, settingsRef,show
       )}
     </div>
   );
-};
+});
 
 export default SettingsComponent;

@@ -14,6 +14,7 @@ const Home = () => {
   const [selectedLanguage, setselectedLanguage] = useState("English");
   const [showIframe, setShowIframe] = useState(false); // New state variable
 
+  console.log("Show Iframe:", showIframe); // Iframe'in durumu
   const settingsRef = useRef(null);
   const iframeRef = useRef(null); // iframe referansı
   // console.log("Iframe Ref:", iframeRef.current);
@@ -125,89 +126,104 @@ const Home = () => {
     const url = "https://api.openai.com/v1/chat/completions";
 
     const data = {
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "user",
-          content: `Bu ifadeyi: "${query}" ${selectedLanguage} diline çevirin. Lütfen yalnızca çevrilen metni döndürün, ek bir kelime veya karakter olmadan.`,
-        },
-      ],
-      max_tokens: 100,
+        model: "gpt-3.5-turbo",
+        messages: [
+            {
+                role: "user",
+                content: `Bu ifadeyi: "${query}" ${selectedLanguage} diline çevirin. Lütfen yalnızca çevrilen metni döndürün, ek bir kelime veya karakter olmadan.`,
+            },
+        ],
+        max_tokens: 100,
     };
 
     try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify(data),
-      });
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify(data),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (result.choices && result.choices.length > 0) {
-        const translatedText = result.choices[0].message.content.trim();
-        console.log(`Çevrilen metin: ${translatedText}`);
+        if (result.choices && result.choices.length > 0) {
+            const translatedText = result.choices[0].message.content.trim();
+            console.log(`Çevrilen metin: ${translatedText}`);
 
-        const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(translatedText)}&output=search`;
+            const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(translatedText)}&output=search`;
 
-
-        if (iframeRef.current) {
-          iframeRef.current.src = searchUrl; // iframe'in src değerini ayarla
-
+            // Only set the iframe's src, don't change showIframe here
+            if (iframeRef.current) {
+                iframeRef.current.src = searchUrl; // iframe'in src değerini ayarla
+            } else {
+                console.error("Iframe referansı alınamadı.");
+            }
         } else {
-          console.error("Iframe referansı alınamadı.");
+            console.error("Çeviri alınamadı:", result);
+            setShowIframe(false);
         }
-      } else {
-        console.error("Çeviri alınamadı:", result);
-      }
     } catch (error) {
-      console.error("API isteği sırasında hata:", error);
+        console.error("API isteği sırasında hata:", error);
     }
-  };
+};
+
 
   useEffect(() => {
     updateArrowPosition();
   }, [showSettings, selectedEngine]);
 
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
     setShowSettings(false);
-    if (selectedEngine === "global-search") {
-      translateWithGPT(searchTerm);
-      setShowIframe(true);
-      setIsVisible(true)
-    }
-  };
 
-  function handleLogoClick() {
-    // Clear the search input
+    if (selectedEngine === "global-search") {
+        setShowIframe(false); // Hide iframe initially
+        await translateWithGPT(searchTerm); // Call the translation function
+        setShowIframe(true); // Show iframe after translation
+        setIsVisible(true);
+    } else {
+        setShowIframe(false); // If not global search, hide iframe
+    }
+};
+
+  
+
+  const handleLogoClick = () => {
     const searchInput = document.getElementById("gsc-i-id1");
     if (searchInput) {
-        searchInput.value = ""; // Clear the input field
-        setSearchTerm(""); // Clear the search state
+        searchInput.value = "";
+        setSearchTerm("");
     }
 
-    // Clear relevant states
-    setIsVisible(false); // Hide search results
-
-    // Clear GPT response
-    setGptResponse(""); // Clear the GPT response
-
-    // Hide CSE results
     const searchResultsContainer = document.querySelector(".gsc-results-wrapper-nooverlay");
-    if (searchResultsContainer) {
+    if (searchResultsContainer && searchResultsContainer.classList.contains("gsc-results-wrapper-visible")) {
         searchResultsContainer.classList.remove("gsc-results-wrapper-visible"); // Hide results
     }
 
-    // Reset the iframe if using it
+    setGptResponse("");
+    setIsVisible(false); // Hide search results
+
     if (iframeRef.current) {
         iframeRef.current.src = ""; // Reset iframe
-        setShowIframe(false); // Hide iframe
+        iframeRef.current.style.display = "none"; // Hide iframe
+        setShowIframe(false); // Show iframe'i false yap
     }
-}
+};
+
+  
+  useEffect(() => {
+    if (iframeRef.current) {
+      iframeRef.current.style.display = "none"; 
+      iframeRef.current.src = ""; 
+    }
+  }, [showIframe]);  
+  
+
+
+
+
 
 
   return (
@@ -265,7 +281,8 @@ const Home = () => {
                       searchTerm
                     )}`}
                     width="100%"
-                    style={{ border: "none", height:"77vh" ,zIndex:"0"}}
+                    style={{ display: showIframe ? "block" : "none" ,border: "none", height:"77vh" ,zIndex:"0"}}
+
                   />
                 </div>
               )}
