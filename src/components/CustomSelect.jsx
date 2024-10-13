@@ -36,8 +36,9 @@ const CustomSelect = ({selectedLanguage, onLanguageChange}) => {
   };
 
   return (
-    <div id="language-selection" className="mt-1 text-center">
-      <label htmlFor="target-lang" className="block mb-2 text-[10px] font-bold text-gray-600" style={{letterSpacing:"1px", wordSpacing:"2px"}}>Target Language:</label>
+    <div id="language-selection" className="mt-2 text-center">
+      <hr className="w-[50%] mx-auto my-2" />
+      <label htmlFor="target-lang" className="block mb-2 mt-2 text-[10px] font-bold text-gray-600" style={{letterSpacing:"1px", wordSpacing:"2px"}}>Target Language:</label>
       <div className="relative">
         <button 
           className="border border-gray-300 rounded-md p-1 text-center bg-white text-gray-500 w-[10%] hover:bg-gray-200 text-[14px] mb-20" 
