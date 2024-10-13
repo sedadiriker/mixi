@@ -125,11 +125,6 @@
 
 .search-results {
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  margin-top: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .search-results h3 {
@@ -143,7 +138,6 @@
 }
 
 .search-results li {
-  border-bottom: 1px solid #eee;
   padding: 10px 0;
 }
 
@@ -168,4 +162,24 @@
 .result-link{
   color: #4AA64E !important;
   font-size: 13px;
+}
+.href-link:hover{
+  text-decoration: none !important;
+}
+
+.search-results .tabs{
+  font-weight: 700;
+}
+
+
+.tab-button {
+  background: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 13px;
+}
+
+.tab-button.active {
+  border-bottom: 2px solid #4173E8; 
+  color: #4173E8;
 }

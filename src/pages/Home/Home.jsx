@@ -9,19 +9,19 @@ const Home = () => {
   const [selectedEngine, setSelectedEngine] = useState("google-gpt4"); 
   const [showSettings, setShowSettings] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [cachedResults, setCachedResults] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [gptResponse, setGptResponse] = useState("");
   const [selectedLanguage, setselectedLanguage] = useState("English");
   const [searchResults, setSearchResults] = useState([]); 
   const [imageResults, setImageResults] = useState([]); 
-console.log(searchResults)
-  // const [translatedText, setTranslatedText] = useState("");
+  const [activeTab, setActiveTab] = useState("web"); 
 
   const settingsRef = useRef(null);
   const searchRef = useRef(null);
 
 console.log(isVisible,"visible")
-
+console.log(cachedResults)
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://cse.google.com/cse.js?cx=45d2ff09083bc5958";
@@ -123,6 +123,8 @@ console.log(isVisible,"visible")
   
       if (data.items) {
         setSearchResults(data.items); 
+        setCachedResults(data.items);
+        localStorage.setItem('searchResults', JSON.stringify(data.items));
       } else {
         console.error("No results found");
       }
@@ -140,6 +142,8 @@ console.log(isVisible,"visible")
       const data = await response.json();
       if (data.items) {
         setImageResults(data.items);
+        localStorage.setItem('imageResults', JSON.stringify(data.items)); 
+
       } else {
         console.error("No image results found");
       }
@@ -246,35 +250,40 @@ console.log(isVisible,"visible")
     const searchInput = document.getElementById("gsc-i-id1");
     if (searchInput) {
       searchInput.value = "";
-      // setSearchTerm("");
     }
   
     const searchResultsContainer = document.querySelector(".gsc-results-wrapper-nooverlay");
     if (searchResultsContainer && searchResultsContainer.classList.contains("gsc-results-wrapper-visible")) {
-      searchResultsContainer.classList.remove("gsc-results-wrapper-visible"); // Hide results
+      searchResultsContainer.classList.remove("gsc-results-wrapper-visible"); 
     }
   
     setGptResponse("");
     setIsVisible(false); 
- 
-  
   };
-  const handleSearchResultClick = (e) => {
-    e.stopPropagation();
-  };
+
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setIsVisible(false); // Dışarı tıklandığında görünürlüğü false yap
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    const storedTerm = localStorage.getItem('searchTerm');
+    if (storedTerm) {
+      setSearchTerm(storedTerm);
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('searchTerm', searchTerm);
+  }, [searchTerm]);
+  useEffect(() => {
+    const storedResults = localStorage.getItem('searchResults');
+    if (storedResults) {
+        setCachedResults(JSON.parse(storedResults));
+    }
+
+    const storedImages = localStorage.getItem('imageResults');
+    if (storedImages) {
+        setImageResults(JSON.parse(storedImages));
+    }
+}, []);
+
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
@@ -310,7 +319,7 @@ console.log(isVisible,"visible")
               <form onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
-                  className={`global-input absolute top-1 left-0 z-20 mt-[-3px] ${isVisible ? "py-[10px] px-2" : "py-1 px-2"}`}
+                  className={`global-input absolute top-1 left-0 z-20 mt-[-3px] w-[100%] ${isVisible ? "py-[10px] px-2" : "py-1 px-2"}`}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 
@@ -366,32 +375,65 @@ console.log(isVisible,"visible")
         </div>
         <div>
         {selectedEngine === "global-search" && isVisible && (
-              <div className="search-results" onClick={handleSearchResultClick}>
-                <h3>Arama Sonuçları</h3>
-                <ul>
-                  {searchResults.map((result) => (
-                    <li key={result.link}>
-                      <a href={result.link} target="_blank" rel="noopener noreferrer">
-                        {result.title}
-                      </a>
-                      <p className="result-link">{result.displayLink} <span className="text-[10px]">{">"}</span></p>
-                      <p className="text-[13px]">{result.htmlSnippet}</p>
-                    </li>
-                  ))}
-                </ul>
-                <h3>Görsel Sonuçlar</h3>
-                <ul>
-                  {imageResults.map((imgResult) => (
-                    <li key={imgResult.link}>
-                      <a href={imgResult.link} target="_blank" rel="noopener noreferrer">
-                        <img src={imgResult.link} alt={imgResult.title} style={{ width: "120px", height: "auto" }} />
-                        {imgResult.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-        )}
+        <div className="search-results">
+          <div className="tabs flex gap-3 text-[#666666] text-[13px]">
+            <button
+              className={`tab-button ${activeTab === "web" ? "active" : ""}`}
+              onClick={() => setActiveTab("web")}
+            >
+              Web 
+            </button>
+            <button
+              className={`tab-button ${activeTab === "images" ? "active" : ""}`}
+              onClick={() => setActiveTab("images")}
+            >
+              Görsel 
+            </button>
+            
+          </div>
+          <hr />
+
+          {activeTab === "web" && (
+            <>
+              <ul>
+                {cachedResults.map((result) => (
+                  <li key={result.link}>
+                    <a className="href-link" href={result.link} target="_blank" rel="noopener noreferrer"                       dangerouslySetInnerHTML={{ __html: result.htmlTitle }}
+>
+                    </a>
+                    <p className="result-link">
+                      {result.displayLink} <span className="text-[10px]">{">"}</span>
+                    </p>
+                    <p
+                      className="text-[13px]"
+                      dangerouslySetInnerHTML={{ __html: result.htmlSnippet }}
+                    ></p>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {activeTab === "images" && (
+            <>
+              <ul>
+                {imageResults.map((imgResult) => (
+                  <li key={imgResult.link}>
+                    <a href={imgResult.link} target="_blank" rel="noopener noreferrer">
+                      <img
+                        src={imgResult.link}
+                        alt={imgResult.title}
+                        style={{ width: "120px", height: "auto" }}
+                      />
+                      {imgResult.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      )}
         </div>
         {/* GPT Response - only show if selectedEngine is not global-search */}
         {selectedEngine !== "global-search" && (
