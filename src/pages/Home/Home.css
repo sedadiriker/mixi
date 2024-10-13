@@ -122,3 +122,50 @@
   margin-top: 3rem;
 }
 
+
+.search-results {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-results h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.search-results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.search-results li {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.search-results li:last-child {
+  border-bottom: none;
+}
+
+.search-results a {
+  font-weight: 600;
+  color: #3B61CE; /* Google'daki mavi bağlantı rengi */
+  text-decoration: none;
+}
+
+.search-results a:hover {
+  text-decoration: underline;
+}
+
+.search-results p {
+  color: #333333; /* Google'daki gri metin rengi */
+  margin: 0;
+}
+.result-link{
+  color: #4AA64E !important;
+  font-size: 13px;
+}

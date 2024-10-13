@@ -12,13 +12,13 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [gptResponse, setGptResponse] = useState("");
   const [selectedLanguage, setselectedLanguage] = useState("English");
-  const [showIframe, setShowIframe] = useState(false); // New state variable
+  const [searchResults, setSearchResults] = useState([]); // Arama sonuçlarını saklamak için yeni durum
+  const [imageResults, setImageResults] = useState([]); // Görsel sonuçları saklamak için yeni durum
+console.log(searchResults)
+  const [translatedText, setTranslatedText] = useState("");
 
-console.log("Show Iframe:", showIframe); // Iframe'in durumu
   const settingsRef = useRef(null);
-  const iframeRef = useRef(null); // iframe referansı
-  // console.log("Iframe Ref:", iframeRef.current);
-  // console.log(searchTerm,"searchterm")
+console.log(isVisible,"visible")
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -98,6 +98,64 @@ console.log("Show Iframe:", showIframe); // Iframe'in durumu
     fetchGptResponse("Merhaba");
   }, []);
 
+  const fetchSearchResults = async (query) => {
+    if (!query) {
+      console.error("Arama terimi boş.");
+      return; // Arama terimi boşsa işleme devam etme
+    }
+    try {
+      const response = await fetch(`https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}`);
+      const data = await response.json();
+  
+      if (data.items) {
+        setSearchResults(data.items); // API'den alınan sonuçları state'e kaydet
+      } else {
+        console.error("No results found");
+      }
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
+  const fetchImageResults = async (query) => {
+    if (!query) {
+      console.error("Görsel arama terimi boş.");
+      return;
+    }
+    try {
+      const response = await fetch(`https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&searchType=image`);
+      const data = await response.json();
+      if (data.items) {
+        setImageResults(data.items);
+      } else {
+        console.error("No image results found");
+      }
+    } catch (error) {
+      console.error("Error fetching image results:", error);
+    }
+  };
+  
+  
+  
+  const handleSearchSubmit = async (e) => {
+    e.preventDefault();
+    setShowSettings(false);
+    
+    if (selectedEngine === "global-search") {
+      // Çeviriyi yap
+      const translated = await translateWithGPT(searchTerm);
+      if (translated) {
+        // Arama sonuçlarını al
+        await fetchSearchResults(translated);
+        await fetchImageResults(translated); // Görsel sonuçları al
+        setIsVisible(true);
+      } else {
+        console.error("Çeviri başarısız, arama yapılmadı.");
+      }
+    }
+  };
+  
+  
+
   const updateArrowPosition = () => {
     const searchArrow = document.querySelector(".search-arrow");
     const form = document.querySelector(".gsc-search-box");
@@ -124,7 +182,7 @@ console.log("Show Iframe:", showIframe); // Iframe'in durumu
   const translateWithGPT = async (query) => {
     const apiKey = `${apikey}`;
     const url = "https://api.openai.com/v1/chat/completions";
-
+  
     const data = {
       model: "gpt-3.5-turbo",
       messages: [
@@ -135,7 +193,7 @@ console.log("Show Iframe:", showIframe); // Iframe'in durumu
       ],
       max_tokens: 100,
     };
-
+  
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -145,49 +203,37 @@ console.log("Show Iframe:", showIframe); // Iframe'in durumu
         },
         body: JSON.stringify(data),
       });
-
+  
       const result = await response.json();
-
+  
       if (result.choices && result.choices.length > 0) {
-        const translatedText = result.choices[0].message.content.trim();
-        console.log(`Çevrilen metin: ${translatedText}`);
-
-        const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(translatedText)}&output=search`;
-
-
-        if (iframeRef.current) {
-          iframeRef.current.src = searchUrl; // iframe'in src değerini ayarla
-
-        } else {
-          console.error("Iframe referansı alınamadı.");
-        }
+        const text = result.choices[0].message.content.trim();
+        console.log(`Çevrilen metin: ${text}`);
+        setTranslatedText(text); // Çeviriyi state'e kaydet
+        return text; // Çevirilen metni döndür
       } else {
         console.error("Çeviri alınamadı:", result);
+        return null; // Hata durumunda null döndür
       }
     } catch (error) {
       console.error("API isteği sırasında hata:", error);
+      return null; // Hata durumunda null döndür
     }
   };
+  
+
 
   useEffect(() => {
     updateArrowPosition();
   }, [showSettings, selectedEngine]);
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    setShowSettings(false);
-    if (selectedEngine === "global-search") {
-      translateWithGPT(searchTerm);
-      setShowIframe(true);
-      setIsVisible(true)
-    }
-  };
+
 
   const handleLogoClick = () => {
     const searchInput = document.getElementById("gsc-i-id1");
     if (searchInput) {
       searchInput.value = "";
-      setSearchTerm("");
+      // setSearchTerm("");
     }
   
     const searchResultsContainer = document.querySelector(".gsc-results-wrapper-nooverlay");
@@ -196,31 +242,11 @@ console.log("Show Iframe:", showIframe); // Iframe'in durumu
     }
   
     setGptResponse("");
-    setIsVisible(false); // Hide search results
-  
-    if (iframeRef.current) {
-      iframeRef.current.src = ""; // Reset iframe
-      iframeRef.current.style.display = "none"; // Hide iframe
-      setShowIframe(false);
-
-    }
+    setIsVisible(false); 
+ 
   
   };
   
-  
-  
-  useEffect(() => {
-    if (!showIframe && iframeRef.current) {
-      iframeRef.current.style.display = "none"; // İframe'i gizle
-      iframeRef.current.src = ""; // İframe'in içeriğini boşalt
-    }
-  }, [showIframe]);  
-  
-
-
-
-
-
 
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
@@ -244,16 +270,12 @@ console.log("Show Iframe:", showIframe); // Iframe'in durumu
             style={{zIndex:"423432535"}}
               className={`relative  search-container ${isVisible ? "mt-[-5rem]" : ""}`}
               onMouseEnter={() => {
-                if (!isVisible) {
                   setShowSettings(true);
-                  updateArrowPosition(); // Ayar menüsü açıldığında oku günceller
-                }
+                  updateArrowPosition(); 
               }}
               onMouseLeave={() => {
-                if (!isVisible) {
                   setShowSettings(false);
-                  updateArrowPosition(); // Ayar menüsü kapandığında oku eski pozisyonuna getirir
-                }
+                  updateArrowPosition(); 
               }}
             >
               <div className="gcse-search relative"></div>
@@ -265,23 +287,10 @@ console.log("Show Iframe:", showIframe); // Iframe'in durumu
                   onChange={(e) => setSearchTerm(e.target.value)}
                 
                 />
-                <button type="submit"></button>
+                {/* <button type="submit"></button> */}
               </form>
               <div className="search-arrow"></div>
-              {showIframe && (
-                <div className="zindex-0 iframe-container absolute top-[-5px] left-0 w-[97%]">
-                  <iframe
-                    ref={iframeRef}
-                    title="Search Results"
-                    src={`https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(
-                      searchTerm
-                    )}`}
-                    width="100%"
-                    style={{ display: showIframe ? "block" : "none" ,border: "none", height:"77vh" ,zIndex:"0"}}
-
-                  />
-                </div>
-              )}
+           
 
               {/* SettingsComponent will be shown here */}
               {showSettings && !isVisible && (
@@ -299,12 +308,13 @@ console.log("Show Iframe:", showIframe); // Iframe'in durumu
             <div
               className={`search-container`}
               onMouseEnter={() => {
+                console.log("çalıştı")
                 setShowSettings(true);
-                updateArrowPosition(); // Ayar menüsü açıldığında oku günceller
+                updateArrowPosition(); 
               }}
               onMouseLeave={() => {
                 setShowSettings(false);
-                updateArrowPosition(); // Ayar menüsü kapandığında oku eski pozisyonuna getirir
+                updateArrowPosition(); 
               }}
             >
               <div className="gcse-search">
@@ -326,7 +336,33 @@ console.log("Show Iframe:", showIframe); // Iframe'in durumu
             </div>
           )}
         </div>
-
+        {selectedEngine === "global-search" && isVisible && (
+              <div className="search-results">
+                <h3>Arama Sonuçları</h3>
+                <ul>
+                  {searchResults.map((result) => (
+                    <li key={result.link}>
+                      <a href={result.link} target="_blank" rel="noopener noreferrer">
+                        {result.title}
+                      </a>
+                      <p className="result-link">{result.displayLink} <span className="text-[10px]">{">"}</span></p>
+                      <p className="text-[13px]">{result.htmlSnippet}</p>
+                    </li>
+                  ))}
+                </ul>
+                <h3>Görsel Sonuçlar</h3>
+                <ul>
+                  {imageResults.map((imgResult) => (
+                    <li key={imgResult.link}>
+                      <a href={imgResult.link} target="_blank" rel="noopener noreferrer">
+                        <img src={imgResult.link} alt={imgResult.title} style={{ width: "120px", height: "auto" }} />
+                        {imgResult.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+        )}
         {/* GPT Response - only show if selectedEngine is not global-search */}
         {selectedEngine !== "global-search" && (
           <div className="gpt-response">
