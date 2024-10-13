@@ -14,7 +14,7 @@ const Home = () => {
   const [selectedLanguage, setselectedLanguage] = useState("English");
   const [showIframe, setShowIframe] = useState(false); // New state variable
 
-  console.log("Show Iframe:", showIframe); // Iframe'in durumu
+console.log("Show Iframe:", showIframe); // Iframe'in durumu
   const settingsRef = useRef(null);
   const iframeRef = useRef(null); // iframe referansı
   // console.log("Iframe Ref:", iframeRef.current);
@@ -126,97 +126,93 @@ const Home = () => {
     const url = "https://api.openai.com/v1/chat/completions";
 
     const data = {
-        model: "gpt-3.5-turbo",
-        messages: [
-            {
-                role: "user",
-                content: `Bu ifadeyi: "${query}" ${selectedLanguage} diline çevirin. Lütfen yalnızca çevrilen metni döndürün, ek bir kelime veya karakter olmadan.`,
-            },
-        ],
-        max_tokens: 100,
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content: `Bu ifadeyi: "${query}" ${selectedLanguage} diline çevirin. Lütfen yalnızca çevrilen metni döndürün, ek bir kelime veya karakter olmadan.`,
+        },
+      ],
+      max_tokens: 100,
     };
 
     try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${apiKey}`,
-            },
-            body: JSON.stringify(data),
-        });
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(data),
+      });
 
-        const result = await response.json();
+      const result = await response.json();
 
-        if (result.choices && result.choices.length > 0) {
-            const translatedText = result.choices[0].message.content.trim();
-            console.log(`Çevrilen metin: ${translatedText}`);
+      if (result.choices && result.choices.length > 0) {
+        const translatedText = result.choices[0].message.content.trim();
+        console.log(`Çevrilen metin: ${translatedText}`);
 
-            const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(translatedText)}&output=search`;
+        const searchUrl = `https://www.google.com/cse?cx=45d2ff09083bc5958&q=${encodeURIComponent(translatedText)}&output=search`;
 
-            // Only set the iframe's src, don't change showIframe here
-            if (iframeRef.current) {
-                iframeRef.current.src = searchUrl; // iframe'in src değerini ayarla
-            } else {
-                console.error("Iframe referansı alınamadı.");
-            }
+
+        if (iframeRef.current) {
+          iframeRef.current.src = searchUrl; // iframe'in src değerini ayarla
+
         } else {
-            console.error("Çeviri alınamadı:", result);
-            setShowIframe(false);
+          console.error("Iframe referansı alınamadı.");
         }
+      } else {
+        console.error("Çeviri alınamadı:", result);
+      }
     } catch (error) {
-        console.error("API isteği sırasında hata:", error);
+      console.error("API isteği sırasında hata:", error);
     }
-};
-
+  };
 
   useEffect(() => {
     updateArrowPosition();
   }, [showSettings, selectedEngine]);
 
-  const handleSearchSubmit = async (e) => {
+  const handleSearchSubmit = (e) => {
     e.preventDefault();
     setShowSettings(false);
-
     if (selectedEngine === "global-search") {
-        setShowIframe(false); // Hide iframe initially
-        await translateWithGPT(searchTerm); // Call the translation function
-        setShowIframe(true); // Show iframe after translation
-        setIsVisible(true);
-    } else {
-        setShowIframe(false); // If not global search, hide iframe
+      translateWithGPT(searchTerm);
+      setShowIframe(true);
+      setIsVisible(true)
     }
-};
-
-  
+  };
 
   const handleLogoClick = () => {
     const searchInput = document.getElementById("gsc-i-id1");
     if (searchInput) {
-        searchInput.value = "";
-        setSearchTerm("");
+      searchInput.value = "";
+      setSearchTerm("");
     }
-
+  
     const searchResultsContainer = document.querySelector(".gsc-results-wrapper-nooverlay");
     if (searchResultsContainer && searchResultsContainer.classList.contains("gsc-results-wrapper-visible")) {
-        searchResultsContainer.classList.remove("gsc-results-wrapper-visible"); // Hide results
+      searchResultsContainer.classList.remove("gsc-results-wrapper-visible"); // Hide results
     }
-
+  
     setGptResponse("");
     setIsVisible(false); // Hide search results
-
+  
     if (iframeRef.current) {
-        iframeRef.current.src = ""; // Reset iframe
-        iframeRef.current.style.display = "none"; // Hide iframe
-        setShowIframe(false); // Show iframe'i false yap
-    }
-};
+      iframeRef.current.src = ""; // Reset iframe
+      iframeRef.current.style.display = "none"; // Hide iframe
+      setShowIframe(false);
 
+    }
+  
+  };
+  
+  
   
   useEffect(() => {
-    if (iframeRef.current) {
-      iframeRef.current.style.display = "none"; 
-      iframeRef.current.src = ""; 
+    if (!showIframe && iframeRef.current) {
+      iframeRef.current.style.display = "none"; // İframe'i gizle
+      iframeRef.current.src = ""; // İframe'in içeriğini boşalt
     }
   }, [showIframe]);  
   
