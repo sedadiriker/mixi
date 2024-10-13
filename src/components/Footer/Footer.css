@@ -35,21 +35,22 @@
 }
 
 .footer-widget-container.collapsed {
-  height: 50px; 
+  height: 7vh; 
 }
 
 .footer-widget-container.expanded ,.footer-widget-container.collapsed2{
   transition: height 0.3s ease;
-  height: 175px;
+  /* height: 175px; */
+  height: 7vh;
 }
 .footer-widget-container.expanded2 {
   transition: height 0.3s ease;
   height: 80vh;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 .footer-widget-container.expanded {
   transition: height 0.3s ease;
-  height: 175px;
+  height: 25vh;
 }
 
 .footer-widget-container .widget-header {
