@@ -141,12 +141,10 @@ console.log(isVisible,"visible")
     setShowSettings(false);
     
     if (selectedEngine === "global-search") {
-      // Çeviriyi yap
       const translated = await translateWithGPT(searchTerm);
       if (translated) {
-        // Arama sonuçlarını al
         await fetchSearchResults(translated);
-        await fetchImageResults(translated); // Görsel sonuçları al
+        await fetchImageResults(translated); 
         setIsVisible(true);
       } else {
         console.error("Çeviri başarısız, arama yapılmadı.");
@@ -287,9 +285,9 @@ console.log(isVisible,"visible")
                   onChange={(e) => setSearchTerm(e.target.value)}
                 
                 />
-                {/* <button type="submit"></button> */}
+                <button type="submit"></button>
               </form>
-              <div className="search-arrow"></div>
+              <div onClick={handleSearchSubmit} className="search-arrow"></div>
            
 
               {/* SettingsComponent will be shown here */}
