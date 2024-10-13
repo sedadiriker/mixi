@@ -403,7 +403,7 @@ const Home = () => {
                           </li>
                         ))}
                       </ul>
-                      <div id="pagination" className="text-[12px] flex gap-2 text-[#666666]">
+                      <div id="pagination" className="text-[12px] flex gap-2 text-[#666666] mt-3">
   {[...Array(10)].map((_, index) => (
     <button 
       key={index + 1} 

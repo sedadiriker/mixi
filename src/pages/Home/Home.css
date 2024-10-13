@@ -12,7 +12,6 @@
 .search-results {
   max-height: 65vh; 
   overflow-y: auto; 
-  margin-top: 20px;
   background-color: white;
   padding: 10px;
   z-index: 500; 
@@ -178,7 +177,7 @@
 .tab-button {
   background: none;
   cursor: pointer;
-  padding: 10px 20px;
+  padding: 5px 10px;
   font-size: 13px;
 }
 
@@ -187,6 +186,8 @@
   color: #4173E8;
 }
 
-.pagination{
-  border: 1px solid red;
+
+
+.page-button.active {
+ color: #4173E8; 
 }
