@@ -299,22 +299,17 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col bg-white w-[100%] mx-auto h-[100vh]">
+    <div className="flex flex-col bg-white w-[100%] mx-auto  home">
       <Header showLogo={isVisible} onLogoClick={handleLogoClick} />
       <main
-        className={`search-main flex-grow p-4 ${
-          isVisible ? "mt-[-4.5rem]" : "mt-20"
-        }`}
+        className={`search-main flex-grow p-4 flex flex-col justify-center`}
       >
-        <div>
-          <div className="w-full">
+          <div className="w-full py-20">
             <img
-              className="m-auto mt-10 logo"
+              className="m-auto logo w-[10vw]"
               src="images/logo.png"
-              width={130}
               alt="Logo"
             />
-          </div>
           {selectedEngine === "global-search" ? (
             <div
               style={{ zIndex: "423432535" }}
@@ -476,7 +471,7 @@ const Home = () => {
             </div>
           )}
         </div>
-        <div></div>
+
         {/* GPT Response - only show if selectedEngine is not global-search */}
         {selectedEngine !== "global-search" && (
           <div className="gpt-response">
