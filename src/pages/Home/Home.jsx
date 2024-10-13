@@ -27,8 +27,8 @@ const Home = () => {
 
 
   const handlePageChange = (newPage) => {
-    if (newPage < 1 || newPage > 10) return; // 1-10 arası sayfa kontrolü
-    fetchSearchResults(searchTerm, newPage); // Yeni sayfayı al
+    if (newPage < 1 || newPage > 10) return; 
+    fetchSearchResults(searchTerm, newPage); 
   };
   
   
@@ -127,7 +127,6 @@ const Home = () => {
       return;
     }
   
-    // Her sayfa için başlangıç indexini hesapla
     const start = (page - 1) * 10 + 1;
   
     try {
@@ -139,7 +138,7 @@ const Home = () => {
       if (data.items) {
         setSearchResults(data.items);
         setCachedResults(data.items);
-        setCurrentPage(page); // Aktif sayfayı ayarla
+        setCurrentPage(page);
         localStorage.setItem("searchResults", JSON.stringify(data.items));
       } else {
         console.error("No results found");
@@ -197,7 +196,7 @@ const Home = () => {
         if (form) {
           form.classList.add("hidden");
         }
-        searchArrow.style.top = "40%";
+        searchArrow.style.top = "14%";
       } else {
         if (form) {
           form.classList.remove("hidden");
@@ -205,7 +204,7 @@ const Home = () => {
         if (showSettings) {
           searchArrow.style.top = "27.5%";
         } else {
-          searchArrow.style.top = "48%";
+          searchArrow.style.top = "18%";
         }
       }
     }

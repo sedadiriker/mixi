@@ -187,7 +187,9 @@
 }
 
 
-
+.page-button{
+  font-weight: 500;
+}
 .page-button.active {
  color: #4173E8; 
 }
