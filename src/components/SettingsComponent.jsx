@@ -143,7 +143,6 @@ const SettingsComponent = forwardRef(({ selectedEngine, setSelectedEngine, showS
             </div> */}
           </div>
         </div>
-        <hr className="w-[50%] m-auto" />
       </div>
 
       {selectedEngine === "global-search" && (
