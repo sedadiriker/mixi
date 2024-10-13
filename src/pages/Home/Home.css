@@ -146,7 +146,7 @@
 }
 
 .search-results a {
-  font-weight: 600;
+  font-weight: 500;
   color: #3B61CE; /* Google'daki mavi bağlantı rengi */
   text-decoration: none;
 }
@@ -160,8 +160,9 @@
   margin: 0;
 }
 .result-link{
-  color: #4AA64E !important;
+  color: #009933 !important;
   font-size: 13px;
+  font-weight: 600;
 }
 .href-link:hover{
   text-decoration: none !important;

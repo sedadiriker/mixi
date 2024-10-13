@@ -401,8 +401,8 @@ console.log(cachedResults)
                     <a className="href-link" href={result.link} target="_blank" rel="noopener noreferrer"                       dangerouslySetInnerHTML={{ __html: result.htmlTitle }}
 >
                     </a>
-                    <p className="result-link">
-                      {result.displayLink} <span className="text-[10px]">{">"}</span>
+                    <p className="result-link py-1">
+                      {result.displayLink} <span className="text-[10px]">{"›"}</span>
                     </p>
                     <p
                       className="text-[13px]"
