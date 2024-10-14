@@ -82,7 +82,7 @@ const Reminder = () => {
   }, []);
 
   const startTimer = () => {
-    if (isRunning) return; // Eğer zaten çalışıyorsa, tekrar başlatma
+    if (isRunning) return; 
     setIsRunning(true);
     const newTimer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -145,7 +145,7 @@ const Reminder = () => {
   };
 
   const toggleSettings = () => {
-    setShowSettings(!showSettings); // Ayar sayfasını göster ya da gizle
+    setShowSettings(!showSettings); 
   };
 
   return (
@@ -236,38 +236,63 @@ const Reminder = () => {
 
       {!showSettings && (
         <>
-          <div className="mb-8 flex justify-center items-center py-2" style={{ width: "100%", height: "130px" }}>
-    <svg className="w-full h-full" viewBox="0 0 30 30">
-        <circle className="py-4" cx="15" cy="15" r="10" fill="none" stroke="#e0e0e0" strokeWidth="2"></circle>
-        <circle 
-            id="timerCircle" 
-            cx="15" 
-            cy="15" 
-            r="10" 
-            fill="none" 
-            stroke="#3b82f6" 
-            strokeWidth="2" 
-            style={{ 
-                strokeDasharray: `${50.3 * (1 - (timeLeft / (reminderInterval * 60)))}`, 
-                transform: 'rotate(-90deg)', 
-                transformOrigin: '50% 50%' 
-            }} 
-        />
-        <text 
-            id="timerText" 
-            x="15" 
-            y="15" 
-            textAnchor="middle" 
-            dy=".3em" 
-            fontSize="4" 
-            className="font-bold"
-            fill="white">
-            {`${Math.floor(timeLeft / 60).toString().padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`}
-        </text>
-    </svg>
-</div>
+          <div
+            className="mb-8 flex flex-col justify-center items-center py-2"
+            style={{ width: "100%", height: "130px" }}
+          >
+            <svg className="w-full h-full" viewBox="0 0 30 30">
+              <circle
+                className="py-4"
+                cx="15"
+                cy="15"
+                r="10"
+                fill="none"
+                stroke="#e0e0e0"
+                strokeWidth="2"
+              ></circle>
+              <circle
+                id="timerCircle"
+                cx="15"
+                cy="15"
+                r="10"
+                fill="none"
+                stroke="#3b82f6"
+                strokeWidth="2"
+                style={{
+                  strokeDasharray: `${
+                    50.3 * (1 - timeLeft / (reminderInterval * 60))
+                  }`,
+                  transform: "rotate(-90deg)",
+                  transformOrigin: "50% 50%",
+                }}
+              />
+              <text
+                id="timerText"
+                x="15"
+                y="15"
+                textAnchor="middle"
+                dy=".3em"
+                fontSize="4"
+                className="font-bold"
+                fill="white"
+              >
+                {`${Math.floor(timeLeft / 60)
+                  .toString()
+                  .padStart(2, "0")}:${(timeLeft % 60)
+                  .toString()
+                  .padStart(2, "0")}`}
+              </text>
+            </svg>
 
-
+            <div className="flex space-x-4">
+              <button className="btn-start transition duration-300 bg-gray-600 hover:bg-gray-400 text-black font-bold py-1 px-2 rounded text-[12px]">
+                Start
+              </button>
+              <button className="btn-stop transition duration-300 bg-gray-600 hover:bg-gray-400 text-black font-bold py-1 px-2 rounded text-[12px]">
+                Stop
+              </button>
+            </div>
+          </div>
 
           {popupVisible && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">

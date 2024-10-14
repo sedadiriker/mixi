@@ -38,6 +38,7 @@
     border-radius: 8px;
     text-align: center;
     width: 30%;
+    height: 80vh;
   }
   
   .reminder-widget  .close {
