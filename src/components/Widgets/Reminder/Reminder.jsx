@@ -236,14 +236,14 @@ const Reminder = () => {
 
       {!showSettings && (
         <>
-          <div className="mb-8 flex justify-center items-center py-2 border" style={{ width: "100%", height: "130px" }}>
-    <svg className="w-full h-full border" viewBox="0 0 30 30">
-        <circle className="py-4" cx="15" cy="15" r="15" fill="none" stroke="#e0e0e0" strokeWidth="2"></circle>
+          <div className="mb-8 flex justify-center items-center py-2" style={{ width: "100%", height: "130px" }}>
+    <svg className="w-full h-full" viewBox="0 0 30 30">
+        <circle className="py-4" cx="15" cy="15" r="10" fill="none" stroke="#e0e0e0" strokeWidth="2"></circle>
         <circle 
             id="timerCircle" 
             cx="15" 
             cy="15" 
-            r="15" 
+            r="10" 
             fill="none" 
             stroke="#3b82f6" 
             strokeWidth="2" 
@@ -259,7 +259,7 @@ const Reminder = () => {
             y="15" 
             textAnchor="middle" 
             dy=".3em" 
-            fontSize="6" 
+            fontSize="4" 
             className="font-bold"
             fill="white">
             {`${Math.floor(timeLeft / 60).toString().padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`}

@@ -9,7 +9,7 @@
     z-index: 300;
   }
   
-  .reminder-widget:hover .settings-icon-quotes {
+  .reminder-widget:hover .settings-icon-reminder {
     color: #808080; 
   }
   .reminder-widget {
