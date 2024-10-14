@@ -41,10 +41,17 @@ const Home = () => {
     }
   };
   
-  const handleImagePageChange = (newPage) => {
+  const handleImagePageChange = async (newPage) => {
     if (newPage < 1 || newPage > 10) return;
-    fetchSearchResults(searchTerm, newPage);
+  
+    const translated = await translateWithGPT(searchTerm);
+    if (translated) {
+      fetchImageResults(translated, newPage);
+    } else {
+      console.error("Çeviri başarısız, resim arama yapılmadı.");
+    }
   };
+  
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -168,17 +175,17 @@ const Home = () => {
       console.error("Görsel arama terimi boş.");
       return;
     }
+    
     const start = (page - 1) * 10 + 1;
-
+  
     try {
       const response = await fetch(
-        `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&searchType=image`
+        `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&searchType=image&start=${start}`
       );
       const data = await response.json();
       if (data.items) {
-        // console.log(data.items);
         setImageResults(data.items);
-        setCurrentImagePage(page);
+        setCurrentImagePage(page); // Şu anki sayfayı güncelle
         localStorage.setItem("imageResults", JSON.stringify(data.items));
       } else {
         console.error("No image results found");
@@ -187,6 +194,7 @@ const Home = () => {
       console.error("Error fetching image results:", error);
     }
   };
+  
 
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
