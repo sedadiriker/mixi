@@ -1,6 +1,5 @@
 import React from 'react'
 import useSound from 'use-sound'
-import clickSfx from '../../../sounds/slide.mp3'
 
 const Controls = ({ timerMode,
                     setTimerMode,
@@ -13,7 +12,7 @@ const Controls = ({ timerMode,
                     volume
                   }) => {
 
-  const [playSfx] = useSound(clickSfx, { volume: volume });
+  const [playSfx] = useSound('/sounds/slide.mp3', { volume: volume });
 
   const handleModeChange = (event) => {
     setTimerMode(event.target.id)

@@ -15,6 +15,8 @@ const Reminder = () => {
   const [chart, setChart] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [alarmSound, setAlarmSound] = useState("alarm1"); 
+
   const chartRef = useRef(null);
 
   const closeModal = () => {
@@ -177,6 +179,11 @@ const Reminder = () => {
     }
   }, [showSettings]);
   
+  const playPreviewSound = (soundName) => {
+    const audio = new Audio(`/sounds/reminder/${soundName}.mp3`);
+    audio.play();
+  };
+  
   const radius = 11;
   const circumference = 2 * Math.PI * radius; 
   return (
@@ -232,21 +239,50 @@ const Reminder = () => {
               </div>
 
               <div className="mt-2">
-                <label
-                  htmlFor="alarmSound"
-                  className="block mb-2 font-semibold"
-                >
-                  Alarm Sound:
-                </label>
-                <select
-                  id="alarmSound"
-                  className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500 outline-none"
-                >
-                  <option value="beep">Bip</option>
-                  <option value="bell">Zil</option>
-                  <option value="chime">Çan</option>
-                </select>
-              </div>
+  <label htmlFor="alarmSound" className="block mb-2 font-semibold">
+    Alarm Sound:
+  </label>
+  <div className="grid grid-cols-3 gap-2">
+    <div>
+      <label htmlFor="beep">Bip</label>
+      <button
+        className="play-sound-button"
+        onClick={() => playPreviewSound("beep")}
+      >
+        Dinle
+      </button>
+    </div>
+    <div>
+      <label htmlFor="bell">Zil</label>
+      <button
+        className="play-sound-button"
+        onClick={() => playPreviewSound("bell")}
+      >
+        Dinle
+      </button>
+    </div>
+    <div>
+      <label htmlFor="chime">Çan</label>
+      <button
+        className="play-sound-button"
+        onClick={() => playPreviewSound("chime")}
+      >
+        Dinle
+      </button>
+    </div>
+  </div>
+
+  <select
+    id="alarmSound"
+    className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500 outline-none"
+    onChange={(e) => setAlarmSound(e.target.value)}
+  >
+    <option value="alarm1">Bip</option>
+    <option value="alarm2">Alarm</option>
+    <option value="alarm3">Dong</option>
+  </select>
+</div>
+
 
               <button
                 onClick={isRunning ? stopTimer : startTimer}

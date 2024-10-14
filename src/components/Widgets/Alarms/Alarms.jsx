@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toastWarnNotify, toastSuccessNotify } from '../../../helper/ToastNotify'; 
 import './Alarms.css';
-import alarmSound from '../../../sounds/timesUp.mp3';
 import AlarmModal from './AlarmModal'; 
 
 const Alarms = () => {
@@ -91,7 +90,7 @@ const Alarms = () => {
   
 
 const playAlarmSound = () => {
-  const audioInstance = new Audio(alarmSound);
+  const audioInstance = new Audio('/sounds/timesUp.mp3');
   audioInstance.loop = true;
   audioInstance.play();
   setAudio(audioInstance);

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import useSound from 'use-sound'
-import timesUpSfx from '../../../sounds/timesUp.mp3'
 import Settings from './settings'
 import Button from './button'
 import Header from './header'
@@ -21,9 +20,8 @@ const Pomodoro = () => {
   const [ buttonText, setButtonText ] = useState('START')
 
   const [ volume, setVolume ] = useState(1)
-  const [ timesUp ] = useSound(timesUpSfx, {
-                                volume: volume,
-                              })
+  const [play] = useSound('/sounds/timesUp.mp3', { volume: volume });
+
 
   useEffect(() => {
     if(isActive) {
@@ -35,13 +33,13 @@ const Pomodoro = () => {
         clearInterval(interval)
         setIsActive(false)
         setButtonText('')
-        timesUp()
+        play()
       }
 
       return () => clearInterval(interval)
     }
     
-  }, [isActive, secondsLeft, timesUp]);
+  }, [isActive, secondsLeft, play]);
 
 
   const toggleSettingsVisibility = (event) => {
