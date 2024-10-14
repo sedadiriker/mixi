@@ -236,52 +236,38 @@ const Reminder = () => {
 
       {!showSettings && (
         <>
-          <div
-            className="flex justify-center items-center"
-            style={{ border: "1px solid red, width: '100%', height: '100%'" }}
-          >
-            <svg className="w-full h-full" viewBox="0 0 64 64">
-              <circle
-                cx="32"
-                cy="32"
-                r="20"
-                fill="none"
-                stroke="#e0e0e0"
-                strokeWidth="4"
-              ></circle>
-              <circle
-                id="timerCircle"
-                cx="32"
-                cy="32"
-                r="20"
-                fill="none"
-                stroke="#3b82f6"
-                strokeWidth="4"
-                style={{
-                  strokeDasharray: `${
-                    125.6 * (1 - timeLeft / (reminderInterval * 60))
-                  }`,
-                  transform: "rotate(-90deg)",
-                  transformOrigin: "50% 50%",
-                }}
-              />
-              <text
-                id="timerText"
-                x="32"
-                y="32"
-                textAnchor="middle"
-                dy=".3em"
-                fontSize="10"
-                className="font-bold"
-              >
-                {`${Math.floor(timeLeft / 60)
-                  .toString()
-                  .padStart(2, "0")}:${(timeLeft % 60)
-                  .toString()
-                  .padStart(2, "0")}`}
-              </text>
-            </svg>
-          </div>
+          <div className="mb-8 flex justify-center items-center py-2 border" style={{ width: "100%", height: "130px" }}>
+    <svg className="w-full h-full border" viewBox="0 0 30 30">
+        <circle className="py-4" cx="15" cy="15" r="15" fill="none" stroke="#e0e0e0" strokeWidth="2"></circle>
+        <circle 
+            id="timerCircle" 
+            cx="15" 
+            cy="15" 
+            r="15" 
+            fill="none" 
+            stroke="#3b82f6" 
+            strokeWidth="2" 
+            style={{ 
+                strokeDasharray: `${50.3 * (1 - (timeLeft / (reminderInterval * 60)))}`, 
+                transform: 'rotate(-90deg)', 
+                transformOrigin: '50% 50%' 
+            }} 
+        />
+        <text 
+            id="timerText" 
+            x="15" 
+            y="15" 
+            textAnchor="middle" 
+            dy=".3em" 
+            fontSize="6" 
+            className="font-bold"
+            fill="white">
+            {`${Math.floor(timeLeft / 60).toString().padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`}
+        </text>
+    </svg>
+</div>
+
+
 
           {popupVisible && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
