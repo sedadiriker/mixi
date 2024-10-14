@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import Chart from "chart.js/auto";
 import "./Reminder.css";
 
@@ -15,6 +15,7 @@ const Reminder = () => {
   const [chart, setChart] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const chartRef = useRef(null);
 
   const closeModal = () => {
     setShowSettings(false);
@@ -34,55 +35,81 @@ const Reminder = () => {
   }, [reminderInterval]);
 
   useEffect(() => {
-    const ctx = document.getElementById("weeklyChart");
-    if (ctx) {
-      const newChart = new Chart(ctx.getContext("2d"), {
-        type: "bar",
-        data: {
-          labels: getWeekLabels(),
-          datasets: [
-            {
-              label: "Yapılan Egzersizler",
-              data: weeklyData.done,
-              backgroundColor: "rgba(75, 192, 192, 0.6)",
-            },
-            {
-              label: "Atlanan Egzersizler",
-              data: weeklyData.skipped,
-              backgroundColor: "rgba(255, 99, 132, 0.6)",
-            },
-          ],
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              stepSize: 1,
-            },
-          },
-          responsive: true,
-          plugins: {
-            legend: {
-              position: "top",
-            },
-            title: {
-              display: true,
-              text: "Haftalık Egzersiz Performansı",
-            },
-          },
-        },
-      });
+    if (showSettings && chartRef.current) {
+      const timeout = setTimeout(() => {
+        const ctx = chartRef.current.getContext("2d");
+        if (ctx) {
+          if (chart) {
+            chart.destroy(); 
+          }
 
-      setChart(newChart);
+          const newChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: getWeekLabels(),
+              datasets: [
+                {
+                  label: "Yapılan Egzersizler",
+                  data: weeklyData.done,
+                  backgroundColor: "rgba(75, 192, 192, 0.6)",
+                },
+                {
+                  label: "Atlanan Egzersizler",
+                  data: weeklyData.skipped,
+                  backgroundColor: "rgba(255, 99, 132, 0.6)",
+                },
+              ],
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  stepSize: 1,
+                  grid: {
+                    color: "#ffffff50",
+                  },
+                },
+                x: {
+                  grid: {
+                    color: "#ffffff50",
+                  },
+                },
+              },
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: "Haftalık Egzersiz Performansı",
+                },
+              },
+            },
+          });
+          
 
-      return () => {
-        newChart.destroy();
-      };
+            setChart(newChart);
+
+            return () => {
+                newChart.destroy(); 
+            };
+        } else {
+            console.error("Canvas element not found");
+        }
+      }, 100); 
+      return () => clearTimeout(timeout);
     }
-  }, []);
+}, [showSettings, weeklyData]);
+
+  
+
+
+  
+  
 
   const startTimer = () => {
-    if (isRunning) return; 
+    if (isRunning) return;
     setIsRunning(true);
     const newTimer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -140,41 +167,48 @@ const Reminder = () => {
   };
 
   const getWeekLabels = () => {
-    const days = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const today = new Date().getDay();
     return days.slice(today + 1).concat(days.slice(0, today + 1));
   };
 
   const toggleSettings = () => {
-    setShowSettings(!showSettings); 
+    setShowSettings(!showSettings);
   };
 
+  useEffect(() => {
+    if (showSettings) {
+      updateChart();
+    }
+  }, [showSettings]);
+  
+
   return (
-    <div className="reminder-widget relative">
+    <div className="reminder-widget relative h-[100%]">
       <div className="settings-icon-reminder" onClick={toggleSettings}>
         <i className="fas fa-cog"></i>
       </div>
 
       {showSettings && (
         <div className="modal">
-          <div className="modal-content mt-20">
+          <div className="modal-content mt-28">
             <span className="close" onClick={closeModal}>
               &times;
             </span>
 
-            <div className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6 mb-8">
+            <div className=" bg-black rounded-lg shadow-lg p-6 h-[100%]">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label
                     htmlFor="reminderInterval"
-                    className="block mb-2 font-semibold"
+                    className="block mb-1 font-semibold"
                   >
-                    Hatırlatma Aralığı (dakika):
+                    Reminder Interval (minutes):
                   </label>
                   <input
                     type="number"
                     id="reminderInterval"
-                    className="w-full p-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500"
+                    className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500"
                     value={reminderInterval}
                     onChange={(e) =>
                       setReminderInterval(parseInt(e.target.value))
@@ -187,12 +221,12 @@ const Reminder = () => {
                     htmlFor="exerciseDuration"
                     className="block mb-2 font-semibold"
                   >
-                    Egzersiz Süresi (dakika):
+                    Exercise Duration (minutes):
                   </label>
                   <input
                     type="number"
                     id="exerciseDuration"
-                    className="w-full p-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500"
+                    className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500"
                     value={exerciseDuration}
                     onChange={(e) =>
                       setExerciseDuration(parseInt(e.target.value))
@@ -201,16 +235,16 @@ const Reminder = () => {
                 </div>
               </div>
 
-              <div className="mt-6">
+              <div className="mt-2">
                 <label
                   htmlFor="alarmSound"
                   className="block mb-2 font-semibold"
                 >
-                  Alarm Sesi:
+                  Alarm Sound:
                 </label>
                 <select
                   id="alarmSound"
-                  className="w-full p-2 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500"
+                  className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500 outline-none"
                 >
                   <option value="beep">Bip</option>
                   <option value="bell">Zil</option>
@@ -220,13 +254,17 @@ const Reminder = () => {
 
               <button
                 onClick={isRunning ? stopTimer : startTimer}
-                className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+                className="mt-3 w-[25%] bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-2 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
               >
-                {isRunning ? "Durdur" : "Başlat"}
+                {isRunning ? "Stop" : "Start"}
               </button>
 
-              <div className="mt-6">
-                <canvas id="weeklyChart" width="400" height="200"></canvas>
+              <div className="mt-1 h-auto">
+                <canvas
+                  className="w-full h-[90%]"
+                  ref={chartRef} 
+                  id="weeklyChart"
+                ></canvas>
               </div>
             </div>
           </div>
@@ -236,8 +274,8 @@ const Reminder = () => {
       {!showSettings && (
         <>
           <div
-            className="mb-8 flex flex-col items-center"
-            style={{ width: "100%", height: "130px" }}
+            className="flex flex-col items-center h-[100%]"
+            style={{ width: "100%"}}
           >
             <svg className="w-full h-full" viewBox="0 0 30 30">
               <circle

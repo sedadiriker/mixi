@@ -14,7 +14,6 @@
   }
   .reminder-widget {
     position: relative;
-    height: 100px; 
   }
   
   
@@ -34,11 +33,11 @@
   
   .reminder-widget  .modal-content {
     background: black;
-    padding: 20px;
+    padding:10px;
     border-radius: 8px;
     text-align: center;
-    width: 30%;
-    height: 80vh;
+    width: 50%;
+    height: 82vh;
   }
   
   .reminder-widget  .close {
