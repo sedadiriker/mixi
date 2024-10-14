@@ -16,23 +16,25 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [imageResults, setImageResults] = useState([]);
   const [activeTab, setActiveTab] = useState("web");
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentImagePage, setCurrentImagePage] = useState(1);
   const settingsRef = useRef(null);
   const searchRef = useRef(null);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(cachedResults.length / itemsPerPage);
 
-  console.log(isVisible, "visible");
-  console.log(imageResults);
-
+  // console.log(isVisible, "visible");
+  console.log(cachedResults,"cache");
 
   const handlePageChange = (newPage) => {
-    if (newPage < 1 || newPage > 10) return; 
-    fetchSearchResults(searchTerm, newPage); 
+    if (newPage < 1 || newPage > 10) return;
+    fetchSearchResults(searchTerm, newPage);
   };
-  
-  
-  
+  const handleImagePageChange = (newPage) => {
+    if (newPage < 1 || newPage > 10) return;
+    fetchSearchResults(searchTerm, newPage);
+  };
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://cse.google.com/cse.js?cx=45d2ff09083bc5958";
@@ -63,7 +65,6 @@ const Home = () => {
       }
     });
 
-    // Observer'ı uygun öğe üzerinde başlatmayı unutmayın
     observer.observe(document, { childList: true, subtree: true });
 
     const checkForSearchResultsContainer = setInterval(() => {
@@ -127,40 +128,46 @@ const Home = () => {
       return;
     }
   
-    const start = (page - 1) * 10 + 1;
+    // Google Custom Search API'de her sayfa 10 sonuç içerir.
+    const startIndex = (page - 1) * 10 + 1;
   
     try {
       const response = await fetch(
-        `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&start=${start}`
+        `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&start=${startIndex}`
       );
       const data = await response.json();
   
       if (data.items) {
+        console.log("Sonuçlar", data.items);
         setSearchResults(data.items);
         setCachedResults(data.items);
         setCurrentPage(page);
         localStorage.setItem("searchResults", JSON.stringify(data.items));
       } else {
-        console.error("No results found");
+        console.error("Sonuç bulunamadı.");
       }
     } catch (error) {
-      console.error("Error fetching search results:", error);
+      console.error("Arama sonuçları getirilirken hata oluştu:", error);
     }
   };
   
-  const fetchImageResults = async (query) => {
+
+  const fetchImageResults = async (query, page) => {
     if (!query) {
       console.error("Görsel arama terimi boş.");
       return;
     }
+    const start = (page - 1) * 10 + 1;
+
     try {
       const response = await fetch(
         `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&searchType=image`
       );
       const data = await response.json();
       if (data.items) {
-        console.log(data.items);
+        // console.log(data.items);
         setImageResults(data.items);
+        setCurrentImagePage(page);
         localStorage.setItem("imageResults", JSON.stringify(data.items));
       } else {
         console.error("No image results found");
@@ -174,11 +181,16 @@ const Home = () => {
     e.preventDefault();
     setShowSettings(false);
     setIsVisible(true);
+    
+    // İlk sayfa için page numarasını 1 olarak ayarla
+    const initialPage = 1;
+  
     if (selectedEngine === "global-search") {
       const translated = await translateWithGPT(searchTerm);
       if (translated) {
-        await fetchSearchResults(translated);
-        await fetchImageResults(translated);
+        // İlk sayfa sonuçları için page = 1 gönderiyoruz
+        await fetchSearchResults(translated, initialPage);
+        await fetchImageResults(translated, initialPage);
         setIsVisible(true);
       } else {
         console.error("Çeviri başarısız, arama yapılmadı.");
@@ -186,6 +198,7 @@ const Home = () => {
     }
     console.log("çalıştı-handle");
   };
+  
 
   const updateArrowPosition = () => {
     const searchArrow = document.querySelector(".search-arrow");
@@ -304,16 +317,20 @@ const Home = () => {
       <main
         className={`search-main flex-grow p-4 flex flex-col justify-center`}
       >
-          <div className="w-full py-20">
-            <img
-              className={`m-auto logo w-[10vw] ${isVisible ? "hidden" : "visible"}`}
-              src="images/logo.png"
-              alt="Logo"
-            />
+        <div className="w-full py-20">
+          <img
+            className={`m-auto logo w-[10vw] ${
+              isVisible ? "hidden" : "visible"
+            }`}
+            src="images/logo.png"
+            alt="Logo"
+          />
           {selectedEngine === "global-search" ? (
             <div
               style={{ zIndex: "423432535" }}
-              className={`search-container mx-auto ${isVisible ? "fixed left-[25%] mt-[-14rem] ": "relative"}`}
+              className={`search-container mx-auto ${
+                isVisible ? "fixed left-[25%] mt-[-14rem] " : "relative"
+              }`}
               onMouseEnter={() => {
                 setShowSettings(true);
                 updateArrowPosition();
@@ -327,7 +344,9 @@ const Home = () => {
               <form onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
-                  className={` global-input absolute top-5 ${isVisible ? "fixed top-28 left-0" : ""} left-0 z-20 mt-[-3px] ${
+                  className={` global-input absolute top-5 ${
+                    isVisible ? "fixed top-28 left-0" : ""
+                  } left-0 z-20 mt-[-3px] ${
                     isVisible ? "py-1 px-2" : "py-1 px-2"
                   }`}
                   value={searchTerm}
@@ -372,9 +391,9 @@ const Home = () => {
 
                   {activeTab === "web" && (
                     <>
-                      <ul>
+                      <ul className="web-results">
                         {cachedResults.map((result) => (
-                          <li key={result.link}>
+                          <li key={result.link} className="group">
                             <a
                               className="href-link"
                               href={result.link}
@@ -397,18 +416,22 @@ const Home = () => {
                           </li>
                         ))}
                       </ul>
-                      <div id="pagination" className="text-[12px] flex gap-2 text-[#666666] mt-3">
-  {[...Array(10)].map((_, index) => (
-    <button 
-      key={index + 1} 
-      onClick={() => handlePageChange(index + 1)} 
-      className={`page-button ${currentPage === index + 1 ? "active" : ""}`}
-    >
-      {index + 1}
-    </button>
-  ))}
-</div>
-
+                      <div
+                        id="pagination"
+                        className="text-[12px] flex gap-2 text-[#666666] mt-3"
+                      >
+                        {[...Array(10)].map((_, index) => (
+                          <button
+                            key={index + 1}
+                            onClick={() => handlePageChange(index + 1)}
+                            className={`page-button ${
+                              currentPage === index + 1 ? "active" : ""
+                            }`}
+                          >
+                            {index + 1}
+                          </button>
+                        ))}
+                      </div>
 
                       <div id="results"></div>
                     </>
@@ -416,9 +439,9 @@ const Home = () => {
 
                   {activeTab === "images" && (
                     <>
-                      <ul>
+                      <ul className="flex flex-wrap gap-2 image-results">
                         {imageResults.map((imgResult) => (
-                          <li key={imgResult.link}>
+                          <li key={imgResult.link} className="relative group">
                             <a
                               href={imgResult.link}
                               target="_blank"
@@ -427,13 +450,40 @@ const Home = () => {
                               <img
                                 src={imgResult.link}
                                 alt={imgResult.title}
-                                style={{ width: "120px", height: "auto" }}
+                                className="h-[180px] w-auto"
                               />
-                              {imgResult.title}
+                              <span className="absolute left-0 -bottom-[-1rem] bg-[rgba(0,0,0,0.7)] text-xs px-2 py-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 w-[95%]">
+                                <p
+                                  className="image-text uppercase"
+                                  dangerouslySetInnerHTML={{
+                                    __html: imgResult.htmlTitle,
+                                  }}
+                                ></p>
+                                <p className="image-text2">
+                                  {imgResult.displayLink}
+                                </p>
+                              </span>
                             </a>
                           </li>
                         ))}
                       </ul>
+
+                      <div
+                        id="image-pagination"
+                        className="text-[12px] flex gap-2 text-[#666666] mt-3"
+                      >
+                        {[...Array(10)].map((_, index) => (
+                          <button
+                            key={index + 1}
+                            onClick={() => handleImagePageChange(index + 1)}
+                            className={`page-button ${
+                              currentImagePage === index + 1 ? "active" : ""
+                            }`}
+                          >
+                            {index + 1}
+                          </button>
+                        ))}
+                      </div>
                     </>
                   )}
                 </div>
@@ -441,9 +491,11 @@ const Home = () => {
             </div>
           ) : (
             <div
-              className={`search-container mx-auto ${isVisible ? "mt-[-9rem]" : ""}`}
+              className={`search-container mx-auto ${
+                isVisible ? "mt-[-9rem]" : ""
+              }`}
               onMouseEnter={() => {
-                console.log("çalıştı");
+                // console.log("çalıştı");
                 setShowSettings(true);
                 updateArrowPosition();
               }}

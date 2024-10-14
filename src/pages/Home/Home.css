@@ -146,12 +146,12 @@
   margin-bottom: 10px;
 }
 
-.search-results ul {
+.search-results .web-results, .search-results .image-results {
   list-style-type: none;
   padding: 0;
 }
 
-.search-results li {
+.search-results .group {
   padding: 10px 0;
 }
 
@@ -205,4 +205,10 @@
 }
 .page-button.active {
  color: #4173E8; 
+}
+.image-results .image-text{
+  color: white;
+}
+.image-results .image-text2{
+  color: #949494;
 }
