@@ -196,15 +196,15 @@ const Home = () => {
         if (form) {
           form.classList.add("hidden");
         }
-        searchArrow.style.top = "14%";
+        searchArrow.style.top = "12%";
       } else {
         if (form) {
           form.classList.remove("hidden");
         }
         if (showSettings) {
-          searchArrow.style.top = "27.5%";
+          searchArrow.style.top = "25.5%";
         } else {
-          searchArrow.style.top = "18%";
+          searchArrow.style.top = "10%";
         }
       }
     }
@@ -306,14 +306,14 @@ const Home = () => {
       >
           <div className="w-full py-20">
             <img
-              className="m-auto logo w-[10vw]"
+              className={`m-auto logo w-[10vw] ${isVisible ? "hidden" : "visible"}`}
               src="images/logo.png"
               alt="Logo"
             />
           {selectedEngine === "global-search" ? (
             <div
               style={{ zIndex: "423432535" }}
-              className={`search-container ${isVisible ? "fixed left-[25%]": "relative"}`}
+              className={`search-container mx-auto ${isVisible ? "fixed left-[25%] mt-[-9rem] ": "relative"}`}
               onMouseEnter={() => {
                 setShowSettings(true);
                 updateArrowPosition();
@@ -441,7 +441,7 @@ const Home = () => {
             </div>
           ) : (
             <div
-              className={`search-container`}
+              className={`search-container mx-auto ${isVisible ? "mt-[-9rem]" : ""}`}
               onMouseEnter={() => {
                 console.log("çalıştı");
                 setShowSettings(true);
