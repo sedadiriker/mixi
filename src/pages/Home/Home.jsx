@@ -26,10 +26,21 @@ const Home = () => {
   // console.log(isVisible, "visible");
   console.log(cachedResults,"cache");
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = async (newPage) => {
     if (newPage < 1 || newPage > 10) return;
-    fetchSearchResults(searchTerm, newPage);
+  
+    if (selectedEngine === "global-search") {
+      const translated = await translateWithGPT(searchTerm);
+      if (translated) {
+        await fetchSearchResults(translated, newPage);
+      } else {
+        console.error("Çeviri başarısız, arama yapılmadı.");
+      }
+    } else {
+      await fetchSearchResults(searchTerm, newPage);
+    }
   };
+  
   const handleImagePageChange = (newPage) => {
     if (newPage < 1 || newPage > 10) return;
     fetchSearchResults(searchTerm, newPage);
