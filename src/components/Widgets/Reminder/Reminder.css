@@ -1,0 +1,27 @@
+.reminder-widget .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #C8C6C6;
+    z-index: 1000;
+  }
+  
+.reminder-widget .modal-content {
+    background: black;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 30%;
+  }
+  
+  .reminder-widget  .close {
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+  }
+  
