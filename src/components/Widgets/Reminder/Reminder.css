@@ -1,3 +1,6 @@
+.reminder-widget{
+    position: relative;
+}
 .reminder-widget .modal {
     display: flex;
     justify-content: center;
@@ -8,7 +11,7 @@
     right: 0;
     bottom: 0;
     background-color: #C8C6C6;
-    z-index: 1000;
+    z-index: 10000000000 !important;
   }
   
 .reminder-widget .modal-content {
@@ -17,11 +20,12 @@
     border-radius: 8px;
     text-align: center;
     width: 30%;
+    height: 80%;
   }
   
-  .reminder-widget  .close {
+  .reminder-widget .close {
     cursor: pointer;
-    float: right;
+float: right;
     font-size: 20px;
   }
   
