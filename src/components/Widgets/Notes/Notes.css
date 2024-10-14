@@ -13,7 +13,7 @@
 }
 
 .modal-overlay-notes {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     position: fixed;
     top: 0;
     left: 0;
@@ -33,7 +33,9 @@
     max-width: 800px;
     position: relative;
     z-index: 1000;
-    height: 100vh;
+    height: 85vh;
+    margin-top: 5rem;
+    /* border: 1px solid red; */
 }
 
 

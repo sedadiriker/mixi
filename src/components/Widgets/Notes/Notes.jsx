@@ -35,7 +35,7 @@ const NotesSlider = () => {
   };
 
   return (
-    <div className="notes-slider relative">
+    <div className="notes-slider relative border flex flex-col">
       <div className="settings-icon-notes" onClick={handleModalOpen}>
         <i className="fas fa-cog"></i>
       </div>
