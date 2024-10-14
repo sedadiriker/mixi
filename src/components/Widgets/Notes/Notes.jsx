@@ -8,8 +8,21 @@ const NotesSlider = () => {
 
   useEffect(() => {
     const savedNotes = JSON.parse(localStorage.getItem('notes')) || [];
+    // console.log("Loaded Notes:", savedNotes);
+    if (savedNotes.length === 0) {
+      const initialNotes = [
+        { title: "Meeting Goals", body: "Review team goals and individual contributions in the next meeting." },
+        { title: "Team Building Activity", body: "Schedule team-building activity for next month. Consider options for outdoor venues." },
+        { title: "Literature Theme", body: "Theme in 'To Kill a Mockingbird': The moral nature of human beings." },
+        { title: "Chemical Reactions", body: "Chemical reaction types: Synthesis, Decomposition, Single Replacement, Double Replacement." },
+        { title: "Budget Discussion", body: "Discuss budget for Q3. Action item: Prepare a detailed report by next week." }
+      ];
+    setNotes(initialNotes); 
+    localStorage.setItem('notes', JSON.stringify(initialNotes)); 
+  } else {
     console.log("Loaded Notes:", savedNotes);
     setNotes(savedNotes); 
+  }
   }, []);
 
   useEffect(() => {
@@ -35,7 +48,7 @@ const NotesSlider = () => {
   };
 
   return (
-    <div className="notes-slider relative border flex flex-col">
+    <div className="notes-slider relative  flex flex-col">
       <div className="settings-icon-notes" onClick={handleModalOpen}>
         <i className="fas fa-cog"></i>
       </div>
@@ -49,7 +62,7 @@ const NotesSlider = () => {
           ))}
         </div>
       ) : (
-        <div className="note-content text-center text-[11px] text-gray-500 h-[122px] flex items-center">
+        <div className="note-content text-center text-[11px] text-gray-500 h-[122px] flex items-center  justify-center">
           <p>No notes available. <br/>Click the settings icon to add your notes!</p>
         </div>
       )}
