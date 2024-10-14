@@ -326,7 +326,7 @@ const Reminder = () => {
                 onClick={startTimer}
                 disabled={isRunning}
                 className={`py-1 px-2 rounded-lg font-bold text-[12px] text-black uppercase ${
-                  isRunning ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 "
+                  isRunning ? "bg-gray-400 cursor-not-allowed" : "bg-blue-900 "
                 }`}
               >
                 Start
