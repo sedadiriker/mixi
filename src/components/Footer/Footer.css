@@ -50,7 +50,7 @@
 }
 .footer-widget-container.expanded {
   transition: height 0.3s ease;
-  height: 25vh;
+  height: 30vh;
 }
 
 .footer-widget-container .widget-header {
