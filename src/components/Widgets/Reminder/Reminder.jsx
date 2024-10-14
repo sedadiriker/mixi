@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import "./Reminder.css";
 
@@ -15,7 +15,7 @@ const Reminder = () => {
   const [chart, setChart] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [alarmSound, setAlarmSound] = useState("alarm1"); 
+  const [alarmSound, setAlarmSound] = useState("alarm1");
 
   const chartRef = useRef(null);
 
@@ -42,7 +42,7 @@ const Reminder = () => {
         const ctx = chartRef.current.getContext("2d");
         if (ctx) {
           if (chart) {
-            chart.destroy(); 
+            chart.destroy();
           }
 
           const newChart = new Chart(ctx, {
@@ -89,21 +89,19 @@ const Reminder = () => {
               },
             },
           });
-          
 
-            setChart(newChart);
+          setChart(newChart);
 
-            return () => {
-                newChart.destroy(); 
-            };
+          return () => {
+            newChart.destroy();
+          };
         } else {
-            console.error("Canvas element not found");
+          console.error("Canvas element not found");
         }
-      }, 100); 
+      }, 100);
       return () => clearTimeout(timeout);
     }
-}, [showSettings, weeklyData]);
-
+  }, [showSettings, weeklyData]);
 
   const startTimer = () => {
     if (isRunning) return;
@@ -178,14 +176,14 @@ const Reminder = () => {
       updateChart();
     }
   }, [showSettings]);
-  
+
   const playPreviewSound = (soundName) => {
     const audio = new Audio(`/sounds/reminder/${soundName}.mp3`);
     audio.play();
   };
-  
-  const radius = 11;
-  const circumference = 2 * Math.PI * radius; 
+
+  const radius = 10;
+  const circumference = 2 * Math.PI * radius;
   return (
     <div className="reminder-widget relative h-[100%]">
       <div className="settings-icon-reminder" onClick={toggleSettings}>
@@ -239,50 +237,52 @@ const Reminder = () => {
               </div>
 
               <div className="mt-2">
-  <label htmlFor="alarmSound" className="block mb-2 font-semibold">
-    Alarm Sound:
-  </label>
-  <div className="grid grid-cols-3 gap-2">
-    <div>
-      <label htmlFor="beep">Bip</label>
-      <button
-        className="play-sound-button"
-        onClick={() => playPreviewSound("beep")}
-      >
-        Dinle
-      </button>
-    </div>
-    <div>
-      <label htmlFor="bell">Zil</label>
-      <button
-        className="play-sound-button"
-        onClick={() => playPreviewSound("bell")}
-      >
-        Dinle
-      </button>
-    </div>
-    <div>
-      <label htmlFor="chime">Çan</label>
-      <button
-        className="play-sound-button"
-        onClick={() => playPreviewSound("chime")}
-      >
-        Dinle
-      </button>
-    </div>
-  </div>
+                <label
+                  htmlFor="alarmSound"
+                  className="block mb-2 font-semibold"
+                >
+                  Alarm Sound:
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label htmlFor="beep">Bip</label>
+                    <button
+                      className="play-sound-button"
+                      onClick={() => playPreviewSound("beep")}
+                    >
+                      Dinle
+                    </button>
+                  </div>
+                  <div>
+                    <label htmlFor="bell">Zil</label>
+                    <button
+                      className="play-sound-button"
+                      onClick={() => playPreviewSound("bell")}
+                    >
+                      Dinle
+                    </button>
+                  </div>
+                  <div>
+                    <label htmlFor="chime">Çan</label>
+                    <button
+                      className="play-sound-button"
+                      onClick={() => playPreviewSound("chime")}
+                    >
+                      Dinle
+                    </button>
+                  </div>
+                </div>
 
-  <select
-    id="alarmSound"
-    className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500 outline-none"
-    onChange={(e) => setAlarmSound(e.target.value)}
-  >
-    <option value="alarm1">Bip</option>
-    <option value="alarm2">Alarm</option>
-    <option value="alarm3">Dong</option>
-  </select>
-</div>
-
+                <select
+                  id="alarmSound"
+                  className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500 outline-none"
+                  onChange={(e) => setAlarmSound(e.target.value)}
+                >
+                  <option value="alarm1">Bip</option>
+                  <option value="alarm2">Alarm</option>
+                  <option value="alarm3">Dong</option>
+                </select>
+              </div>
 
               <button
                 onClick={isRunning ? stopTimer : startTimer}
@@ -294,7 +294,7 @@ const Reminder = () => {
               <div className="mt-1 h-auto">
                 <canvas
                   className="w-full h-[90%]"
-                  ref={chartRef} 
+                  ref={chartRef}
                   id="weeklyChart"
                 ></canvas>
               </div>
@@ -307,33 +307,34 @@ const Reminder = () => {
         <>
           <div
             className="flex flex-col items-center h-[100%]"
-            style={{ width: "100%"}}
+            style={{ width: "100%" }}
           >
             <svg className="w-full h-full" viewBox="0 0 30 30">
               <circle
                 className="py-4"
                 cx="15"
                 cy="15"
-                r="11"
+                r="10"
                 fill="none"
                 stroke="#e0e0e0"
                 strokeWidth="2"
               ></circle>
               <circle
-  id="timerCircle"
-  cx="15"
-  cy="15"
-  r={radius}
-  fill="none"
-  stroke="#271E2499"
-  strokeWidth="2"
-  style={{
-    strokeDasharray: circumference,
-    strokeDashoffset: circumference * (1 - timeLeft / (reminderInterval * 60)),
-    transform: "rotate(-90deg)",
-    transformOrigin: "50% 50%",
-  }}
-/>
+                id="timerCircle"
+                cx="15"
+                cy="15"
+                r={radius}
+                fill="none"
+                stroke="#271E2499"
+                strokeWidth="2"
+                style={{
+                  strokeDasharray: circumference,
+                  strokeDashoffset:
+                    circumference * (1 - timeLeft / (reminderInterval * 60)),
+                  transform: "rotate(-90deg)",
+                  transformOrigin: "50% 50%",
+                }}
+              />
               <text
                 id="timerText"
                 x="15"
@@ -352,11 +353,11 @@ const Reminder = () => {
               </text>
             </svg>
 
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 mb-3">
               <button
                 onClick={startTimer}
                 disabled={isRunning}
-                className={`py-1 px-2 rounded-lg font-bold text-[12px] text-black uppercase ${
+                className={`py-1 px-2 rounded-lg font-bold text-[11px] text-black uppercase ${
                   isRunning ? "bg-gray-400 cursor-not-allowed" : "bg-blue-900 "
                 }`}
               >
@@ -365,7 +366,7 @@ const Reminder = () => {
               <button
                 onClick={stopTimer}
                 disabled={!isRunning}
-                className={`py-1 px-3 rounded-lg font-bold text-[12px] text-black uppercase ${
+                className={`py-1 px-3 rounded-lg font-bold text-[11px] text-black uppercase ${
                   isRunning ? "bg-red-900" : "bg-gray-400 cursor-not-allowed"
                 }`}
               >
