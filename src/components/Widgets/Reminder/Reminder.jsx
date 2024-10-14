@@ -102,11 +102,6 @@ const Reminder = () => {
     }
 }, [showSettings, weeklyData]);
 
-  
-
-
-  
-  
 
   const startTimer = () => {
     if (isRunning) return;
@@ -182,7 +177,8 @@ const Reminder = () => {
     }
   }, [showSettings]);
   
-
+  const radius = 11;
+  const circumference = 2 * Math.PI * radius; 
   return (
     <div className="reminder-widget relative h-[100%]">
       <div className="settings-icon-reminder" onClick={toggleSettings}>
@@ -288,21 +284,20 @@ const Reminder = () => {
                 strokeWidth="2"
               ></circle>
               <circle
-                id="timerCircle"
-                cx="15"
-                cy="15"
-                r="11"
-                fill="none"
-                stroke="#271E2499"
-                strokeWidth="2"
-                style={{
-                  strokeDasharray: `${
-                    50.3 * (1 - timeLeft / (reminderInterval * 60))
-                  }`,
-                  transform: "rotate(-90deg)",
-                  transformOrigin: "50% 50%",
-                }}
-              />
+  id="timerCircle"
+  cx="15"
+  cy="15"
+  r={radius}
+  fill="none"
+  stroke="#271E2499"
+  strokeWidth="2"
+  style={{
+    strokeDasharray: circumference,
+    strokeDashoffset: circumference * (1 - timeLeft / (reminderInterval * 60)),
+    transform: "rotate(-90deg)",
+    transformOrigin: "50% 50%",
+  }}
+/>
               <text
                 id="timerText"
                 x="15"
