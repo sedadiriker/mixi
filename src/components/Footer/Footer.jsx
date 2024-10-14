@@ -73,7 +73,6 @@ const Footer = ({ hasSearchResults }) => {
         &lt;
       </div>
 
-      <div className="widget-slider">
         <div className="widget-container">
           {widgetGroups[currentGroupIndex].map(widget => (
             <div className="widget" key={widget.id}>
@@ -82,13 +81,12 @@ const Footer = ({ hasSearchResults }) => {
               </div>
               <div className="widget-body">
                 {widget.image ? (
-                  <img src={widget.image} alt={widget.title.toLowerCase()} className="h-[130px] w-[100%] object-contain mt-1" />
+                  <img src={widget.image} alt={widget.title.toLowerCase()} className="w-[100%] h-[100%] object-contain mt-1" />
                 ) : widget.content}
               </div>
             </div>
           ))}
         </div>
-      </div>
 
       <div className="toggle-footer-2" >
         {isCollapsed ? "▼" : "▲"}
