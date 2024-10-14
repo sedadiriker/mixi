@@ -54,11 +54,15 @@ const NotesSlider = () => {
       </div>
       {notes.length > 0 ? (
         <div className="note-content h-[122px] overflow-y-auto flex flex-col text-gray-500 text-[12px]">
-          {notes.slice().reverse().map((note, index) => ( // Reverse the notes array
+          {notes.slice().reverse().map((note, index) => ( 
+            <>
             <div key={index} className="note-item flex items-center">
-              <span className="bullet-point mr-2">•</span>
+              <span className="bullet-point mr-2 py-1">•</span>
               <p>{truncateNote(note.body || "Note could not be loaded.")}</p>
             </div>
+            <hr className=" w-[100%] opacity-10" />
+            </>
+
           ))}
         </div>
       ) : (

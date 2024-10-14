@@ -169,14 +169,13 @@
 }
 .notes-slider {
     position: relative;
+    height: 100%;
   }
 
-  .notes-slider {
-    max-height: 122px; /* Set max height for the slider */
-  }
   
-  .note-content {
-    padding: 10px; /* Add some padding around the notes */
+.notes-slider  .note-content {
+    padding:0 10px 10px 10px;
+    height: 100%;
   }
   
   .note-item {
