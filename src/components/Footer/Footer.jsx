@@ -5,7 +5,7 @@ import FinanceInfo from "../WİDGETS/Finance/FinanceInfo";
 import Pomodoro from "../WİDGETS/Pomodoro/Pomodoro";
 import Notes from "../WİDGETS/Notes/Notes";
 import TodoList from "../WİDGETS/ToDo/TodoList";
-import Reminder from "../WİDGETS/Reminder";
+import Reminder from "../WİDGETS/Reminder/Reminder";
 import Shortcuts from "../WİDGETS/Shortcuts/Shortcuts";
 import AnalogClock from "../WİDGETS/Clock/AnalogClock";
 import ImageSlider from "../WİDGETS/ImageSlider/ImageSlider";
