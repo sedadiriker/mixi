@@ -76,7 +76,7 @@ const Reminder = () => {
       setChart(newChart);
 
       return () => {
-        newChart.destroy(); // Component unmount edildiğinde chart'ı temizle
+        newChart.destroy();
       };
     }
   }, []);
@@ -90,6 +90,7 @@ const Reminder = () => {
           clearInterval(newTimer);
           setPopupVisible(true);
           playAlarmSound();
+          setIsRunning(false);
           return 0;
         }
         return prev - 1;
@@ -154,7 +155,6 @@ const Reminder = () => {
         <i className="fas fa-cog"></i>
       </div>
 
-      {/* Ayar Modalı */}
       {showSettings && (
         <div className="modal">
           <div className="modal-content mt-20">
@@ -219,13 +219,12 @@ const Reminder = () => {
               </div>
 
               <button
-                onClick={startTimer}
+                onClick={isRunning ? stopTimer : startTimer}
                 className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
               >
                 {isRunning ? "Durdur" : "Başlat"}
               </button>
 
-              {/* Chart inside the modal */}
               <div className="mt-6">
                 <canvas id="weeklyChart" width="400" height="200"></canvas>
               </div>
@@ -237,7 +236,7 @@ const Reminder = () => {
       {!showSettings && (
         <>
           <div
-            className="mb-8 flex flex-col justify-center items-center py-2"
+            className="mb-8 flex flex-col items-center"
             style={{ width: "100%", height: "130px" }}
           >
             <svg className="w-full h-full" viewBox="0 0 30 30">
@@ -245,7 +244,7 @@ const Reminder = () => {
                 className="py-4"
                 cx="15"
                 cy="15"
-                r="10"
+                r="11"
                 fill="none"
                 stroke="#e0e0e0"
                 strokeWidth="2"
@@ -254,9 +253,9 @@ const Reminder = () => {
                 id="timerCircle"
                 cx="15"
                 cy="15"
-                r="10"
+                r="11"
                 fill="none"
-                stroke="#3b82f6"
+                stroke="#271E2499"
                 strokeWidth="2"
                 style={{
                   strokeDasharray: `${
@@ -285,39 +284,48 @@ const Reminder = () => {
             </svg>
 
             <div className="flex space-x-4">
-              <button className="btn-start transition duration-300 bg-gray-600 hover:bg-gray-400 text-black font-bold py-1 px-2 rounded text-[12px]">
+              <button
+                onClick={startTimer}
+                disabled={isRunning}
+                className={`py-1 px-2 rounded-lg font-bold text-[12px] text-black uppercase ${
+                  isRunning ? "bg-gray-400 cursor-not-allowed" : "bg-green-900 "
+                }`}
+              >
                 Start
               </button>
-              <button className="btn-stop transition duration-300 bg-gray-600 hover:bg-gray-400 text-black font-bold py-1 px-2 rounded text-[12px]">
-                Stop
+              <button
+                onClick={stopTimer}
+                disabled={!isRunning}
+                className={`py-1 px-3 rounded-lg font-bold text-[12px] text-black uppercase ${
+                  isRunning ? "bg-red-900" : "bg-gray-400 cursor-not-allowed"
+                }`}
+              >
+                stop
               </button>
             </div>
           </div>
-
-          {popupVisible && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-              <div className="bg-white dark:bg-gray-700 p-8 rounded-lg shadow-lg">
-                <p className="mb-6 text-xl font-bold text-center">
-                  Egzersiz zamanı!
-                </p>
-                <div className="flex justify-center space-x-4">
-                  <button
-                    onClick={() => handleExerciseResponse(true)}
-                    className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
-                  >
-                    Yapıldı
-                  </button>
-                  <button
-                    onClick={() => handleExerciseResponse(false)}
-                    className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
-                  >
-                    Atlandı
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </>
+      )}
+
+      {popupVisible && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <h2>Egzersiz Zamanı!</h2>
+            <p>Şimdi egzersiz yapma zamanı!</p>
+            <button
+              onClick={() => handleExerciseResponse(true)}
+              className="done-button"
+            >
+              Tamam
+            </button>
+            <button
+              onClick={() => handleExerciseResponse(false)}
+              className="skip-button"
+            >
+              Atla
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
