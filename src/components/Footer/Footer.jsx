@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./Footer.css";
-import GmailEmails from "../WİDGETS/Gmail/GmailEmails";
-import FinanceInfo from "../WİDGETS/Finance/FinanceInfo";
-import Pomodoro from "../WİDGETS/Pomodoro/Pomodoro";
-import Notes from "../WİDGETS/Notes/Notes";
-import TodoList from "../WİDGETS/ToDo/TodoList";
-import Reminder from "../WİDGETS/Reminder/Reminder";
-import Shortcuts from "../WİDGETS/Shortcuts/Shortcuts";
-import AnalogClock from "../WİDGETS/Clock/AnalogClock";
-import ImageSlider from "../WİDGETS/ImageSlider/ImageSlider";
-import Quotes from "../WİDGETS/Quotes/Quotes";
-import Weather from "../WİDGETS/Weather/Weather";
-import Alarms from "../WİDGETS/Alarms/Alarms";
-import News from "../WİDGETS/News/News";
+import GmailEmails from "../Widgets/Gmail/GmailEmails";
+import FinanceInfo from "../Widgets/Finance/FinanceInfo";
+import Pomodoro from "../Widgets/Pomodoro/Pomodoro";
+import Notes from "../Widgets/Notes/Notes";
+import TodoList from "../Widgets/ToDo/TodoList";
+import Reminder from "../Widgets/Reminder/Reminder";
+import Shortcuts from "../Widgets/Shortcuts/Shortcuts";
+import AnalogClock from "../Widgets/Clock/AnalogClock";
+import ImageSlider from "../Widgets/ImageSlider/ImageSlider";
+import Quotes from "../Widgets/Quotes/Quotes";
+import Weather from "../Widgets/Weather/Weather";
+import Alarms from "../Widgets/Alarms/Alarms";
+import News from "../Widgets/News/News";
 
 const Footer = ({ hasSearchResults }) => {
   const [isCollapsed, setIsCollapsed] = useState(hasSearchResults > 0);
