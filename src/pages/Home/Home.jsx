@@ -313,7 +313,7 @@ const Home = () => {
           {selectedEngine === "global-search" ? (
             <div
               style={{ zIndex: "423432535" }}
-              className={`search-container mx-auto ${isVisible ? "fixed left-[25%] mt-[-9rem] ": "relative"}`}
+              className={`search-container mx-auto ${isVisible ? "fixed left-[25%] mt-[-14rem] ": "relative"}`}
               onMouseEnter={() => {
                 setShowSettings(true);
                 updateArrowPosition();
