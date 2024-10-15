@@ -51,12 +51,12 @@ const Reminder = () => {
               labels: getWeekLabels(),
               datasets: [
                 {
-                  label: "Yapılan Egzersizler",
+                  label: "Exercises Performed                  ",
                   data: weeklyData.done,
                   backgroundColor: "rgba(75, 192, 192, 0.6)",
                 },
                 {
-                  label: "Atlanan Egzersizler",
+                  label: "Skipped Exercises                  ",
                   data: weeklyData.skipped,
                   backgroundColor: "rgba(255, 99, 132, 0.6)",
                 },
@@ -84,7 +84,7 @@ const Reminder = () => {
                 },
                 title: {
                   display: true,
-                  text: "Haftalık Egzersiz Performansı",
+                  text: "Weekly Exercise Performance",
                 },
               },
             },
@@ -142,18 +142,33 @@ const Reminder = () => {
     }
   };
 
-  const handleExerciseResponse = (done) => {
-    setPopupVisible(false);
-    const today = new Date().getDay();
-    const updatedData = { ...weeklyData };
-    if (done) {
-      updatedData.done[today]++;
-    } else {
-      updatedData.skipped[today]++;
-    }
-    setWeeklyData(updatedData);
-    startTimer();
-  };
+useEffect(() => {
+  const storedData = localStorage.getItem('weeklyData');
+  if (storedData) {
+    setWeeklyData(JSON.parse(storedData));
+  }
+}, []);
+
+const handleExerciseResponse = (done) => {
+  const today = new Date().getDay();
+  const updatedData = { ...weeklyData };
+  
+  if (done) {
+    updatedData.done[today]++;
+  } else {
+    updatedData.skipped[today]++;
+  }
+
+  setWeeklyData(updatedData);
+  localStorage.setItem('weeklyData', JSON.stringify(updatedData));
+
+  // Popup'u kapat
+  setPopupVisible(false);
+  
+  // startTimer();
+};
+
+
 
   const playAlarmSound = () => {
     const audio = new Audio(`/sounds/reminder/${alarmSound}.mp3`);
@@ -377,26 +392,32 @@ const Reminder = () => {
         </>
       )}
 
-      {popupVisible && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            <h2>Egzersiz Zamanı!</h2>
-            <p>Şimdi egzersiz yapma zamanı!</p>
-            <button
-              onClick={() => handleExerciseResponse(true)}
-              className="done-button"
-            >
-              Tamam
-            </button>
-            <button
-              onClick={() => handleExerciseResponse(false)}
-              className="skip-button"
-            >
-              Atla
-            </button>
-          </div>
-        </div>
-      )}
+{popupVisible && (
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md">
+      <h2 className="text-2xl font-bold text-center mb-4 uppercase text-gray-800 dark:text-gray-200">
+        Exercise Time!
+      </h2>
+      
+      <div className="flex justify-center space-x-4">
+        <button
+          onClick={() => handleExerciseResponse(true)}
+          className="bg-green-900 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
+        >
+          I exercised
+        </button>
+        
+        <button
+          onClick={() => handleExerciseResponse(false)}
+          className="bg-red-900 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+        >
+          I didn't exercise
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
