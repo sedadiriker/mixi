@@ -13,12 +13,27 @@ const TodoList = () => {
     }
     return savedTasks;
   });
-  
-  const [currentIndex, setCurrentIndex] = useState(0); // Şu anki index
-  const tasksPerSlide = 5; // Her kaydırmada gösterilecek görev sayısı
-  const maxChars = 20; // Görev metni için maksimum karakter sayısı
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const tasksPerSlide = 5;
+  const maxChars = 20;
 
   useEffect(() => {
+    // Varsayılan görevler
+    const defaultTasks = [
+      { id: 1, text: 'Buy groceries', completed: false },
+      { id: 2, text: 'Walk the dog', completed: false },
+      { id: 3, text: 'Read a book', completed: false },
+      { id: 4, text: 'Prepare dinner', completed: false },
+      { id: 5, text: 'Complete homework', completed: false },
+    ];
+
+    // Eğer görev listesi boşsa, varsayılan görevleri ekle
+    if (tasks.length === 0) {
+      setTasks(defaultTasks);
+      localStorage.setItem('tasks', JSON.stringify(defaultTasks)); // Varsayılan görevleri localStorage'a kaydet
+    }
+
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => {
         const nextIndex = prevIndex + tasksPerSlide;
@@ -40,21 +55,21 @@ const TodoList = () => {
   const handleAddTask = (task) => {
     setTasks((prevTasks) => {
       const updatedTasks = [...prevTasks, task];
-      localStorage.setItem('tasks', JSON.stringify(updatedTasks)); // Güncellenen görevleri localStorage'a kaydet
-      return updatedTasks; // Güncellenen görevleri döndür
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks)); 
+      return updatedTasks; 
     });
   };
 
   const handleEditTask = (updatedTask) => {
-    const updatedTasks = tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)); // Görevi güncelle
+    const updatedTasks = tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task));
     setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks)); // Güncellenen görevleri localStorage'a kaydet
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks)); 
   };
-  
+
   const handleDelete = (id) => {
     const updatedTasks = tasks.filter(task => task.id !== id);
     setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks)); // Güncellenen görevleri localStorage'a kaydet
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks)); 
   };
 
   const handleCheckboxChange = (id) => {
@@ -62,18 +77,16 @@ const TodoList = () => {
       task.id === id ? { ...task, completed: !task.completed } : task
     );
     setTasks(updatedTasks);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks)); // Güncellenen görevleri localStorage'a kaydet
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks)); 
   };
 
-  // Mevcut kaydırmada gösterilecek görevleri al
   const currentTasks = tasks.slice(currentIndex, currentIndex + tasksPerSlide);
 
-  // Görev metnini kısaltmak için yardımcı fonksiyon
   const truncateTask = (text) => {
     if (text.length > maxChars) {
-      return `${text.slice(0, maxChars)}...`; // Belirtilen karakter sayısını aşarsa kısalt
+      return `${text.slice(0, maxChars)}...`; 
     }
-    return text; // Aşmıyorsa orijinal metni döndür
+    return text; 
   };
 
   return (
@@ -87,9 +100,9 @@ const TodoList = () => {
         onSubmit={handleAddTask}
         tasks={tasks}
         onDelete={handleDelete}
-        onEdit={handleEditTask} // onEdit fonksiyonunu geç
+        onEdit={handleEditTask} 
       />
-      {tasks.length === 0 ? ( // Eğer görev listesi boşsa
+      {tasks.length === 0 ? (
         <div className="text-[12px]" style={{ textAlign: 'center', margin: '20px', color: '#888', letterSpacing:"1px" }}>
           Your task list is empty! Add your first tasks.
         </div>
@@ -102,12 +115,13 @@ const TodoList = () => {
                 id={`task-${task.id}`} 
                 checked={task.completed || false} 
                 onChange={() => handleCheckboxChange(task.id)} 
-                style={{ display: 'none' }} // Varsayılan onay kutusunu gizle
+                style={{ display: 'none' }} 
               />
               <label 
                 htmlFor={`task-${task.id}`} 
                 className={`custom-checkbox ${task.completed ? 'checked' : ''}`}
-              >  <i class="fas fa-check"></i>
+              >  
+                <i className="fas fa-check"></i>
               </label>
               <span style={{ letterSpacing: "1.5px", textDecoration: task.completed ? 'line-through' : 'none', marginLeft: '8px' }} className="text-gray-500 text-[11px]">
                 {truncateTask(task.text)}

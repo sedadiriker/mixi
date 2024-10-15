@@ -42,18 +42,18 @@ const Shortcuts = () => {
   };
 
   return (
-    <div className="shortcuts-container relative">
+    <div className="shortcuts-container h-[100%] relative">
       <div className="settings-icon-shortcuts" onClick={openModal}>
         <i className="fas fa-cog"></i>
       </div>
-      <div className="flex gap-5 2xl:gap-10 w-[100%] flex-wrap h-[122px] justify-center mt-3">
+      <div className="flex gap-5 2xl:gap-10 w-[100%] flex-wrap justify-center h-[100%] items-center">
         {shortcuts.length === 0 ? (
           <div className="no-shortcuts-message text-gray-500 text-[10px]" style={{letterSpacing:"1px", lineHeight:"16px"}}>
             You haven't added any shortcuts yet!<br /> Click the settings icon to add a new shortcut.
           </div>
         ) : (
           shortcuts.map((shortcut, index) => (
-            <div key={index} className="shortcut-item" onClick={() => navigateToShortcut(shortcut.url)}>
+            <div key={index} className="shortcut-item mb-5" onClick={() => navigateToShortcut(shortcut.url)}>
               <div className="shortcut-icon">
                 <img
                   src={`https://www.google.com/s2/favicons?domain=${shortcut.url}&sz=64`}

@@ -5,12 +5,7 @@ import "./Home.css";
 import SettingsComponent from "../../components/SettingsComponent";
 import Chatbot from "../../components/Chatbot/Chatbot";
 import Loading from "../../components/Loading";
-import { updateArrowPosition } from "../../utils/util";
-import {
-  fetchGptResponse,
-  fetchImageResults,
-  fetchSearchResults,
-} from "../../api/apiService";
+import { updateArrowPosition } from '../../utils/util'; 
 
 const Home = () => {
   const [selectedEngine, setSelectedEngine] = useState("google-gpt4");
@@ -27,16 +22,17 @@ const Home = () => {
   const [currentImagePage, setCurrentImagePage] = useState(1);
   const settingsRef = useRef(null);
   const searchRef = useRef(null);
-  // const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
   const itemsPerPage = 10;
   const totalPages = Math.ceil(cachedResults.length / itemsPerPage);
 
   // console.log(isVisible, "visible");
   // console.log(cachedResults,"cache");
+  console.log(loading)
 
   const handlePageChange = async (newPage) => {
     if (newPage < 1 || newPage > 10) return;
-
+  
     if (selectedEngine === "global-search") {
       const translated = await translateWithGPT(searchTerm);
       if (translated) {
@@ -48,88 +44,10 @@ const Home = () => {
       await fetchSearchResults(searchTerm, newPage);
     }
   };
-   const fetchGptResponse = async (term) => {
-    if (term) {
-      try {
-        const response = await fetch(
-          "https://api.openai.com/v1/chat/completions",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${apikey}`,
-            },
-            body: JSON.stringify({
-              model: "gpt-3.5-turbo",
-              messages: [{ role: "user", content: term }],
-              max_tokens: 150,
-            }),
-          }
-        );
-        const data = await response.json();
-      //   setGptResponse(data.choices[0].message.content);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    }
-  };
   
-   const fetchSearchResults = async (query, page) => {
-      if (!query) {
-        console.error("Arama terimi boş.");
-        return;
-      }
-    
-      const startIndex = (page - 1) * 10 + 1;
-    
-      try {
-        const response = await fetch(
-          `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&start=${startIndex}`
-        );
-        const data = await response.json();
-    
-        if (data.items) {
-          console.log("Sonuçlar", data.items);
-          // setSearchResults(data.items);
-          // setCachedResults(data.items);
-          // setCurrentPage(page);
-          localStorage.setItem("searchResults", JSON.stringify(data.items));
-        } else {
-          console.error("Sonuç bulunamadı.");
-        }
-      } catch (error) {
-        console.error("Arama sonuçları getirilirken hata oluştu:", error);
-      }
-    };
-    
-  
-    const fetchImageResults = async (query, page) => {
-      if (!query) {
-        console.error("Görsel arama terimi boş.");
-        return;
-      }
-      
-      const start = (page - 1) * 10 + 1;
-    
-      try {
-        const response = await fetch(
-          `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&searchType=image&start=${start}`
-        );
-        const data = await response.json();
-        if (data.items) {
-          // setImageResults(data.items);
-          // setCurrentImagePage(page);
-          localStorage.setItem("imageResults", JSON.stringify(data.items));
-        } else {
-          console.error("No image results found");
-        }
-      } catch (error) {
-        console.error("Error fetching image results:", error);
-      }
-    };
   const handleImagePageChange = async (newPage) => {
     if (newPage < 1 || newPage > 10) return;
-
+  
     const translated = await translateWithGPT(searchTerm);
     if (translated) {
       fetchImageResults(translated, newPage);
@@ -137,6 +55,7 @@ const Home = () => {
       console.error("Çeviri başarısız, resim arama yapılmadı.");
     }
   };
+  
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -195,18 +114,98 @@ const Home = () => {
   }, []);
 
   const apikey = process.env.REACT_APP_openapikey;
+  const fetchGptResponse = async (term) => {
+    if (term) {
+      try {
+        const response = await fetch(
+          "https://api.openai.com/v1/chat/completions",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${apikey}`,
+            },
+            body: JSON.stringify({
+              model: "gpt-3.5-turbo",
+              messages: [{ role: "user", content: term }],
+              max_tokens: 150,
+            }),
+          }
+        );
+        const data = await response.json();
+        setGptResponse(data.choices[0].message.content);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  };
 
   useEffect(() => {
     fetchGptResponse("Merhaba");
   }, []);
 
+  const fetchSearchResults = async (query, page) => {
+    if (!query) {
+      console.error("Arama terimi boş.");
+      return;
+    }
+  
+    const startIndex = (page - 1) * 10 + 1;
+  
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&start=${startIndex}`
+      );
+      const data = await response.json();
+  
+      if (data.items) {
+        console.log("Sonuçlar", data.items);
+        setSearchResults(data.items);
+        setCachedResults(data.items);
+        setCurrentPage(page);
+        localStorage.setItem("searchResults", JSON.stringify(data.items));
+      } else {
+        console.error("Sonuç bulunamadı.");
+      }
+    } catch (error) {
+      console.error("Arama sonuçları getirilirken hata oluştu:", error);
+    }
+  };
+  
+
+  const fetchImageResults = async (query, page) => {
+    if (!query) {
+      console.error("Görsel arama terimi boş.");
+      return;
+    }
+    
+    const start = (page - 1) * 10 + 1;
+  
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_GOOGLE_API_KEY}&cx=${process.env.REACT_APP_GOOGLE_CX}&q=${query}&searchType=image&start=${start}`
+      );
+      const data = await response.json();
+      if (data.items) {
+        setImageResults(data.items);
+        setCurrentImagePage(page);
+        localStorage.setItem("imageResults", JSON.stringify(data.items));
+      } else {
+        console.error("No image results found");
+      }
+    } catch (error) {
+      console.error("Error fetching image results:", error);
+    }
+  };
+  
+
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     setShowSettings(false);
     setIsVisible(true);
-
+    
     const initialPage = 1;
-
+  
     if (selectedEngine === "global-search") {
       const translated = await translateWithGPT(searchTerm);
       if (translated) {
@@ -219,8 +218,64 @@ const Home = () => {
     }
     console.log("çalıştı-handle");
   };
+  
 
-  window.addEventListener("resize", updateArrowPosition);
+  // const updateArrowPosition = () => {
+  //   const searchArrow = document.querySelector(".search-arrow");
+  //   const form = document.querySelector(".gsc-search-box");
+  
+  //   if (searchArrow) {
+  //     const width = window.innerWidth;
+  //     const height = window.innerHeight;
+  
+  //     if (selectedEngine === "global-search") {
+  //       if (form) {
+  //         form.classList.add("hidden");
+  //       }
+  //       if (width < 768) { 
+  //         searchArrow.style.top = "10%"; 
+  //         searchArrow.style.right = "5%"; 
+  //       } else if (width >= 768 && width < 1500) {
+  //         searchArrow.style.top = "12%"; 
+  //         searchArrow.style.right = "5%"; 
+  //       } else { 
+  //         searchArrow.style.top = "8%"; 
+  //         searchArrow.style.right = "4%"; 
+  //       }
+  //     } else {
+  //       if (form) {
+  //         form.classList.remove("hidden");
+  //       }
+  //       if (showSettings) {
+  //         if (width < 768) { 
+  //           searchArrow.style.top = "35%"; 
+  //           searchArrow.style.right = "20%"; 
+  //         } else if (width >= 768 && width < 1500) { 
+  //           searchArrow.style.top = "39%"; 
+  //           searchArrow.style.right = "28%";
+  //         } else { 
+  //           searchArrow.style.top = "40.5%"; 
+  //           searchArrow.style.right = "27%"; 
+  //         }
+  //       } else {
+  //         if (width < 768) { 
+  //           searchArrow.style.top = "35%"; 
+  //           searchArrow.style.right = "20%"; 
+  //         } else if (width >= 768 && width < 1500) { 
+  //           searchArrow.style.top = "39%"; 
+  //           searchArrow.style.right = "28%";
+  //         } else { 
+  //           searchArrow.style.top = "40.5%"; 
+  //           searchArrow.style.right = "27%"; 
+  //         }
+  //       }
+  //     }
+  //   }
+  // };
+  
+  window.addEventListener('resize', updateArrowPosition);
+  
+  
 
   const translateWithGPT = async (query) => {
     const apiKey = `${apikey}`;
@@ -265,7 +320,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    updateArrowPosition(selectedEngine, showSettings);
+    updateArrowPosition(selectedEngine,showSettings);
   }, [showSettings, selectedEngine]);
 
   const handleLogoClick = () => {
@@ -298,7 +353,6 @@ const Home = () => {
   useEffect(() => {
     localStorage.setItem("searchTerm", searchTerm);
   }, [searchTerm]);
-
   useEffect(() => {
     const storedResults = localStorage.getItem("searchResults");
     if (storedResults) {
@@ -311,243 +365,237 @@ const Home = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+        setLoading(false);
+    }, 2000);
 
-  // <  useEffect(() => {
-  //     const timer = setTimeout(() => {
-  //         setLoading(false);
-  //     }, 2000);
-
-  //     return () => clearTimeout(timer);
-  // }, []);>
+    return () => clearTimeout(timer);
+}, []);
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto  home">
       <Header showLogo={isVisible} onLogoClick={handleLogoClick} />
       <main
         className={`search-main flex-grow p-4 flex flex-col justify-center`}
       >
-        <div>
+      
+          <div>
           <div className="w-full py-20">
-            <img
-              className={`m-auto logo w-[10vw] ${
-                isVisible ? "hidden" : "visible"
-              }`}
-              src="images/logo.png"
-              alt="Logo"
-            />
-            {selectedEngine === "global-search" ? (
-              <div
-                style={{ zIndex: "423432535" }}
-                className={`search-container mx-auto ${
-                  isVisible
-                    ? "fixed left-[25%] mt-[-14rem] 2xl:mt-[-20rem] "
-                    : "relative"
-                }`}
-                onMouseEnter={() => {
-                  setShowSettings(true);
-                  updateArrowPosition(selectedEngine, showSettings);
-                }}
-                onMouseLeave={() => {
-                  setShowSettings(false);
-                  updateArrowPosition(selectedEngine, showSettings);
-                }}
-              >
-                <div className="gcse-search relative"></div>
-                <form onSubmit={handleSearchSubmit}>
-                  <input
-                    type="text"
-                    className={` global-input absolute top-5 ${
-                      isVisible ? "fixed top-28  left-0" : ""
-                    } left-0 z-20 mt-[-3px] ${
-                      isVisible ? "py-2 px-2" : "py-2 px-2"
-                    }`}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  <button type="submit"></button>
-                </form>
-                <div
-                  onClick={handleSearchSubmit}
-                  className="search-arrow"
-                ></div>
-
-                {/* SettingsComponent will be shown here */}
-                {showSettings && !isVisible && (
-                  <SettingsComponent
-                    ref={settingsRef}
-                    selectedEngine={selectedEngine}
-                    setSelectedEngine={setSelectedEngine}
-                    showSettings={showSettings}
-                    selectedLanguage={selectedLanguage}
-                    setSelectedLanguage={setselectedLanguage}
-                  />
-                )}
-                {selectedEngine === "global-search" && isVisible && (
-                  <div className="search-results mx-auto">
-                    <div className="tabs flex gap-3 text-[#666666] text-[13px]">
-                      <button
-                        className={`tab-button ${
-                          activeTab === "web" ? "active" : ""
-                        }`}
-                        onClick={() => setActiveTab("web")}
-                      >
-                        Web
-                      </button>
-                      <button
-                        className={`tab-button ${
-                          activeTab === "images" ? "active" : ""
-                        }`}
-                        onClick={() => setActiveTab("images")}
-                      >
-                        Görsel
-                      </button>
-                    </div>
-                    <hr />
-
-                    {activeTab === "web" && (
-                      <>
-                        <ul className="web-results">
-                          {cachedResults.map((result) => (
-                            <li key={result.link} className="group">
-                              <a
-                                className="href-link text-[13px] 2xl:text-[17px]"
-                                href={result.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                dangerouslySetInnerHTML={{
-                                  __html: result.htmlTitle,
-                                }}
-                              ></a>
-                              <p className="result-link py-1">
-                                {result.displayLink}{" "}
-                                <span className="text-[10px] 2xl:text-[12px]">
-                                  {"›"}
-                                </span>
-                              </p>
-                              <p
-                                className="text-[13px] 2xl:text-[15px]"
-                                dangerouslySetInnerHTML={{
-                                  __html: result.htmlSnippet,
-                                }}
-                              ></p>
-                            </li>
-                          ))}
-                        </ul>
-                        <div
-                          id="pagination"
-                          className="text-[12px] 2xl:text-[16px] flex gap-2 text-[#666666] mt-3"
-                        >
-                          {[...Array(10)].map((_, index) => (
-                            <button
-                              key={index + 1}
-                              onClick={() => handlePageChange(index + 1)}
-                              className={`page-button ${
-                                currentPage === index + 1 ? "active" : ""
-                              }`}
-                            >
-                              {index + 1}
-                            </button>
-                          ))}
-                        </div>
-
-                        <div id="results"></div>
-                      </>
-                    )}
-
-                    {activeTab === "images" && (
-                      <>
-                        <ul className="flex flex-wrap gap-2 image-results">
-                          {imageResults.map((imgResult) => (
-                            <li key={imgResult.link} className="relative group">
-                              <a
-                                href={imgResult.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <img
-                                  src={imgResult.link}
-                                  alt={imgResult.title}
-                                  className="h-[180px] w-auto"
-                                />
-                                <span className="absolute left-0 -bottom-[-1rem] bg-[rgba(0,0,0,0.7)] text-xs px-2 py-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 w-[95%]">
-                                  <p
-                                    className="image-text uppercase"
-                                    dangerouslySetInnerHTML={{
-                                      __html: imgResult.htmlTitle,
-                                    }}
-                                  ></p>
-                                  <p className="image-text2">
-                                    {imgResult.displayLink}
-                                  </p>
-                                </span>
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-
-                        <div
-                          id="image-pagination"
-                          className="text-[12px] flex gap-2 text-[#666666] mt-3"
-                        >
-                          {[...Array(10)].map((_, index) => (
-                            <button
-                              key={index + 1}
-                              onClick={() => handleImagePageChange(index + 1)}
-                              className={`page-button ${
-                                currentImagePage === index + 1 ? "active" : ""
-                              }`}
-                            >
-                              {index + 1}
-                            </button>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div
-                className={`search-container mx-auto ${
-                  isVisible ? "mt-[-9rem]" : ""
-                }`}
-                onMouseEnter={() => {
-                  // console.log("çalıştı");
-                  setShowSettings(true);
-                  updateArrowPosition(selectedEngine, showSettings);
-                }}
-                onMouseLeave={() => {
-                  setShowSettings(false);
-                  updateArrowPosition(selectedEngine, showSettings);
-                }}
-              >
-                <div className="gcse-search">
-                  <div id="gsc-i-id1" className="relative"></div>
-                </div>
-                <div className="search-arrow"></div>
-
-                {/* SettingsComponent will be shown here */}
-                {showSettings && !isVisible && (
-                  <SettingsComponent
-                    ref={settingsRef}
-                    selectedEngine={selectedEngine}
-                    setSelectedEngine={setSelectedEngine}
-                    showSettings={showSettings}
-                    selectedLanguage={selectedLanguage}
-                    setSelectedLanguage={setselectedLanguage}
-                  />
-                )}
-              </div>
-            )}
+             <img
+               className={`m-auto logo w-[10vw] ${
+                 isVisible ? "hidden" : "visible"
+               }`}
+               src="images/logo.png"
+               alt="Logo"
+             />
+             {selectedEngine === "global-search" ? (
+               <div
+                 style={{ zIndex: "423432535" }}
+                 className={`search-container mx-auto ${
+                   isVisible ? "fixed left-[25%] mt-[-14rem] 2xl:mt-[-20rem] " : "relative"
+                 }`}
+                 onMouseEnter={() => {
+                   setShowSettings(true);
+                   updateArrowPosition(selectedEngine,showSettings);
+                 }}
+                 onMouseLeave={() => {
+                   setShowSettings(false);
+                   updateArrowPosition(selectedEngine,showSettings);
+                 }}
+               >
+                 <div className="gcse-search relative"></div>
+                 <form onSubmit={handleSearchSubmit}>
+                   <input
+                     type="text"
+                     className={` global-input absolute top-5 ${
+                       isVisible ? "fixed top-28  left-0" : ""
+                     } left-0 z-20 mt-[-3px] ${
+                       isVisible ? "py-2 px-2" : "py-2 px-2"
+                     }`}
+                     value={searchTerm}
+                     onChange={(e) => setSearchTerm(e.target.value)}
+                   />
+                   <button type="submit"></button>
+                 </form>
+                 <div onClick={handleSearchSubmit} className="search-arrow"></div>
+   
+                 {/* SettingsComponent will be shown here */}
+                 {showSettings && !isVisible && (
+                   <SettingsComponent
+                     ref={settingsRef}
+                     selectedEngine={selectedEngine}
+                     setSelectedEngine={setSelectedEngine}
+                     showSettings={showSettings}
+                     selectedLanguage={selectedLanguage}
+                     setSelectedLanguage={setselectedLanguage}
+                   />
+                 )}
+                 {selectedEngine === "global-search" && isVisible && (
+                   <div className="search-results mx-auto">
+                     <div className="tabs flex gap-3 text-[#666666] text-[13px]">
+                       <button
+                         className={`tab-button ${
+                           activeTab === "web" ? "active" : ""
+                         }`}
+                         onClick={() => setActiveTab("web")}
+                       >
+                         Web
+                       </button>
+                       <button
+                         className={`tab-button ${
+                           activeTab === "images" ? "active" : ""
+                         }`}
+                         onClick={() => setActiveTab("images")}
+                       >
+                         Görsel
+                       </button>
+                     </div>
+                     <hr />
+   
+                     {activeTab === "web" && (
+                       <>
+                         <ul className="web-results">
+                           {cachedResults.map((result) => (
+                             <li key={result.link} className="group">
+                               <a
+                                 className="href-link text-[13px] 2xl:text-[17px]"
+                                 href={result.link}
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 dangerouslySetInnerHTML={{
+                                   __html: result.htmlTitle,
+                                 }}
+                               ></a>
+                               <p className="result-link py-1">
+                                 {result.displayLink}{" "}
+                                 <span className="text-[10px] 2xl:text-[12px]">{"›"}</span>
+                               </p>
+                               <p
+                                 className="text-[13px] 2xl:text-[15px]"
+                                 dangerouslySetInnerHTML={{
+                                   __html: result.htmlSnippet,
+                                 }}
+                               ></p>
+                             </li>
+                           ))}
+                         </ul>
+                         <div
+                           id="pagination"
+                           className="text-[12px] 2xl:text-[16px] flex gap-2 text-[#666666] mt-3"
+                         >
+                           {[...Array(10)].map((_, index) => (
+                             <button
+                               key={index + 1}
+                               onClick={() => handlePageChange(index + 1)}
+                               className={`page-button ${
+                                 currentPage === index + 1 ? "active" : ""
+                               }`}
+                             >
+                               {index + 1}
+                             </button>
+                           ))}
+                         </div>
+   
+                         <div id="results"></div>
+                       </>
+                     )}
+   
+                     {activeTab === "images" && (
+                       <>
+                         <ul className="flex flex-wrap gap-2 image-results">
+                           {imageResults.map((imgResult) => (
+                             <li key={imgResult.link} className="relative group">
+                               <a
+                                 href={imgResult.link}
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                               >
+                                 <img
+                                   src={imgResult.link}
+                                   alt={imgResult.title}
+                                   className="h-[180px] w-auto"
+                                 />
+                                 <span className="absolute left-0 -bottom-[-1rem] bg-[rgba(0,0,0,0.7)] text-xs px-2 py-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 w-[95%]">
+                                   <p
+                                     className="image-text uppercase"
+                                     dangerouslySetInnerHTML={{
+                                       __html: imgResult.htmlTitle,
+                                     }}
+                                   ></p>
+                                   <p className="image-text2">
+                                     {imgResult.displayLink}
+                                   </p>
+                                 </span>
+                               </a>
+                             </li>
+                           ))}
+                         </ul>
+   
+                         <div
+                           id="image-pagination"
+                           className="text-[12px] flex gap-2 text-[#666666] mt-3"
+                         >
+                           {[...Array(10)].map((_, index) => (
+                             <button
+                               key={index + 1}
+                               onClick={() => handleImagePageChange(index + 1)}
+                               className={`page-button ${
+                                 currentImagePage === index + 1 ? "active" : ""
+                               }`}
+                             >
+                               {index + 1}
+                             </button>
+                           ))}
+                         </div>
+                       </>
+                     )}
+                   </div>
+                 )}
+               </div>
+             ) : (
+               <div
+                 className={`search-container mx-auto ${
+                   isVisible ? "mt-[-9rem]" : ""
+                 }`}
+                 onMouseEnter={() => {
+                   // console.log("çalıştı");
+                   setShowSettings(true);
+                   updateArrowPosition(selectedEngine,showSettings);
+                 }}
+                 onMouseLeave={() => {
+                   setShowSettings(false);
+                   updateArrowPosition(selectedEngine,showSettings);
+                 }}
+               >
+                 <div className="gcse-search">
+                   <div id="gsc-i-id1" className="relative"></div>
+                 </div>
+                 <div className="search-arrow"></div>
+   
+                 {/* SettingsComponent will be shown here */}
+                 {showSettings && !isVisible && (
+                   <SettingsComponent
+                     ref={settingsRef}
+                     selectedEngine={selectedEngine}
+                     setSelectedEngine={setSelectedEngine}
+                     showSettings={showSettings}
+                     selectedLanguage={selectedLanguage}
+                     setSelectedLanguage={setselectedLanguage}
+                   />
+                 )}
+               </div>
+             )}
+           </div>
+   
+           {/* GPT Response - only show if selectedEngine is not global-search */}
+           {selectedEngine !== "global-search" && (
+             <div className="gpt-response">
+               <h3 className="py-4">GPT Answer</h3>
+               <p className="text-justify">{gptResponse}</p>
+             </div>
+           )}
           </div>
-
-          {/* GPT Response - only show if selectedEngine is not global-search */}
-          {selectedEngine !== "global-search" && (
-            <div className="gpt-response">
-              <h3 className="py-4">GPT Answer</h3>
-              <p className="text-justify">{gptResponse}</p>
-            </div>
-          )}
-        </div>
+       
       </main>
       <Footer hasSearchResults={isVisible} />
     </div>
