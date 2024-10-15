@@ -348,7 +348,7 @@ const Home = () => {
             <div
               style={{ zIndex: "423432535" }}
               className={`search-container mx-auto ${
-                isVisible ? "fixed left-[25%] mt-[-14rem] " : "relative"
+                isVisible ? "fixed left-[25%] mt-[-14rem] 2xl:mt-[-20rem] " : "relative"
               }`}
               onMouseEnter={() => {
                 setShowSettings(true);
@@ -364,7 +364,7 @@ const Home = () => {
                 <input
                   type="text"
                   className={` global-input absolute top-5 ${
-                    isVisible ? "fixed top-28 left-0" : ""
+                    isVisible ? "fixed top-28  left-0" : ""
                   } left-0 z-20 mt-[-3px] ${
                     isVisible ? "py-1 px-2" : "py-1 px-2"
                   }`}
@@ -414,7 +414,7 @@ const Home = () => {
                         {cachedResults.map((result) => (
                           <li key={result.link} className="group">
                             <a
-                              className="href-link"
+                              className="href-link text-[13px] 2xl:text-[17px]"
                               href={result.link}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -424,10 +424,10 @@ const Home = () => {
                             ></a>
                             <p className="result-link py-1">
                               {result.displayLink}{" "}
-                              <span className="text-[10px]">{"›"}</span>
+                              <span className="text-[10px] 2xl:text-[12px]">{"›"}</span>
                             </p>
                             <p
-                              className="text-[13px]"
+                              className="text-[13px] 2xl:text-[15px]"
                               dangerouslySetInnerHTML={{
                                 __html: result.htmlSnippet,
                               }}
@@ -437,7 +437,7 @@ const Home = () => {
                       </ul>
                       <div
                         id="pagination"
-                        className="text-[12px] flex gap-2 text-[#666666] mt-3"
+                        className="text-[12px] 2xl:text-[16px] flex gap-2 text-[#666666] mt-3"
                       >
                         {[...Array(10)].map((_, index) => (
                           <button
