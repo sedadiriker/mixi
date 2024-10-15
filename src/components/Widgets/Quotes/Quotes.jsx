@@ -76,12 +76,12 @@ const Quotes = () => {
   };
 
   return (
-    <div className="quotes-widget relative" style={{ textAlign: 'center', padding: '10px' }}>
+    <div className="quotes-widget relative text-center p-4">
       <div className="settings-icon-reminder" onClick={() => openModal()}>
         <i className="fas fa-cog"></i>
       </div>
       <div
-        className="quote-display"
+        className="quote-display leading-4 2xl:leading-6 h-[100%] flex items-center"
         onWheel={(e) => {
           e.preventDefault();
           setIsScrolling(true);
@@ -92,7 +92,7 @@ const Quotes = () => {
           }
         }}
       >
-        <p className="text-gray-400 h-[120px]" style={{ fontStyle: 'italic', fontSize: '10px', letterSpacing: '1px' }}>
+        <p className="text-gray-400 h-[120px] text-[10px] 2xl:text-[15px] italic" style={{letterSpacing:"1px"}}>
           {quotes[currentIndex]}
         </p>
       </div>
@@ -102,7 +102,7 @@ const Quotes = () => {
           <div className="modal-content">
             <span className="close" onClick={closeModal}>&times;</span>
             
-            <h2 className="text-center uppercase mb-1 my-3 mb-5" style={{ letterSpacing: "2px" }}>{editIndex !== null ? 'Edit Quote' : 'Add New Quote'}</h2>
+            <h2 className="text-center uppercase my-3 mb-5" style={{ letterSpacing: "2px" }}>{editIndex !== null ? 'Edit Quote' : 'Add New Quote'}</h2>
             <div className="flex flex-col items-center gap-3">
               <textarea
                 className="text-black fixed-textarea rounded text-[11px]"

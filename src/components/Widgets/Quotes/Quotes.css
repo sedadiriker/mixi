@@ -14,7 +14,8 @@
   }
   .quotes-widget {
     position: relative;
-    height: 100px; 
+    /* height: 100px;  */
+    height: 100%;
   }
   
   
@@ -47,9 +48,9 @@
   }
   
   .quotes-widget  .quotes-list {
-    max-height: 100px; 
+    max-height: 100%; 
     overflow-y: auto;
-    border: 1px solid #cccccc49; 
+    /* border: 1px solid #cccccc49;  */
     background-color: black;
     padding: 10px;
     border-radius: 10px;
