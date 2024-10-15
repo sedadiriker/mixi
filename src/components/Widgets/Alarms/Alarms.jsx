@@ -181,12 +181,12 @@ const playAlarmSound = () => {
       {alarms.map(alarm => (
         <div key={alarm.id} className={`alarm ${!alarm.isActive ? 'off' : ''}`}>
           <div className="alarm-details">
-            <div className="alarm-name">{alarm.name}</div>
-            <div className="alarm-time" style={{ position: 'relative' }}>
+            <div className="alarm-name text-[8px] 2xl:text-[12px]">{alarm.name}</div>
+            <div className="alarm-time text-[14px] 2xl:text-[17px]" style={{ position: 'relative' }}>
               {alarm.time}
-              <span className="text-[8px]" style={{ position: 'absolute', top: 0, right: -15 }}>AM</span>
+              <span className="text-[8px] 2xl:text-[10px]" style={{ position: 'absolute', top: 0,}}>AM</span>
             </div>
-            <div className="alarm-info">{alarm.info}</div>
+            <div className="alarm-info text-[8px] 2xl:text-[10px]">{alarm.info}</div>
           </div>
           <div className="alarm-toggle">
             <label className="switch">

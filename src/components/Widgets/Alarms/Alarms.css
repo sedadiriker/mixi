@@ -12,16 +12,15 @@
   }
 
   & .alarm-name {
-    font-size: 8px;
     color: rgba(255, 255, 255, 0.588);
   }
 
-  & .alarm-time {
+  /* & .alarm-time {
     font-size: 14px; 
-  }
+  } */
 
   .alarm-info {
-    font-size: 8px;
+    /* font-size: 8px; */
     color: rgba(255, 255, 255, 0.588);
   }
   & .alarm-timing {
