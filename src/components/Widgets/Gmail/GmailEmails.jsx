@@ -207,9 +207,14 @@ const GmailEmails = () => {
       setCurrentIndex((prevIndex) => (prevIndex - 1 + emails.length) % emails.length);
     }
   };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toUTCString().replace(/ GMT.*/, ""); 
+  };
+  
 
   return (
-    <div>
+    <div className="h-[100%]">
       {!isAuthenticated ? (
         <div className="auth-prompt flex flex-col gap-1 items-center justify-center h-[125px]" >
           <h3 className="text-gray-400 text-[10px]" style={{lineHeight:"20px"}}>Please Grant Access to Your Gmail Emails</h3>
@@ -218,15 +223,17 @@ const GmailEmails = () => {
           </button>
         </div>
       ) : (
-        <div style={{ overflowY: 'hidden', height: '123px' }} onWheel={handleScroll}>
-          <div className="gmail-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <h2 style={{letterSpacing:"1px"}} className="text-gray-400 text-[9px] uppercase text-center mt-3">
+        <div style={{ overflowY: 'hidden'}} onWheel={handleScroll} className="h-[100%]">
+          <div className="gmail-container h-[100%] flex flex-col mt-2 2xl:mt-3 items-center gap-1">
+            <h2 style={{letterSpacing:"1px"}} className="text-gray-400 text-[9px] 2xl:text-[15px] uppercase text-center mt-3">
               {emails[currentIndex]?.subject || "Loading..."}
             </h2>
             <hr className="mt-1 opacity-10 w-[100%]" />
-            <p className="my-2 text-gray-500 text-[10px] text-center">{emails[currentIndex]?.sender || ""}</p>
+            <p className="my-2 text-gray-500 text-[10px] 2xl:text-[15px] text-center">{emails[currentIndex]?.sender || ""}</p>
             <hr className="opacity-20" />
-            <p className="mt-1 text-[10px] text-start text-gray-500">{emails[currentIndex]?.date || ""}</p>
+            <p className="mt-1 text-[10px] 2xl:text-[15px] text-start text-gray-500">
+  {emails[currentIndex]?.date ? formatDate(emails[currentIndex]?.date) : ""}
+</p>
           </div>
         </div>
       )}
