@@ -68,7 +68,7 @@ const Pomodoro = () => {
   }
 
   return (
-    <div className="pomodoro-app relative mt-3">
+    <div className="pomodoro-app relative mt-3 gap-1 2xl:gap-3">
       <Controls
         timerMode={timerMode}
         setTimerMode={setTimerMode}
