@@ -97,8 +97,7 @@
 }
 
 .alarm-list {
-  max-height: 128px; /* List için sabit bir yükseklik */
-  overflow-y: auto;  /* Yatayda kaydırma yapabilmek için */
+  overflow-y: auto;  
 }
 
 

@@ -158,24 +158,22 @@ const playAlarmSound = () => {
     event.stopPropagation(); 
     const confirmDelete = window.confirm('Are you sure you want to delete this alarm?');
     
-    // Log the confirmation status
     console.log('Delete confirmation:', confirmDelete);
     
     if (confirmDelete) {
-      // Log before updating the alarms
       console.log('Deleting alarm with ID:', id);
   
       setAlarms(prevAlarms => {
         const updatedAlarms = prevAlarms.filter(alarm => alarm.id !== id);
-        toastWarnNotify('Alarm deleted successfully!'); // Toast burada çağrılıyor
+        toastWarnNotify('Alarm deleted successfully!');
         return updatedAlarms; 
       });
     }
   };
   
   return (
-   <div className="alarm-container relative">
-     <div className="alarm-list ">
+   <div className="alarm-container relative h-[100%]">
+     <div className="alarm-list h-[100%] ">
       <div className="settings-icon-alarm" onClick={() => setModalOpen(true)}>
         <i className="fas fa-cog"></i>
       </div>
