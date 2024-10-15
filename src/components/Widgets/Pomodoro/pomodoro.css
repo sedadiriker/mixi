@@ -74,7 +74,7 @@
   color: var(--text-dark);
   opacity: 1;
   background: var(--accent-color);
-  color:white;
+  color:black;
   animation-name: fade;
   animation-timing-function: ease-in;
   animation-duration: 0.05s;
