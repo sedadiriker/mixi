@@ -236,42 +236,42 @@ const Reminder = () => {
                 </div>
               </div>
 
-              <div className="mt-2">
+              <div className="mt-3">
                 <label
                   htmlFor="alarmSound"
                   className="block mb-2 font-semibold"
                 >
                   Alarm Sound:
                 </label>
-                <div className="grid grid-cols-3 gap-2">
+                {/* <div className="grid grid-cols-3 gap-2">
                   <div>
-                    <label htmlFor="beep">Bip</label>
+                    <label htmlFor="beep">Alarm1</label>
                     <button
                       className="play-sound-button"
-                      onClick={() => playPreviewSound("beep")}
+                      onClick={() => playPreviewSound("alarm1")}
                     >
                       Dinle
                     </button>
                   </div>
                   <div>
-                    <label htmlFor="bell">Zil</label>
+                    <label htmlFor="bell">Alarm2</label>
                     <button
                       className="play-sound-button"
-                      onClick={() => playPreviewSound("bell")}
+                      onClick={() => playPreviewSound("alarm2")}
                     >
                       Dinle
                     </button>
                   </div>
                   <div>
-                    <label htmlFor="chime">Çan</label>
+                    <label htmlFor="chime">Alarm3</label>
                     <button
                       className="play-sound-button"
-                      onClick={() => playPreviewSound("chime")}
+                      onClick={() => playPreviewSound("alarm3")}
                     >
                       Dinle
                     </button>
                   </div>
-                </div>
+                </div> */}
 
                 <select
                   id="alarmSound"
