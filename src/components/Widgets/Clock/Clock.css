@@ -262,7 +262,7 @@ color: #3B3BBF;
 
 .clock__date {
   text-align: center;
-  font-size: 12px;
+  /* font-size: 12px; */
   font-weight: var(--font-medium);
   display: flex;
   justify-content: center;

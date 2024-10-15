@@ -162,7 +162,7 @@ const AnalogClock = () => {
           <div className="clock__text-ampm text-gray-400 text-[8px] 2xl:text-[10px]" ref={textAmPmRef}></div>
         </div>
 
-        <div className="clock__date" style={{letterSpacing:"1px"}}>
+        <div className="clock__date text-[12px] 2xl:text-[15px]" style={{letterSpacing:"1px"}}>
           <span id="date-day" ref={dateDayRef}></span>
           <span id="date-month" ref={dateMonthRef}></span>
           <span id="date-year" ref={dateYearRef}></span>
