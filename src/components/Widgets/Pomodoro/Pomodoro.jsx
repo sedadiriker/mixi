@@ -13,8 +13,8 @@ const Pomodoro = () => {
   const [ pomoLength, setPomoLength ] = useState(25)
   const [ shortLength, setShortLength ] = useState(3)
   const [ longLength, setLongLength ] = useState(15)
-  const [ fontPref, setFontPref ] = useState('kumbh')         // options: kumbh, roboto, space
-  const [ accentColor, setAccentColor ] = useState('default') // options: default, blue, purple
+  const [ fontPref, setFontPref ] = useState('kumbh')        
+  const [ accentColor, setAccentColor ] = useState('default') 
   const [ secondsLeft, setSecondsLeft] = useState(pomoLength * 60)
   const [ isActive, setIsActive ] = useState(false)
   const [ buttonText, setButtonText ] = useState('START')

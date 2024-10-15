@@ -31,14 +31,14 @@ const Controls = ({ timerMode,
   }
 
   return(
-    <form className="controls">
+    <form className="controls w-full lg:w-[90%]">
       <input  type="radio" 
               id="pomo" 
               name="mode" 
               checked={timerMode === 'pomo'}
               onClick={playSfx} 
               onChange={handleModeChange} />
-      <label  htmlFor="pomo" className="controls__button">pomodoro</label>
+<label htmlFor="pomo" className="px-2 controls__button sm:py-1 md:py-2 lg:py:3 sm:text-[5px] md:text-[7px] lg:text-[8px] xl:text-[15px]">pomodoro</label>
 
       <input  type="radio" 
               id="short" 
@@ -46,7 +46,7 @@ const Controls = ({ timerMode,
               checked={timerMode === 'short'}
               onClick={playSfx} 
               onChange={handleModeChange} />
-      <label htmlFor="short"  className="controls__button">short break</label>
+      <label htmlFor="short"  className="px-2 controls__button sm:py-1 md:py-2 lg:py:3 sm:text-[5px] md:text-[7px] lg:text-[8px] xl:text-[15px]">short break</label>
       
       <input  type="radio" 
               id="long" 
@@ -54,7 +54,7 @@ const Controls = ({ timerMode,
               checked={timerMode === 'long'}
               onClick={playSfx} 
               onChange={handleModeChange} />
-      <label htmlFor="long"  className="controls__button">long break</label>
+      <label htmlFor="long"  className="px-2 controls__button sm:py-1 md:py-2 lg:py:3 sm:text-[5px] md:text-[7px] lg:text-[8px] xl:text-[15px]">long break</label>
     </form>
   )
 }
