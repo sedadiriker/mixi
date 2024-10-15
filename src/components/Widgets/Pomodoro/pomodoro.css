@@ -31,7 +31,7 @@
   justify-content: center;
   font-family: var(--font-current);
   height:100%;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   margin-top: 5px;
 }
 
@@ -69,12 +69,14 @@
   mix-blend-mode: normal;
   opacity: 0.4;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .controls input[type="radio"]:checked + label {
   color: var(--text-dark);
   opacity: 1;
   background: var(--accent-color);
+  color:white;
   animation-name: fade;
   animation-timing-function: ease-in;
   animation-duration: 0.05s;
