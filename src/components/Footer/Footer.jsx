@@ -77,7 +77,7 @@ const Footer = ({ hasSearchResults }) => {
           {widgetGroups[currentGroupIndex].map(widget => (
             <div className="widget" key={widget.id}>
               <div className="widget-header">
-                <p>{widget.title}</p>
+                <p className="text-[13px] 2xl:text-[18px]">{widget.title}</p>
               </div>
               <div className="widget-body">
                 {widget.image ? (
