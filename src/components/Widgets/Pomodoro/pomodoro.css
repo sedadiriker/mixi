@@ -85,8 +85,6 @@
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  width: 80px;
-  height: 80px;
   border-radius: 90%;
   background: linear-gradient(315deg, #2e325a 0%, #0e112a 100%);
   cursor: pointer;
@@ -98,13 +96,12 @@
 }
 
 .timer__display {
-
   height: 100%;
   width: 100%;
   padding: 7px;
   border-radius: 90%;
   background: var(--background-timer);
-  box-shadow: 0 10px 50px rgba(156, 153, 153, 0.2), 
+  box-shadow: 0 1px 5px rgba(156, 153, 153, 0.2), 
   0 10px 50px rgba(150, 142, 142, 0.1); 
 }
 

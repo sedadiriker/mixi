@@ -11,11 +11,11 @@ const NotesSlider = () => {
     // console.log("Loaded Notes:", savedNotes);
     if (savedNotes.length === 0) {
       const initialNotes = [
-        { title: "Meeting Goals", body: "Review team goals and individual contributions in the next meeting." },
-        { title: "Team Building Activity", body: "Schedule team-building activity for next month. Consider options for outdoor venues." },
-        { title: "Literature Theme", body: "Theme in 'To Kill a Mockingbird': The moral nature of human beings." },
-        { title: "Chemical Reactions", body: "Chemical reaction types: Synthesis, Decomposition, Single Replacement, Double Replacement." },
-        { title: "Budget Discussion", body: "Discuss budget for Q3. Action item: Prepare a detailed report by next week." }
+        { title: "Stay focused on your goals", body: "Stay focused on your goals, and small steps will lead to big achievements." },
+        { title: "Learning something", body: "Learning something new every day keeps the mind sharp and curious. " },
+        { title: "skill—practice daily", body: "Consistency is the key to mastering any skill—practice daily." },
+        { title: "Take breaks when needed", body: "Take breaks when needed; rest fuels productivity and creativity." },
+        { title: "A positive mindset ", body: "A positive mindset can turn challenges into opportunities for growth." }
       ];
     setNotes(initialNotes); 
     localStorage.setItem('notes', JSON.stringify(initialNotes)); 
