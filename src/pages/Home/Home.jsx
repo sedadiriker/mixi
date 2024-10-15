@@ -236,12 +236,12 @@ const Home = () => {
         if (width < 768) { // Mobil cihazlar için
           searchArrow.style.top = "10%"; 
           searchArrow.style.right = "5%"; 
-        } else if (width >= 768 && width < 1200) { // Tablet boyutları için
-          searchArrow.style.top = "5%"; 
-          searchArrow.style.right = "0%"; 
+        } else if (width >= 768 && width < 1500) { // Tablet boyutları için
+          searchArrow.style.top = "12%"; 
+          searchArrow.style.right = "5%"; 
         } else { // Masaüstü boyutları için
-          searchArrow.style.top = "15%"; 
-          searchArrow.style.right = "15%"; 
+          searchArrow.style.top = "8%"; 
+          searchArrow.style.right = "4%"; 
         }
       } else {
         if (form) {
@@ -406,7 +406,7 @@ const Home = () => {
                   className={` global-input absolute top-5 ${
                     isVisible ? "fixed top-28  left-0" : ""
                   } left-0 z-20 mt-[-3px] ${
-                    isVisible ? "py-1 px-2" : "py-1 px-2"
+                    isVisible ? "py-2 px-2" : "py-2 px-2"
                   }`}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}

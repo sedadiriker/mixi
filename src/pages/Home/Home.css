@@ -67,7 +67,7 @@
 
 .search-arrow {
   position: absolute;
-  right: 40px;
+  /* right: 40px; */
   transform: translateY(-50%) rotate(-90deg);
   font-size: 0;
   /* top:50%; */
@@ -127,7 +127,7 @@
 
 .global-input{
   left: 3%;
-  width: 92%;
+  width: 95%;
   border: 1px solid rgba(0, 0, 0, 0.127);
   /* padding: 5px; */
   outline: none;
