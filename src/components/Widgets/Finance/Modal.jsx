@@ -13,7 +13,6 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
   const ctxRef = useRef(null);
   const chartRef = useRef(null); 
 
-  // Predefined list of coins
   const coins = [
     { id: 'bitcoin', name: 'Bitcoin (BTC)' },
     { id: 'ethereum', name: 'Ethereum (ETH)' },
@@ -22,15 +21,12 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
     { id: 'solana', name: 'Solana (SOL)' }
   ];
 
-  // Cache for storing data
   const [cache, setCache] = useState({});
 
-  // Fetch current price and historical data
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
-    // Check cache
     if (cache[currentAsset]) {
       const { price, change, labels, data } = cache[currentAsset];
       setCurrentPrice(price);
@@ -48,14 +44,13 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
 
       const historyResponse = await fetch(`https://api.coingecko.com/api/v3/coins/${currentAsset}/market_chart?vs_currency=usd&days=30`);
       const historyData = await historyResponse.json();
-      const prices = historyData.prices.map(price => price[1]);
-      const dates = historyData.prices.map(price => new Date(price[0]).toLocaleDateString());
+      const prices = historyData.prices.map(price => price[1]) || [];
+      const dates = historyData.prices.map(price => new Date(price[0]).toLocaleDateString()) || [];
 
       setCurrentPrice(price);
       setPriceChange(change);
       setChartData({ labels: dates, data: prices });
 
-      // Save to cache
       setCache(prevCache => ({
         ...prevCache,
         [currentAsset]: {
@@ -73,7 +68,6 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
     }
   }, [currentAsset, cache]);
 
-  // Create chart
   const createChart = (labels, data) => {
     if (chartRef.current) {
       chartRef.current.destroy();
@@ -121,7 +115,6 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
     });
   };
 
-  // Modal open actions
   useEffect(() => {
     if (!isOpen) return;
 
@@ -132,7 +125,6 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
     return () => clearInterval(intervalId);
   }, [isOpen, fetchData]);
 
-  // Chart data update
   useEffect(() => {
     if (chartData.labels.length > 0 && ctxRef.current) {
       createChart(chartData.labels, chartData.data);
@@ -141,14 +133,22 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
 
   const handleAssetChange = (e) => {
     setCurrentAsset(e.target.value);
-    fetchData(); // Fetch data immediately after changing asset
+    fetchData();
   };
 
   const handleAddFavorite = () => {
     onAddFavorite(currentAsset);
+    fetchData()
   };
 
-  const priceDisplayStyle = priceChange >= 0 ? 'up' : 'down';
+  useEffect(() => {
+    if (chartData.labels?.length > 0 && chartData.data?.length > 0 && ctxRef.current) {
+      createChart(chartData.labels, chartData.data);
+    }
+  }, [chartData]);
+  
+
+const priceDisplayStyle = priceChange >= 0 ? 'up' : 'down';
 
   if (!isOpen) return null;
 
@@ -165,7 +165,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
               value={currentAsset}
               onChange={handleAssetChange}
             >
-              {coins.map(coin => (
+              {coins?.map(coin => (
                 <option key={coin.id} value={coin.id}>
                   {coin.name}
                 </option>
@@ -186,7 +186,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
             {priceChange.toFixed(2)}%
           </div>
           <div id="chart-container">
-            <canvas id="price-chart" style={{ height: '200px' }}></canvas>
+            <canvas id="price-chart" style={{ height: '300px' }}></canvas>
           </div>
         </div>
       </div>
