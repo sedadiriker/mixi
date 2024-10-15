@@ -77,7 +77,7 @@ const Quotes = () => {
 
   return (
     <div className="quotes-widget relative text-center p-4">
-      <div className="settings-icon-reminder" onClick={() => openModal()}>
+      <div className="settings-icon-quotes" onClick={() => openModal()}>
         <i className="fas fa-cog"></i>
       </div>
       <div

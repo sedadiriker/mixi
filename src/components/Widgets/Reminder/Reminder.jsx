@@ -162,12 +162,18 @@ const handleExerciseResponse = (done) => {
   setWeeklyData(updatedData);
   localStorage.setItem('weeklyData', JSON.stringify(updatedData));
 
-  // Popup'u kapat
   setPopupVisible(false);
   
-  // startTimer();
+  stopAlarmSound(); 
+
+  startTimer()
 };
 
+const stopAlarmSound = () => {
+  const audio = new Audio(`/sounds/reminder/${alarmSound}.mp3`);
+  audio.pause(); 
+  audio.currentTime = 0; 
+};
 
 
   const playAlarmSound = () => {
@@ -192,10 +198,10 @@ const handleExerciseResponse = (done) => {
     }
   }, [showSettings]);
 
-  const playPreviewSound = (soundName) => {
-    const audio = new Audio(`/sounds/reminder/${soundName}.mp3`);
-    audio.play();
-  };
+  // const playPreviewSound = (soundName) => {
+  //   const audio = new Audio(`/sounds/reminder/${soundName}.mp3`);
+  //   audio.play();
+  // };
 
   const radius = 10;
   const circumference = 2 * Math.PI * radius;
