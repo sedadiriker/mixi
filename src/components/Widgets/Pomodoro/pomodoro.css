@@ -4,7 +4,7 @@
 
 
 :root {
-  --accent-color: gray;
+  --accent-color: #213A8A;
   --background-body: #1e213f;
   --text: #d7e0ff;
   --text-dark: #1e213f;
@@ -81,6 +81,7 @@
 }
 
 .timer {
+  /* border:1px solid red; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -96,6 +97,7 @@
 }
 
 .timer__display {
+  
   height: 100%;
   width: 100%;
   padding: 7px;
@@ -128,7 +130,6 @@ button:focus:not(:focus-visible) {
   margin-top: 50%;
   font-family: var(--font-default);
   font-weight: bold;
-  font-size: 8px;
   background-color: var(--background-timer);
   border: 0;
   color: var(--text);

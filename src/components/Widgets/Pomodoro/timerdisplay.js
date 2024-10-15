@@ -65,21 +65,20 @@ const TimerDisplay = ({ timerMode,
         <CircularProgressbarWithChildren
           value={percentage}
           text={timeText}
-          strokeWidth={4}
+          strokeWidth={3}
           styles={buildStyles({
-            // How long animation takes to go from one percentage to another, in seconds
             pathTransitionDuration: 0.5,
-            // Colors & Fonts
             pathColor: 'var(--accent-color)',
             textColor: 'var(--text)',
             textSize: textSize,
             fontFamily: 'var(--font-current)',
             trailColor: 'none',
+
           })}>
           
           <MuteToggle volume = {volume}
                       setVolume = {setVolume} />
-          <button className="display__start-pause" onClick={handleClick}>{buttonText}</button>
+          <button className="display__start-pause text-[8px] 2xl:text-[15px]" onClick={handleClick}>{buttonText}</button>
         </CircularProgressbarWithChildren>
       </div>
     </div>
