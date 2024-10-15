@@ -65,7 +65,7 @@ const Footer = ({ hasSearchResults }) => {
 
       <div
         id="left-arrow"
-        className="arrow-left"
+        className="arrow-left left-[-30px]"
         onClick={() => {
           if (currentGroupIndex > 0) slide(-1); 
         }}
@@ -94,7 +94,7 @@ const Footer = ({ hasSearchResults }) => {
 
       <div
         id="right-arrow"
-        className="arrow-right"
+        className="arrow-right right-[-30px]"
         onClick={() => {
           if (currentGroupIndex < totalGroups - 1) slide(1); 
         }}

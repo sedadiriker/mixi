@@ -76,25 +76,22 @@
 
 /* Oklar */
 .footer-widget-container .arrow-right ,.arrow-left{    
-    font-size: 0; /* Varsayılan boyutu sıfırla */
-    width: 0; /* Genişliği sıfırla */
-    height: 0; /* Yüksekliği sıfırla */
-    border-left: 10px solid transparent; /* Sol üçgen için şeffaf kenar */
-    border-right: 10px solid transparent; /* Sağ üçgen için şeffaf kenar */
-    border-top: 15px solid black; /* Üst üçgenin rengi (sol ve sağ ok için) */
+    font-size: 0; 
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent; 
+    border-right: 10px solid transparent; 
+    border-top: 15px solid black; 
     cursor: pointer;
     position: absolute;
 }
 #left-arrow {
-  left: -30px;
   transform: translateY(-50%) rotate(90deg); 
 
 }
 
 #right-arrow {
-  right: -30px; 
   transform: translateY(-50%) rotate(-90deg); 
-
 }
 
 /* Widget Slider */

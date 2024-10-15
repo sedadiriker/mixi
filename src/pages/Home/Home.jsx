@@ -224,7 +224,6 @@ const Home = () => {
     const form = document.querySelector(".gsc-search-box");
   
     if (searchArrow) {
-      // Ekran boyutunu al
       const width = window.innerWidth;
       const height = window.innerHeight;
   
@@ -232,14 +231,13 @@ const Home = () => {
         if (form) {
           form.classList.add("hidden");
         }
-        // Ekran boyutuna göre konum ayarları
-        if (width < 768) { // Mobil cihazlar için
+        if (width < 768) { 
           searchArrow.style.top = "10%"; 
           searchArrow.style.right = "5%"; 
-        } else if (width >= 768 && width < 1500) { // Tablet boyutları için
+        } else if (width >= 768 && width < 1500) {
           searchArrow.style.top = "12%"; 
           searchArrow.style.right = "5%"; 
-        } else { // Masaüstü boyutları için
+        } else { 
           searchArrow.style.top = "8%"; 
           searchArrow.style.right = "4%"; 
         }
@@ -247,28 +245,25 @@ const Home = () => {
         if (form) {
           form.classList.remove("hidden");
         }
-        // "global-search" değilse ayarlar
         if (showSettings) {
-          // "global-search" durumunda ek ayar
-          if (width < 768) { // Mobil cihazlar için
+          if (width < 768) { 
             searchArrow.style.top = "35%"; 
             searchArrow.style.right = "20%"; 
           } else if (width >= 768 && width < 1500) { 
             searchArrow.style.top = "40%"; 
             searchArrow.style.right = "28%";
-          } else { // Masaüstü boyutları için
+          } else { 
             searchArrow.style.top = "40.5%"; 
             searchArrow.style.right = "27%"; 
           }
         } else {
-          // Ekran boyutuna göre ayar
-          if (width < 768) { // Mobil cihazlar için
+          if (width < 768) { 
             searchArrow.style.top = "35%"; 
             searchArrow.style.right = "20%"; 
           } else if (width >= 768 && width < 1500) { 
             searchArrow.style.top = "40%"; 
             searchArrow.style.right = "28%";
-          } else { // Masaüstü boyutları için
+          } else { 
             searchArrow.style.top = "40.5%"; 
             searchArrow.style.right = "27%"; 
           }
@@ -277,7 +272,6 @@ const Home = () => {
     }
   };
   
-  // Ekran boyutu değiştiğinde konumu güncelle
   window.addEventListener('resize', updateArrowPosition);
   
   
