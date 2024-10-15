@@ -92,7 +92,7 @@ color: #3B3BBF;
   justify-content: center;
   /* width: 80px;
   height: 80px; */
-  margin: auto;
+  /* margin: auto; */
   border-radius: 50%;
 }
 
@@ -248,13 +248,13 @@ color: #3B3BBF;
 
 .clock__text-hour, 
 .clock__text-minutes {
-  font-size:15px;
+  /* font-size:15px; */
   font-weight:bold;
   /* color: var(--title-color); */
 }
 
 .clock__text-ampm {
-  font-size: 8px;
+  /* font-size: 8px; */
   /* color: var(--title-color); */
   font-weight: var(--font-medium);
   margin-left: var(--mb-0-25);

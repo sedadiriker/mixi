@@ -131,11 +131,11 @@ const AnalogClock = () => {
   }, []);
 
   return (
-    <div relative>
-      <section className="clock clock-container w-[70px] h-[70px] 2xl:w-[100px] 2xl:h-[100px] relative flex flex-col gap-3">
+    <div className=" h-[100%] flex flex-col justify-center gap-3 2xl:gap-6">
+      <section className="clock clock-container mx-auto w-[70px] h-[70px] 2xl:w-[120px] 2xl:h-[120px] relative flex flex-col gap-3">
         <div className="clock__container grid">
           <div className="clock__content grid">
-            <div className="clock__circle w-[70px] h-[70px] 2xl:w-[100px] 2xl:h-[100px]">
+            <div className="clock__circle w-[70px] h-[70px] 2xl:w-[120px] 2xl:h-[120px]">
               <span className="clock__twelve"></span>
               <span className="clock__three"></span>
               <span className="clock__six"></span>
@@ -155,11 +155,11 @@ const AnalogClock = () => {
         </div>
       </section>
       
-      <div className=" text-gray-500 mt-3">
+      <div className=" text-gray-500">
         <div className="clock__text">
-          <div className="clock__text-hour" ref={textHourRef}></div>
-          <div className="clock__text-minutes" ref={textMinutesRef}></div>
-          <div className="clock__text-ampm text-gray-400" ref={textAmPmRef}></div>
+          <div className="clock__text-hour text-[15px] 2xl:text-[20px]" ref={textHourRef}></div>
+          <div className="clock__text-minutes text-[15px] 2xl:text-[20px]" ref={textMinutesRef}></div>
+          <div className="clock__text-ampm text-gray-400 text-[8px] 2xl:text-[10px]" ref={textAmPmRef}></div>
         </div>
 
         <div className="clock__date" style={{letterSpacing:"1px"}}>
