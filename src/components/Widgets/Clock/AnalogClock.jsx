@@ -132,10 +132,10 @@ const AnalogClock = () => {
 
   return (
     <div relative>
-      <section className="clock clock-container relative flex flex-col gap-3">
+      <section className="clock clock-container w-[70px] h-[70px] 2xl:w-[100px] 2xl:h-[100px] relative flex flex-col gap-3">
         <div className="clock__container grid">
           <div className="clock__content grid">
-            <div className="clock__circle">
+            <div className="clock__circle w-[70px] h-[70px] 2xl:w-[100px] 2xl:h-[100px]">
               <span className="clock__twelve"></span>
               <span className="clock__three"></span>
               <span className="clock__six"></span>

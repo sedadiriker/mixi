@@ -90,8 +90,8 @@ color: #3B3BBF;
   /* padding-top: 10px; */
   display: flex;
   justify-content: center;
-  width: 80px;
-  height: 80px;
+  /* width: 80px;
+  height: 80px; */
   margin: auto;
   border-radius: 50%;
 }
@@ -109,8 +109,8 @@ color: #3B3BBF;
 
 .clock__circle {
   position: relative;
-  width: 70px;
-  height: 70px;
+  /* width: 70px;
+  height: 70px; */
   box-shadow: 6px 6px 16px hsla(var(--hue-color), 8%, 12%, 1), 
   -6px -6px 16px hsla(var(--hue-color), 8%, 20%, 1), 
   inset -6px -6px 16px hsla(var(--white-color), 8%, 20%, 1), 
@@ -171,6 +171,7 @@ color: #3B3BBF;
   border-radius: 50%;
   border: 2px solid var(--body-color);
   z-index: var(--z-tooltip);
+  
 }
 
 .clock__hour, 
