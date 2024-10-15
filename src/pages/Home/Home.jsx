@@ -222,25 +222,65 @@ const Home = () => {
   const updateArrowPosition = () => {
     const searchArrow = document.querySelector(".search-arrow");
     const form = document.querySelector(".gsc-search-box");
-
+  
     if (searchArrow) {
+      // Ekran boyutunu al
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+  
       if (selectedEngine === "global-search") {
         if (form) {
           form.classList.add("hidden");
         }
-        searchArrow.style.top = "12%";
+        // Ekran boyutuna göre konum ayarları
+        if (width < 768) { // Mobil cihazlar için
+          searchArrow.style.top = "10%"; 
+          searchArrow.style.right = "5%"; 
+        } else if (width >= 768 && width < 1200) { // Tablet boyutları için
+          searchArrow.style.top = "5%"; 
+          searchArrow.style.right = "0%"; 
+        } else { // Masaüstü boyutları için
+          searchArrow.style.top = "15%"; 
+          searchArrow.style.right = "15%"; 
+        }
       } else {
         if (form) {
           form.classList.remove("hidden");
         }
+        // "global-search" değilse ayarlar
         if (showSettings) {
-          searchArrow.style.top = "25.5%";
+          // "global-search" durumunda ek ayar
+          if (width < 768) { // Mobil cihazlar için
+            searchArrow.style.top = "35%"; 
+            searchArrow.style.right = "20%"; 
+          } else if (width >= 768 && width < 1500) { 
+            searchArrow.style.top = "40%"; 
+            searchArrow.style.right = "28%";
+          } else { // Masaüstü boyutları için
+            searchArrow.style.top = "40.5%"; 
+            searchArrow.style.right = "27%"; 
+          }
         } else {
-          searchArrow.style.top = "10%";
+          // Ekran boyutuna göre ayar
+          if (width < 768) { // Mobil cihazlar için
+            searchArrow.style.top = "35%"; 
+            searchArrow.style.right = "20%"; 
+          } else if (width >= 768 && width < 1500) { 
+            searchArrow.style.top = "40%"; 
+            searchArrow.style.right = "28%";
+          } else { // Masaüstü boyutları için
+            searchArrow.style.top = "40.5%"; 
+            searchArrow.style.right = "27%"; 
+          }
         }
       }
     }
   };
+  
+  // Ekran boyutu değiştiğinde konumu güncelle
+  window.addEventListener('resize', updateArrowPosition);
+  
+  
 
   const translateWithGPT = async (query) => {
     const apiKey = `${apikey}`;
