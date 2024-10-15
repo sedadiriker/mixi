@@ -60,7 +60,7 @@ const TimerDisplay = ({ timerMode,
                   : '28px'
 
   return(
-    <div className="timer w-[80px] h-[80px] 2xl:w-[100px] 2xl:h-[100px]" onClick={handleClick}>
+    <div className="timer w-[80px] h-[80px] 2xl:w-[120px] 2xl:h-[120px]" onClick={handleClick}>
       <div className="timer__display">
         <CircularProgressbarWithChildren
           value={percentage}
