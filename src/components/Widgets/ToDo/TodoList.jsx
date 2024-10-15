@@ -14,7 +14,7 @@ const TodoList = () => {
     return savedTasks;
   });
 
-  const maxChars = 20;
+  const maxChars = 50;
 
   useEffect(() => {
     const defaultTasks = [
@@ -141,7 +141,7 @@ const TodoList = () => {
                   textDecoration: task.completed ? "line-through" : "none",
                   marginLeft: "8px",
                 }}
-                className="text-gray-500 text-[11px]"
+                className="text-gray-500 text-[11px] 2xl:text-[15px]"
               >
                 {truncateTask(task.text)}
               </span>

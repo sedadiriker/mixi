@@ -57,7 +57,7 @@
   }
 
   .todo-list-container {
-    max-height: 300px; /* Set the maximum height for the task list */
-    overflow-y: auto;  /* Enable vertical scrolling */
+    max-height: 300px; 
+    overflow-y: auto; 
   }
   
