@@ -8,7 +8,7 @@ const FinanceInfo = () => {
   const [isModalOpen, setModalOpen] = useState(false); 
   const [prices, setPrices] = useState({}); 
   const [currentIndex, setCurrentIndex] = useState(0); 
-  const [chartData, setChartData] = useState({}); // Grafik verileri
+  const [chartData, setChartData] = useState({});
 
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem('favoriteCoins')) || [];

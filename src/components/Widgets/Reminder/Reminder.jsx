@@ -156,10 +156,10 @@ const Reminder = () => {
   };
 
   const playAlarmSound = () => {
-    const sound = document.getElementById("alarmSound").value;
-    const audio = new Audio(`https://example.com/sounds/${sound}.mp3`);
+    const audio = new Audio(`/sounds/reminder/${alarmSound}.mp3`);
     audio.play();
   };
+  
 
   const getWeekLabels = () => {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -209,7 +209,7 @@ const Reminder = () => {
                   <input
                     type="number"
                     id="reminderInterval"
-                    className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500"
+                    className="w-full p-1 border rounded-md text-black dark:border-gray-500 outline-none"
                     value={reminderInterval}
                     onChange={(e) =>
                       setReminderInterval(parseInt(e.target.value))
@@ -220,14 +220,14 @@ const Reminder = () => {
                 <div>
                   <label
                     htmlFor="exerciseDuration"
-                    className="block mb-2 font-semibold"
+                    className="block mb-1 font-semibold"
                   >
                     Exercise Duration (minutes):
                   </label>
                   <input
                     type="number"
                     id="exerciseDuration"
-                    className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500"
+                    className="w-full p-1 border rounded-md text-black dark:border-gray-500 outline-none"
                     value={exerciseDuration}
                     onChange={(e) =>
                       setExerciseDuration(parseInt(e.target.value))
@@ -275,12 +275,12 @@ const Reminder = () => {
 
                 <select
                   id="alarmSound"
-                  className="w-full p-1 border rounded-md bg-gray-50 dark:bg-gray-600 dark:border-gray-500 outline-none"
+                  className="w-full p-1 border rounded-md dark:border-gray-500 outline-none text-black"
                   onChange={(e) => setAlarmSound(e.target.value)}
                 >
-                  <option value="alarm1">Bip</option>
-                  <option value="alarm2">Alarm</option>
-                  <option value="alarm3">Dong</option>
+                  <option value="alarm1">alarm1</option>
+                  <option value="alarm2">alarm2</option>
+                  <option value="alarm3">alarm3</option>
                 </select>
               </div>
 
