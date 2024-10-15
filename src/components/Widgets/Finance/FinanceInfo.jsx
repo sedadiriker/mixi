@@ -15,15 +15,32 @@ const FinanceInfo = () => {
         label: "Price",
         data: prices,
         fill: false,
-        borderColor: 'white',
+        borderColor: "white",
         tension: 0.1,
         borderWidth: 2,
       },
     ],
-    
   });
   const [chartVisible, setChartVisible] = useState(false);
+  const [legendFontSize, setLegendFontSize] = useState(14); 
 
+
+  useEffect(() => {
+    const updateFontSize = () => {
+      if (window.innerWidth >= 1500) {
+        setLegendFontSize(18);
+      } else {
+        setLegendFontSize(14);
+      }
+    };
+
+    updateFontSize(); 
+    window.addEventListener("resize", updateFontSize); 
+
+    return () => {
+      window.removeEventListener("resize", updateFontSize);
+    };
+  }, []);
   const handleToggle = () => {
     setChartVisible(!chartVisible);
   };
@@ -147,7 +164,7 @@ const FinanceInfo = () => {
       {favorites.length > 0 ? (
         <div className="favorite-coin h-[100%] w-[100%]">
           {!chartVisible ? (
-            <div className="h-[100%]" onClick={handleToggle}>
+            <div className="h-[100%] cursor-pointer  flex flex-col justify-center" onClick={handleToggle}>
               <h2
                 className="text-gray-600 text-[18px] mb-2"
                 style={{ letterSpacing: "1px" }}
@@ -178,44 +195,47 @@ const FinanceInfo = () => {
               </div>
             </div>
           ) : (
-            <div
-              className="mini-chart h-[100%] w-[100%]"
-            >
+            <div className="mini-chart h-[100%] w-[100%] cursor-pointer">
               {" "}
-               <Line 
-               className="h-[100%] w-[100%]"
-              data={chartData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    labels: {
-                      color: 'gray',
+              <Line
+              onClick={handleToggle}
+                className="h-[100%] w-[100%]"
+                data={chartData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      labels: {
+                        color: "gray",
+                        font:{
+                          size:legendFontSize
+                        },
+                        boxWidth:20
+                      },
                     },
                   },
-                },
-                scales: {
-                  x: {
-                    ticks: {
-                      maxTicksLimit: 7,
-                      color: 'gray', 
+                  scales: {
+                    x: {
+                      ticks: {
+                        maxTicksLimit: 7,
+                        color: "gray",
+                      },
+                      grid: {
+                        color: "rgba(255, 255, 255, 0.2)",
+                      },
                     },
-                    grid: {
-                      color: 'rgba(255, 255, 255, 0.2)', 
+                    y: {
+                      ticks: {
+                        color: "gray",
+                      },
+                      grid: {
+                        color: "rgba(255, 255, 255, 0.2)",
+                      },
                     },
                   },
-                  y: {
-                    ticks: {
-                      color: 'gray', 
-                    },
-                    grid: {
-                      color: 'rgba(255, 255, 255, 0.2)',
-                    },
-                  },
-                },
-              }} 
-            />
+                }}
+              />
             </div>
           )}
         </div>
