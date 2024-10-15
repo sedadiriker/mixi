@@ -189,9 +189,9 @@ const playAlarmSound = () => {
             <div className="alarm-info text-[8px] 2xl:text-[10px]">{alarm.info}</div>
           </div>
           <div className="alarm-toggle">
-            <label className="switch">
+            <label className="switch w-[20px] h-[9px] 2xl:w-[25px] 2xl:h-[12px]">
               <input type="checkbox" checked={alarm.isActive} onChange={() => toggleAlarm(alarm.id)} />
-              <span className="slider round"></span>
+              <span className="slider round before:w-[10px] before:h-[10px] 2xl:before:w-[13px] 2xl:before:h-[13px]"></span>
             </label>
           </div>
           <div className="alarm-actions">
