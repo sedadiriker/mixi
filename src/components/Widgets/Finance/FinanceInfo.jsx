@@ -22,20 +22,22 @@ const FinanceInfo = () => {
     ],
   });
   const [chartVisible, setChartVisible] = useState(false);
-  const [legendFontSize, setLegendFontSize] = useState(14); 
-
+  const [legendFontSize, setLegendFontSize] = useState(12);
+  const [tickFontSize, setTickFontSize] = useState(8);
 
   useEffect(() => {
     const updateFontSize = () => {
       if (window.innerWidth >= 1500) {
         setLegendFontSize(18);
+        setTickFontSize(14);
       } else {
-        setLegendFontSize(14);
+        setLegendFontSize(12);
+        setTickFontSize(8);
       }
     };
 
-    updateFontSize(); 
-    window.addEventListener("resize", updateFontSize); 
+    updateFontSize();
+    window.addEventListener("resize", updateFontSize);
 
     return () => {
       window.removeEventListener("resize", updateFontSize);
@@ -164,7 +166,10 @@ const FinanceInfo = () => {
       {favorites.length > 0 ? (
         <div className="favorite-coin h-[100%] w-[100%]">
           {!chartVisible ? (
-            <div className="h-[100%] cursor-pointer  flex flex-col justify-center" onClick={handleToggle}>
+            <div
+              className="h-[100%] cursor-pointer  flex flex-col justify-center"
+              onClick={handleToggle}
+            >
               <h2
                 className="text-gray-600 text-[18px] mb-2"
                 style={{ letterSpacing: "1px" }}
@@ -198,7 +203,7 @@ const FinanceInfo = () => {
             <div className="mini-chart h-[100%] w-[100%] cursor-pointer">
               {" "}
               <Line
-              onClick={handleToggle}
+                onClick={handleToggle}
                 className="h-[100%] w-[100%]"
                 data={chartData}
                 options={{
@@ -208,10 +213,10 @@ const FinanceInfo = () => {
                     legend: {
                       labels: {
                         color: "gray",
-                        font:{
-                          size:legendFontSize
+                        font: {
+                          size: legendFontSize, // Legend font boyutu
                         },
-                        boxWidth:20
+                        boxWidth: 20, // Legend kutu genişliği
                       },
                     },
                   },
@@ -220,6 +225,9 @@ const FinanceInfo = () => {
                       ticks: {
                         maxTicksLimit: 7,
                         color: "gray",
+                        font: {
+                          size: tickFontSize,
+                        },
                       },
                       grid: {
                         color: "rgba(255, 255, 255, 0.2)",
@@ -228,6 +236,9 @@ const FinanceInfo = () => {
                     y: {
                       ticks: {
                         color: "gray",
+                        font: {
+                          size: tickFontSize,
+                        },
                       },
                       grid: {
                         color: "rgba(255, 255, 255, 0.2)",
