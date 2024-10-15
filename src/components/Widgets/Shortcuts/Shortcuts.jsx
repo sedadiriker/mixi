@@ -7,9 +7,21 @@ const Shortcuts = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // LocalStorage'dan kaydedilen kısayolları al
     const savedShortcuts = JSON.parse(localStorage.getItem("shortcuts")) || [];
-    setShortcuts(savedShortcuts);
+    
+    // Eğer kısayollar boşsa varsayılan kısayolları ayarlayın
+    if (savedShortcuts.length === 0) {
+      const defaultShortcuts = [
+        { name: "Google", url: "https://google.com" },
+        { name: "LinkedIn", url: "https://linkedin.com" },
+        { name: "Facebook", url: "https://facebook.com" },
+        { name: "Instagram", url: "https://instagram.com" },
+      ];
+      setShortcuts(defaultShortcuts);
+      localStorage.setItem("shortcuts", JSON.stringify(defaultShortcuts));
+    } else {
+      setShortcuts(savedShortcuts);
+    }
   }, []);
 
   const openModal = () => {
@@ -26,7 +38,6 @@ const Shortcuts = () => {
 
   const handleShortcutsUpdate = (newShortcuts) => {
     setShortcuts(newShortcuts);
-    // Güncellenmiş kısayolları LocalStorage'a kaydet
     localStorage.setItem("shortcuts", JSON.stringify(newShortcuts));
   };
 
@@ -35,7 +46,7 @@ const Shortcuts = () => {
       <div className="settings-icon-shortcuts" onClick={openModal}>
         <i className="fas fa-cog"></i>
       </div>
-      <div className="flex gap-3 w-[100%] flex-wrap h-[122px] justify-center mt-5">
+      <div className="flex gap-5 2xl:gap-10 w-[100%] flex-wrap h-[122px] justify-center mt-1">
         {shortcuts.length === 0 ? (
           <div className="no-shortcuts-message text-gray-500 text-[10px]" style={{letterSpacing:"1px", lineHeight:"16px"}}>
             You haven't added any shortcuts yet!<br /> Click the settings icon to add a new shortcut.
@@ -45,10 +56,9 @@ const Shortcuts = () => {
             <div key={index} className="shortcut-item" onClick={() => navigateToShortcut(shortcut.url)}>
               <div className="shortcut-icon">
                 <img
-                  
                   src={`https://www.google.com/s2/favicons?domain=${shortcut.url}&sz=64`}
                   alt={shortcut.name}
-                  width={35}
+                  className="2xl:w-[60px] w-[30px]"
                 />
               </div>
               <div className="shortcut-name text-[10px] text-gray-500">{shortcut.name}</div>

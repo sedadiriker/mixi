@@ -34,12 +34,11 @@ const Modal = ({ isOpen, onClose, shortcuts, setShortcuts }) => {
         const updatedShortcuts = shortcuts.map((shortcut, index) =>
           index === currentIndex ? newShortcut : shortcut
         );
-        setShortcuts(updatedShortcuts); // Güncellenmiş kısayolları dışarıda güncelle
+        setShortcuts(updatedShortcuts); 
       } else {
-        setShortcuts([...shortcuts, newShortcut]); // Yeni kısayol ekle
+        setShortcuts([...shortcuts, newShortcut]); 
       }
 
-      // Giriş alanlarını temizle
       setShortcutName("");
       setShortcutUrl("");
       setCurrentIndex(null);
@@ -54,7 +53,7 @@ const Modal = ({ isOpen, onClose, shortcuts, setShortcuts }) => {
 
   const handleDelete = (index) => {
     const updatedShortcuts = shortcuts.filter((_, i) => i !== index);
-    setShortcuts(updatedShortcuts); // Kısayolu sil
+    setShortcuts(updatedShortcuts);
   };
 
   if (!isOpen) return null;

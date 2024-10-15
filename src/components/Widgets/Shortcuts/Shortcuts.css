@@ -7,24 +7,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Hide overflow to create a slider effect */
-    max-height: 100px; /* Set a max height for the slider */
+    overflow: hidden; 
+    max-height: 100px; 
   }
   
-.shortcuts-slider  .shortcut-item {
-    min-width: 200px; /* Fixed width for each shortcut item */
-    margin: 0 10px; /* Add some spacing */
-    padding: 25px;
-    border: 1px solid #cccccc2c;
-    border-radius: 5px;
+.shortcuts-container  .shortcut-item {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   
-.shortcuts-slider .slider-controls {
+.shortcuts-container .slider-controls {
     margin-top: 10px;
   }
   
-.shortcuts-slider  button {
+.shortcuts-container  button {
     padding: 2px 8px;
     margin: 0 5px;
     cursor: pointer;
@@ -46,16 +41,16 @@
 
   .settings-icon-shortcuts {
     position: absolute;
-    top: -25px; /* İkonun konumunu ayarlayın */
-    right: -5px; /* İkonun konumunu ayarlayın */
-    font-size: 12px; /* İkon boyutunu ayarlayın */
-    color: transparent; /* Başlangıçta görünmez */
-    transition: color 0.3s; /* Geçiş animasyonu ekleyin */
+    top: -25px; 
+    right: -5px; 
+    font-size: 12px; 
+    color: transparent; 
+    transition: color 0.3s; 
     cursor: pointer;
   }
   
   .shortcuts-slider:hover .settings-icon-shortcuts {
-    color:#808080; /* Üzerine gelindiğinde görünür hale gelir */
+    color:#808080; 
   }
 
   .shortcut-icon img {
