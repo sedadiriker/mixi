@@ -18,9 +18,9 @@ const ImageSlider = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 10000); // 10 saniye
+    }, 10000); 
 
-    return () => clearInterval(interval); // Temizleme işlemi
+    return () => clearInterval(interval); 
   }, [images.length]);
 
   const handleAddImage = (e) => {
@@ -48,15 +48,12 @@ const ImageSlider = () => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
-  // Mouse scroll ile kaydırma
   const handleScroll = (event) => {
     event.preventDefault();
     if (sliderRef.current && sliderRef.current.contains(event.target)) {
       if (event.deltaY > 0) {
-        // Aşağı kaydırma
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
       } else {
-        // Yukarı kaydırma
         setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
       }
     }
