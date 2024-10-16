@@ -14,10 +14,19 @@
 .modal-content-shortcuts {
   background: black;
   padding:40px 20px;
-  border-radius: 5px;
-  width: 40%;
-  margin-bottom: 55px;
+  width: 100%;
+  height: 100vh;
   position: relative;
+}
+.shortcuts-container .modal-content-shortcuts input {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: black;
+  &::placeholder{
+    font-size: 10px;
+    color:black
+  }
 }
 
 .modal-overlay-shortcuts .cls-btn {
@@ -62,10 +71,10 @@
 }
 
 .shortcuts-list {
-  max-height: 100px;
   overflow-y: auto;
   margin-top: 16px;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
+  /* background-color: rgba(255, 255, 255, 0.1); */
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.115);
 }

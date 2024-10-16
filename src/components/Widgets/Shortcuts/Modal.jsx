@@ -4,7 +4,7 @@ import "./Modal.css";
 const Modal = ({ isOpen, onClose, shortcuts, setShortcuts }) => {
   const [shortcutName, setShortcutName] = useState("");
   const [shortcutUrl, setShortcutUrl] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(null); 
+  const [currentIndex, setCurrentIndex] = useState(null);
 
   useEffect(() => {
     if (currentIndex !== null) {
@@ -34,9 +34,9 @@ const Modal = ({ isOpen, onClose, shortcuts, setShortcuts }) => {
         const updatedShortcuts = shortcuts.map((shortcut, index) =>
           index === currentIndex ? newShortcut : shortcut
         );
-        setShortcuts(updatedShortcuts); 
+        setShortcuts(updatedShortcuts);
       } else {
-        setShortcuts([...shortcuts, newShortcut]); 
+        setShortcuts([...shortcuts, newShortcut]);
       }
 
       setShortcutName("");
@@ -61,75 +61,95 @@ const Modal = ({ isOpen, onClose, shortcuts, setShortcuts }) => {
   return (
     <div className="modal-overlay-shortcuts">
       <div className="modal-content-shortcuts">
-        <h2 className="text-white text-center uppercase mb-2" style={{ letterSpacing: "1px" }}>
-          Shortcuts
+        <div className="w-[120px] 2xl:w-[180px] absolute top-0 2xl:top-[-20px] left-0">
+          <img className="w-full logo-modal" src="images/logo.png" alt="" />
+        </div>
+        <span className="close-button text-white" onClick={onClose}>
+          &times;
+        </span>
+        <h2
+          className="text-center uppercase 2xl:text-[18px] text-[#404751] py-4 2xl:py-6"
+          style={{ letterSpacing: "2px" }}
+        >
+          shortcuts settings
         </h2>
-        <button className="cls-btn" onClick={onClose}>
-          X
-        </button>
+        <hr className=" opacity-25 my-1" />
 
-        <div className="flex gap-2 w-100">
-          <input
-            className="p-2 flex-1 outline-none text-[12px] text-black"
-            type="text"
-            placeholder="Shortcuts Name"
-            value={shortcutName}
-            onChange={(e) => setShortcutName(e.target.value)}
-          />
-          <input
-            className="p-1 flex-1 outline-none text-[12px] text-black"
-            type="text"
-            placeholder="URL"
-            value={shortcutUrl}
-            onChange={(e) => setShortcutUrl(e.target.value)}
-          />
-        </div>
-        <div className="flex justify-end">
-          <button className="bg-gray-700 p-1 px-2 rounded mt-2" onClick={handleSave}>
-            {currentIndex !== null ? "Update" : "Add"}
-          </button>
-        </div>
+        <div className="flex gap-10 px-5 py-20 mt-5 2xl:mt-20">
+          <div className="flex flex-col gap-5 w-100 flex-1">
+            <h3 className="text-center uppercase mb-2 text-white text-[13px] py-3 2xl:text-[16px] 2xl:mb-5">
+              add shortcuts
+            </h3>
+            <input
+              className="p-2 py-3 flex-1 outline-none text-[12px] text-black w-[60%] mx-auto bg-gray-400"
+              type="text"
+              placeholder="Shortcuts Name"
+              value={shortcutName}
+              onChange={(e) => setShortcutName(e.target.value)}
+            />
+            <input
+              className="p-2 py-3 flex-1 outline-none text-[12px] text-black w-[60%] mx-auto bg-gray-400"
+              type="text"
+              placeholder="URL"
+              value={shortcutUrl}
+              onChange={(e) => setShortcutUrl(e.target.value)}
+            />
+            <div className="flex justify-center">
+              <button
+                className=" uppercase text-[10px] 2xl:text-[15px] bg-gray-800 p-3 rounded text-white mt-5"
+                onClick={handleSave}
+              >
+                {currentIndex !== null ? "Update Shortcut" : "Add Shortcut"}
+              </button>
+            </div>
+          </div>
 
-        {/* Kısayollar Listesi */}
-        <div className="shortcuts-list mt-4">
-          <h3 className="text-white py-2">Shortcuts List:</h3>
-          {shortcuts.length > 0 ? ( // Eğer shortcuts dizisi boş değilse
-            shortcuts.map((shortcut, index) => (
-              <div key={index} className="shortcut-item flex justify-between items-center">
-                <div className="flex items-center">
-                  <img
-                    src={`https://www.google.com/s2/favicons?domain=${shortcut.url}`}
-                    alt={`${shortcut.name} favicon`}
-                    style={{
-                      width: "16px",
-                      height: "16px",
-                      marginRight: "8px",
-                      opacity: "0.6",
-                    }}
-                  />
-                  <strong className="text-[12px] text-gray-500">
-                    {shortcut.name}
-                  </strong>{" "}
-                  -{" "}
-                  <span className="text-[12px] text-gray-400">
-                    {shortcut.url}
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  <button className="text-blue-900" onClick={() => handleEdit(index)}>
-                    <i className="fas fa-edit" aria-hidden="true"></i>{" "}
-                    {/* Edit icon */}
-                  </button>
-                  <button className="text-red-900" onClick={() => handleDelete(index)}>
-                    <i className="fas fa-trash" aria-hidden="true"></i>{" "}
-                    {/* Delete icon */}
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500 text-[12px]">You haven't added any shortcuts yet!<br /> Click to add a new shortcut.</p>
-          )}
+          {/* Kısayollar Listesi */}
+          <div className="mt-2 flex-1">
+            <h3 className="text-white py-2 text-[13px]">Shortcuts List:</h3>
+            <div className="shortcuts-list max-h-[300px]">
+              {shortcuts.length > 0 ? (
+                shortcuts.map((shortcut, index) => (
+                  <div
+                    key={index}
+                    className="shortcut-item flex justify-between items-center"
+                  >
+                    <div className="flex items-center">
+                      <img
+                        src={`https://www.google.com/s2/favicons?domain=${shortcut.url}`}
+                        alt={`${shortcut.name} favicon`}
+                        className="w-[20px] h-[20px] mr-3 "
+                      />
+                      <strong className="text-[16px] uppercase mr-5 text-gray-500 px-1 w-[200px] ">
+                        {shortcut.name}
+                      </strong>{" "}
+                      {" "}
+                      <span className="text-[15px] text-gray-500">
+                        {shortcut.url}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleEdit(index)}
+                      >
+                        <i className="fas fa-edit" aria-hidden="true"></i>{" "}
+                      </button>
+                      <button
+                        onClick={() => handleDelete(index)}
+                      >
+                        <i className="fas fa-trash" aria-hidden="true"></i>{" "}
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-gray-500 text-[12px]">
+                  You haven't added any shortcuts yet!
+                  <br /> Click to add a new shortcut.
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

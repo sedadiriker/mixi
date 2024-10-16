@@ -129,14 +129,14 @@ const AlarmModal = ({
                       key={alarm.id}
                       className={`alarm ${!alarm.isActive ? "off" : ""}`}
                     >
-                      <div className="alarm-details px-10">
+                      <div className="alarm-details px-5">
                         <div className="alarm-name">{alarm.name}</div>
                         <div className="alarm-time">
                           <span className="alarm-timing">{alarm.time}</span> AM
                         </div>
                         <div className="alarm-info">{alarm.info}</div>
                       </div>
-                      <div className="alarm-toggle px-10">
+                      <div className="alarm-toggle px-5">
                         <label className="switch w-[20px] h-[9px] 2xl:w-[30px] 2xl:h-[12px]">
                           <input
                             type="checkbox"
