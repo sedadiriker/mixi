@@ -1,14 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Line } from "react-chartjs-2";
 
 const CoinInfo = ({ favorite, price, priceChange, chartData, visibleParagraphs }) => {
+  const [legendFontSize, setLegendFontSize] = useState(9);
+  const [tickFontSize, setTickFontSize] = useState(8);
+
+  useEffect(() => {
+    const updateFontSize = () => {
+      if (window.innerWidth >= 1500) {
+        setLegendFontSize(13);
+        setTickFontSize(10);
+      } else {
+        setLegendFontSize(9);
+        setTickFontSize(8);
+      }
+    };
+
+    updateFontSize();
+    window.addEventListener("resize", updateFontSize);
+
+    return () => {
+      window.removeEventListener("resize", updateFontSize);
+    };
+  }, []);
   const displayFavorite = favorite ? favorite.charAt(0).toUpperCase() + favorite.slice(1) : "Yükleniyor...";
 
 // console.log(chartData)
 
   return (
     <div className=" h-[100%] w-full">
-      <div className="flex justify-between items-center w-full h-[10%]">
+      <div className="flex justify-between items-center w-full h-[10%] 2xl:justify-center 2xl:gap-10">
         <p className={`text-[#213A8A] uppercase text-[12px] 2xl:text-[16px] ${visibleParagraphs[0] ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}>
           {displayFavorite}
         </p>
@@ -33,7 +54,7 @@ const CoinInfo = ({ favorite, price, priceChange, chartData, visibleParagraphs }
                   labels: {
                     color: "gray",
                     font: {
-                      size: 12,
+                      size: setLegendFontSize,
                     },
                     boxWidth: 15,
                   },
@@ -44,14 +65,21 @@ const CoinInfo = ({ favorite, price, priceChange, chartData, visibleParagraphs }
                   ticks: {
                     maxTicksLimit: 7,
                     color: "gray",
+                    font:{
+                      size:tickFontSize
+                    }
                   },
                   grid: {
                     color: "rgba(255, 255, 255, 0.2)",
+                    
                   },
                 },
                 y: {
                   ticks: {
                     color: "gray",
+                    font:{
+                      size:tickFontSize
+                    }
                   },
                   grid: {
                     color: "rgba(255, 255, 255, 0.2)",
