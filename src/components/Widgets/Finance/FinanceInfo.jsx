@@ -24,6 +24,7 @@ const FinanceInfo = () => {
   });
   const [visibleParagraphs, setVisibleParagraphs] = useState([true, false, false]);
 
+console.log(favorites)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % favorites.length);
@@ -33,6 +34,7 @@ const FinanceInfo = () => {
 
     return () => clearInterval(interval);
   }, [favorites.length]);
+
 
   const animateParagraphs = () => {
     const timeouts = [];
@@ -64,28 +66,36 @@ const FinanceInfo = () => {
   }, [favorites]);
 
   const fetchFavoritePrices = async () => {
-    if (favorites.length === 0) return;
+    if (!favorites || favorites.length === 0) return; 
 
     const cachedPrices = JSON.parse(localStorage.getItem("favoritePrices")) || {};
 
-    // Eğer fiyatlar önbellekte mevcutsa, onları kullan
     if (Object.keys(cachedPrices).length > 0) {
-      setPrices(cachedPrices);
+        setPrices(cachedPrices);
     } else {
-      try {
-        const ids = favorites.join(",");
-        const response = await fetch(
-          `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`
-        );
-        const data = await response.json();
-        setPrices(data);
-        localStorage.setItem("favoritePrices", JSON.stringify(data)); // Verileri önbelleğe al
-        fetchHistoricalData(favorites[currentIndex]);
-      } catch (error) {
-        console.error("Favori fiyatları alınırken hata:", error);
-      }
+        try {
+            const ids = favorites.join(",");
+            const response = await fetch(
+                `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`
+            );
+            const data = await response.json();
+            setPrices(data);
+            localStorage.setItem("favoritePrices", JSON.stringify(data)); 
+            if (favorites.length > 0) {
+                fetchHistoricalData(favorites[currentIndex]);
+            }
+        } catch (error) {
+            console.error("Favori fiyatları alınırken hata:", error);
+        }
     }
-  };
+};
+
+useEffect(() => {
+    if (favorites.length > 0) {
+        fetchHistoricalData(favorites[currentIndex]);
+    }
+}, [currentIndex, favorites]);
+
 
   const fetchHistoricalData = async (coin) => {
     const cachedHistoricalData = JSON.parse(localStorage.getItem(`historicalData_${coin}`)) || null;
@@ -140,13 +150,6 @@ const FinanceInfo = () => {
 
   const priceChange = prices[favorites[currentIndex]]?.usd_24h_change || 0;
 
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % favorites.length);
-  };
-
-  const handlePrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + favorites.length) % favorites.length);
-  };
 
   return (
     <div className="finance-info relative h-[100%] w-[100%] flex flex-col justify-center items-center">
@@ -154,12 +157,11 @@ const FinanceInfo = () => {
         <i className="fas fa-cog"></i>
       </div>
 
-      {/* Only show the current favorite coin */}
       <CoinInfo
         favorite={favorites[currentIndex]}
         price={prices[favorites[currentIndex]]?.usd}
         priceChange={priceChange}
-        chartData={chartData} // Display chart data
+        chartData={chartData} 
         visibleParagraphs={visibleParagraphs}
       />
 
@@ -167,14 +169,23 @@ const FinanceInfo = () => {
   isOpen={isModalOpen}
   onClose={() => setModalOpen(false)}
   onAddFavorite={(asset) => {
-    if (favorites && !favorites.includes(asset)) {
-      setFavorites([...favorites, asset]); // Favorilere ekle
-      toastSuccessNotify(`${asset} favorilere eklendi!`); // Başarılı bildirim
+    const existingFavorites = JSON.parse(localStorage.getItem('favoriteCoins')) || [];
+
+    if (!existingFavorites.includes(asset)) {
+      const updatedFavorites = [...existingFavorites, asset];
+      
+      setFavorites(updatedFavorites); 
+      localStorage.setItem('favoriteCoins', JSON.stringify(updatedFavorites));
+      
+      toastSuccessNotify(`${asset} favorilere eklendi!`); 
     } else {
-      toastErrorNotify(`${asset} zaten favorilerde!`); // Hata bildirimi
+      toastErrorNotify(`${asset} zaten favorilerde!`); 
     }
   }}
+  favorites={favorites}
+  setFavorites={setFavorites}
 />
+
 
     </div>
   );

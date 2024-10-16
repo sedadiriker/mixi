@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Chart, registerables } from "chart.js";
-import { toastSuccessNotify, toastErrorNotify } from "../../../helper/ToastNotify"; // ToastErrorNotify import ettik
+
 Chart.register(...registerables);
 
-const Modal = ({ isOpen, onClose, onAddFavorite, favoriteCoins }) => { // favoriteCoins prop olarak alıyoruz
+const Modal = ({ isOpen, onClose, onAddFavorite, favorites, setFavorites }) => {
   const [currentAsset, setCurrentAsset] = useState("bitcoin");
   const [currentPrice, setCurrentPrice] = useState(0);
   const [priceChange, setPriceChange] = useState(0);
@@ -13,6 +13,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favoriteCoins }) => { // favori
   const ctxRef = useRef(null);
   const chartRef = useRef(null);
 
+  console.log(currentAsset);
   const coins = [
     { id: "bitcoin", name: "Bitcoin (BTC)" },
     { id: "ethereum", name: "Ethereum (ETH)" },
@@ -151,17 +152,13 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favoriteCoins }) => { // favori
     setCurrentAsset(e.target.value);
     fetchData();
   };
-
+  const handleRemoveFavorite = (asset) => {
+    setFavorites((prev) => prev.filter((fav) => fav !== asset));
+  };
   const handleAddFavorite = () => {
-  
     onAddFavorite(currentAsset);
-    
-    fetchData(); 
-};
-
-
-
-  
+    fetchData();
+  };
 
   const priceDisplayStyle = priceChange >= 0 ? "up" : "down";
 
@@ -187,7 +184,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favoriteCoins }) => { // favori
             Finance Settings
           </h2>
           <hr className=" opacity-25 my-1" />
-          <div className="flex justify-between px-20">
+          <div className="flex justify-between px-20 h-[50px]">
             <div className="flex gap-2 items-center my-4">
               <select
                 id="asset-selector"
@@ -208,10 +205,10 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favoriteCoins }) => { // favori
                 Add favorites
               </button>
             </div>
-            <div>
-              {error && <div className="error">{error}</div>}
-              <div id="coin-display" className="text-white">
-                <div className="mt-2 flex items-center gap-3">
+            <div className="h-full w-[20%]">
+              {/* {error && <div className="error">{error}</div>} */}
+              <div id="coin-display" className="text-white h-full">
+                {/* <div className="mt-2 flex items-center gap-3">
                   <div className="uppercase text-[14px] ">
                     {coins.find((coin) => coin.id === currentAsset)?.name}
                   </div>
@@ -227,7 +224,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favoriteCoins }) => { // favori
                     {priceChange > 0 ? "+" : ""}
                     {priceChange.toFixed(2)}%
                   </div>
-                  <img
+                   <img
                       className="w-[7px] h-[10px]"
                       src={
                         priceChange > 0
@@ -239,7 +236,31 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favoriteCoins }) => { // favori
                   </div>
                   
                 </div>
-                <div id="price-display" className="text-[14px]">$ {currentPrice.toFixed(2)}</div>
+                <div id="price-display">$ {currentPrice.toFixed(2)}</div> */}
+                <div className="h-full">
+                {/* <h2 className="uppercase">Favorites</h2> */}
+                <div className="favorites-list h-full mt-2">
+                  <ul>
+                    {favorites.map((fav) => (
+                      <li
+                        key={fav}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="text-[12px]">
+                          {coins.find((coin) => coin.id === fav)?.name}
+                        </span>
+                        <button
+                          onClick={() => handleRemoveFavorite(fav)}
+                          className="remove-favorite-button text-red-600"
+                        >
+                          x
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                </div>
+                
               </div>
             </div>
           </div>
