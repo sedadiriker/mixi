@@ -128,11 +128,14 @@
   z-index: 500; 
 }
 
+
+
 .alarm-list .modal-content {
   background:black;
   padding:40px 20px;
-  border-radius: 10px;
-  width: 40%; 
+  /* border-radius: 10px; */
+  width: 100%;
+  height: 100vh;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 .alarm-list .modal-content input {
@@ -141,7 +144,6 @@
 
 .alarm-list .modal-content input {
   margin-bottom: 10px;
-  width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;

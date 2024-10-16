@@ -184,7 +184,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favorites, setFavorites }) => {
         <div id="widget-content">
           <h2
             className="uppercase 2xl:text-[18px] text-[#404751] py-5 2xl:py-6"
-            style={{ letterSpacing: "1px" }}
+            style={{ letterSpacing: "2px" }}
           >
             Finance Settings
           </h2>
