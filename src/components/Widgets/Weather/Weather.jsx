@@ -151,61 +151,61 @@ const Weather = () => {
   };
 
   return (
-    <div className="weather-container">
+    <div className="weather-container h-[100%]">
       <div className="settings-icon-weather" onClick={handleOpenModal}>
         <i className="fas fa-cog"></i>
       </div>
 
       {weatherData.length > 0 ? (
-        <div id="current-weather" onWheel={handleWheel}> {/* Add onWheel event listener */}
-          <div className="slider">
-            <div className="slide" key={weatherData[currentCityIndex].id}>
-              <h2 className="text-[12px] text-center uppercase text-gray-400 mt-3">
+        <div id="current-weather" className="h-[100%]" onWheel={handleWheel}> 
+          <div className="slider h-[100%]">
+            <div className="slide h-[100%]" key={weatherData[currentCityIndex].id}>
+              <h2 className="text-[12px] 2xl:text-[18px] text-center uppercase text-gray-400 mt-3">
                 {weatherData[currentCityIndex].name}, {weatherData[currentCityIndex].sys.country}
               </h2>
               <hr className="opacity-10" />
               <div className="flex justify-center items-center gap-1">
-                <div className="flex justify-center">
+                <div className="flex justify-center 2xl:w-[40%]">
                   <img
-                    width={60}
+                    className="w-full"
                     src={`https://openweathermap.org/img/wn/${weatherData[currentCityIndex].weather[0].icon}@2x.png`}
                     alt="Weather icon"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start flex-1">
-                  <div className="flex justify-between items-center w-full text-[12px] text-gray-500">
-                    <div className="flex justify-between">
-                      <span className="w-[90px]">Temperature</span>
+                  <div className="flex justify-between items-center w-full text-[12px] 2xl:text-[16px] text-gray-500 2xl:px-10 mt-2 2xl:mt-0">
+                    <div className="flex justify-between ">
+                      <span className="w-[90px] 2xl:w-[100px]">Temperature</span>
                       <span>:</span>
                     </div>
-                    <span className="text-[15px] text-gray-300">
+                    <span className="text-[15px] 2xl:text-[20px] text-gray-300">
                       {weatherData[currentCityIndex].main.temp.toFixed(1)}°C
                     </span>
                   </div>
-                  <div className="flex justify-between items-center w-full text-[10px] text-gray-500">
+                  <div className="flex justify-between items-center w-full text-[10px] 2xl:text-[16px] text-gray-500 2xl:px-10">
                     <div className="flex justify-between">
-                      <span className="w-[90px]">Condition</span>
+                      <span className="w-[90px] 2xl:w-[100px]">Condition</span>
                       <span>:</span>
                     </div>
-                    <span className="text-[9px] text-gray-300">
+                    <span className="text-[9px] 2xl:text-[12px] text-gray-300 whitespace-nowrap ps-1">
                       {weatherData[currentCityIndex].weather[0].description}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center w-full text-[10px] text-gray-500">
+                  <div className="flex justify-between items-center w-full text-[10px] 2xl:text-[16px] text-gray-500 2xl:px-10">
                     <div className="flex justify-between">
-                      <span className="w-[90px]">Humidity</span>
+                      <span className="w-[90px] 2xl:w-[100px]">Humidity</span>
                       <span>:</span>
                     </div>
-                    <span className="text-[13px] text-gray-300">
+                    <span className="text-[13px] 2xl:text-[15px] text-gray-300">
                       {weatherData[currentCityIndex].main.humidity}%
                     </span>
                   </div>
-                  <div className="flex justify-between items-center w-full text-[10px] text-gray-500">
+                  <div className="flex justify-between items-center w-full text-[10px] 2xl:text-[16px] text-gray-500 2xl:px-10">
                     <div className="flex justify-between">
-                      <span className="w-[90px]">Wind</span>
+                      <span className="w-[90px] 2xl:w-[100px]">Wind</span>
                       <span>:</span>
                     </div>
-                    <span className="text-[11px] text-gray-300">
+                    <span className="text-[11px] 2xl:text-[12px] text-gray-300">
                       {weatherData[currentCityIndex].wind.speed} m/s
                     </span>
                   </div>
