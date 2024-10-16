@@ -96,6 +96,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favorites, setFavorites }) => {
             label: "Price",
             data: data,
             borderColor: "white",
+            backgroundColor:"#171c23",
             tension: 0.1,
           },
         ],
