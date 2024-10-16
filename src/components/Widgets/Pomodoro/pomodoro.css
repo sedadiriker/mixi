@@ -144,7 +144,7 @@ button:focus:not(:focus-visible) {
 
 .pomodoro-app__preferences {
   position: absolute;
-  top: -25px;
+  top: -36px;
   right: -5px;
   border: 0;
   transition: transform 0.15s ease-in-out;
@@ -153,8 +153,8 @@ button:focus:not(:focus-visible) {
 
   & svg {
     margin-top: 4px;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     fill: transparent; 
   }
 
