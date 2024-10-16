@@ -55,3 +55,22 @@
 .down {
     color: red;
 }
+
+.overflow-hidden {
+  overflow: hidden;
+  width: 100%; 
+}
+
+.flex {
+  display: flex;
+}
+
+.transition-transform {
+  transition: transform 0.3s ease-in-out;
+}
+
+.transform {
+  display: flex;
+}
+
+

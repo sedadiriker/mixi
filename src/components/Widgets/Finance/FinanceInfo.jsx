@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Line } from "react-chartjs-2";
 import "./Finance.css";
 import Modal from "./Modal";
+import CoinInfo from "../../CoinInfo";
 
 const FinanceInfo = () => {
   const [favorites, setFavorites] = useState([]);
@@ -21,71 +21,73 @@ const FinanceInfo = () => {
       },
     ],
   });
-  const [chartVisible, setChartVisible] = useState(false);
-  const [legendFontSize, setLegendFontSize] = useState(12);
-  const [tickFontSize, setTickFontSize] = useState(8);
+  const [visibleParagraphs, setVisibleParagraphs] = useState([true, false, false]);
 
   useEffect(() => {
-    const updateFontSize = () => {
-      if (window.innerWidth >= 1500) {
-        setLegendFontSize(18);
-        setTickFontSize(14);
-      } else {
-        setLegendFontSize(12);
-        setTickFontSize(8);
-      }
-    };
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % favorites.length);
+      setVisibleParagraphs([true, false, false]);
+      animateParagraphs();
+    }, 4000);
 
-    updateFontSize();
-    window.addEventListener("resize", updateFontSize);
+    return () => clearInterval(interval);
+  }, [favorites.length]);
+
+  const animateParagraphs = () => {
+    const timeouts = [];
+
+    timeouts.push(
+      setTimeout(() => setVisibleParagraphs([true, false, false]), 0)
+    );
+
+    timeouts.push(
+      setTimeout(() => setVisibleParagraphs([true, true, false]), 500)
+    );
+
+    timeouts.push(
+      setTimeout(() => setVisibleParagraphs([true, true, true]), 1000)
+    );
 
     return () => {
-      window.removeEventListener("resize", updateFontSize);
+      timeouts.forEach((timeout) => clearTimeout(timeout));
     };
-  }, []);
-  const handleToggle = () => {
-    setChartVisible(!chartVisible);
   };
 
   useEffect(() => {
     const storedFavorites =
       JSON.parse(localStorage.getItem("favoriteCoins")) || [];
-    setFavorites(storedFavorites);
+
+    if (storedFavorites.length === 0) {
+      setFavorites(["bitcoin", "ethereum"]); 
+    } else {
+      setFavorites(storedFavorites);
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("favoriteCoins", JSON.stringify(favorites));
   }, [favorites]);
 
-  const handleAddFavorite = (asset) => {
-    if (!favorites.includes(asset)) {
-      setFavorites([...favorites, asset]);
-    }
-  };
-
   const fetchFavoritePrices = async () => {
     if (favorites.length === 0) return;
 
     try {
       const ids = favorites.join(",");
-      const cachedPrices = localStorage.getItem("cachedPrices");
-      const cachedData = cachedPrices ? JSON.parse(cachedPrices) : {};
+      const response = await fetch(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`
+      );
+      const data = await response.json();
+      setPrices(data);
+      fetchHistoricalData(favorites[currentIndex]);
+    } catch (error) {
+      console.error("Favori fiyatları alınırken hata:", error);
+    }
+  };
 
-      if (cachedData[ids]) {
-        setPrices(cachedData[ids]);
-      } else {
-        const response = await fetch(
-          `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`
-        );
-        const data = await response.json();
-        setPrices(data);
-        cachedData[ids] = data;
-        localStorage.setItem("cachedPrices", JSON.stringify(cachedData));
-      }
-
-      // Historical data
+  const fetchHistoricalData = async (coin) => {
+    try {
       const historyResponse = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${favorites[currentIndex]}/market_chart?vs_currency=usd&days=30`
+        `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=30`
       );
       const historyData = await historyResponse.json();
 
@@ -110,7 +112,7 @@ const FinanceInfo = () => {
         ],
       });
     } catch (error) {
-      console.error("Favori fiyatları alınırken hata:", error);
+      console.error("Tarihsel veriler alınırken hata:", error);
     }
   };
 
@@ -119,150 +121,42 @@ const FinanceInfo = () => {
   }, [favorites]);
 
   useEffect(() => {
-    if (favorites.length === 0) return;
-    const fetchHistoricalData = async () => {
-      try {
-        const historyResponse = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${favorites[currentIndex]}/market_chart?vs_currency=usd&days=30`
-        );
-        const historyData = await historyResponse.json();
-        const prices = historyData.prices.map((price) => price[1]) || [];
-        const dates =
-          historyData.prices.map((price) =>
-            new Date(price[0]).toLocaleDateString()
-          ) || [];
-
-        setChartData({
-          labels: dates,
-          datasets: [
-            {
-              label: "Price (USD)",
-              data: prices,
-              fill: false,
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
-              tension: 0.1,
-            },
-          ],
-        });
-      } catch (error) {
-        console.error("Tarihsel veriler alınırken hata:", error);
-      }
-    };
-
-    fetchHistoricalData();
+    fetchHistoricalData(favorites[currentIndex]);
   }, [currentIndex]);
 
   const priceChange = prices[favorites[currentIndex]]?.usd_24h_change || 0;
 
-  const priceDisplayStyle = priceChange >= 0 ? "up" : "down";
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % favorites.length);
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + favorites.length) % favorites.length);
+  };
 
   return (
-    <div className="finance-info relative  h-[100%] w-[100%] flex flex-col justify-center items-center">
+    <div className="finance-info relative h-[100%] w-[100%] flex flex-col justify-center items-center">
       <div className="settings-icon-finance" onClick={() => setModalOpen(true)}>
         <i className="fas fa-cog"></i>
       </div>
 
-      {favorites.length > 0 ? (
-        <div className="favorite-coin h-[100%] w-[100%]">
-          {!chartVisible ? (
-            <div
-              className="h-[100%] cursor-pointer  flex flex-col justify-center"
-              onClick={handleToggle}
-            >
-              <h2
-                className="text-gray-600 text-[18px] mb-2"
-                style={{ letterSpacing: "1px" }}
-              >
-                {favorites[currentIndex]?.charAt(0).toUpperCase() +
-                  favorites[currentIndex]?.slice(1) || "Yükleniyor..."}{" "}
-                (USD)
-              </h2>
-              <div className="coin-info flex flex-col gap-1">
-                <span>
-                  ${" "}
-                  <span className="text-[16px]">
-                    {prices[favorites[currentIndex]]?.usd?.toFixed(2) ||
-                      "Yükleniyor..."}
-                  </span>
-                </span>
-                <span className={priceDisplayStyle}>
-                  {prices[favorites[currentIndex]]?.usd_24h_change !== undefined
-                    ? (prices[favorites[currentIndex]].usd_24h_change > 0
-                        ? "+"
-                        : "") +
-                      prices[favorites[currentIndex]].usd_24h_change.toFixed(
-                        2
-                      ) +
-                      "%"
-                    : "Yükleniyor..."}
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="mini-chart h-[100%] w-[100%] cursor-pointer">
-              {" "}
-              <Line
-                onClick={handleToggle}
-                className="h-[100%] w-[100%]"
-                data={chartData}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  plugins: {
-                    legend: {
-                      labels: {
-                        color: "gray",
-                        font: {
-                          size: legendFontSize, // Legend font boyutu
-                        },
-                        boxWidth: 20, // Legend kutu genişliği
-                      },
-                    },
-                  },
-                  scales: {
-                    x: {
-                      ticks: {
-                        maxTicksLimit: 7,
-                        color: "gray",
-                        font: {
-                          size: tickFontSize,
-                        },
-                      },
-                      grid: {
-                        color: "rgba(255, 255, 255, 0.2)",
-                      },
-                    },
-                    y: {
-                      ticks: {
-                        color: "gray",
-                        font: {
-                          size: tickFontSize,
-                        },
-                      },
-                      grid: {
-                        color: "rgba(255, 255, 255, 0.2)",
-                      },
-                    },
-                  },
-                }}
-              />
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="no-favorites-message h-[122px] flex items-center justify-center">
-          <h2 className="text-gray-500 text-[11px]">
-            You have no favorite coins yet.
-            <br /> Please add some!
-          </h2>
-        </div>
-      )}
+      {/* Only show the current favorite coin */}
+      <CoinInfo
+        favorite={favorites[currentIndex]}
+        price={prices[favorites[currentIndex]]?.usd}
+        priceChange={priceChange}
+        chartData={chartData} // Display chart data
+        visibleParagraphs={visibleParagraphs}
+      />
 
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
-        onAddFavorite={handleAddFavorite}
+        onAddFavorite={(asset) => {
+          if (!favorites.includes(asset)) {
+            setFavorites([...favorites, asset]);
+          }
+        }}
       />
     </div>
   );

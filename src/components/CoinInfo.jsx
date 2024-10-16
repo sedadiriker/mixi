@@ -1,0 +1,71 @@
+import React from 'react';
+import { Line } from "react-chartjs-2";
+
+const CoinInfo = ({ favorite, price, priceChange, chartData, visibleParagraphs }) => {
+  const displayFavorite = favorite ? favorite.charAt(0).toUpperCase() + favorite.slice(1) : "Yükleniyor...";
+
+// console.log(chartData)
+
+  return (
+    <div className=" h-[100%] w-full">
+      <div className="flex justify-between items-center w-full h-[10%]">
+        <p className={`text-[#213A8A] uppercase text-[12px] 2xl:text-[16px] ${visibleParagraphs[0] ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}>
+          {displayFavorite}
+        </p>
+        <p className={`text-[13px] 2xl:text-[16px] ${visibleParagraphs[1] ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}>
+          ${price?.toFixed(2) || "Yükleniyor..."}
+        </p>
+        <p className={`flex justify-center items-center gap-2 ${visibleParagraphs[2] ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}>
+          <img className="w-[7px] h-[10px]" src="./images/elevator-arrow-up.gif" alt="" />
+          <span className="text-[12px] 2xl:text-[16px]">{priceChange !== undefined ? (priceChange > 0 ? "+" : "") + priceChange.toFixed(2) + "%" : "Yükleniyor..."}</span>
+        </p>
+      </div>
+      <div className="w-full h-[90%]">
+        {chartData && chartData.labels && chartData.datasets ? (
+          <Line
+            className="h-full w-full"
+            data={chartData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "gray",
+                    font: {
+                      size: 12,
+                    },
+                    boxWidth: 15,
+                  },
+                },
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    maxTicksLimit: 7,
+                    color: "gray",
+                  },
+                  grid: {
+                    color: "rgba(255, 255, 255, 0.2)",
+                  },
+                },
+                y: {
+                  ticks: {
+                    color: "gray",
+                  },
+                  grid: {
+                    color: "rgba(255, 255, 255, 0.2)",
+                  },
+                },
+              },
+            }}
+          />
+        ) : (
+          <p>Yükleniyor...</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default CoinInfo;
