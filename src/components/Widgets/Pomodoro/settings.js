@@ -62,22 +62,22 @@ const Settings = ({ visible,
       <div className="preferences preferences--visible">
       <div className="preferences__pane">
         <Button type="close" buttonText="×" toggleVisibility={toggleSettingsVisibility} />
-        <h2>Settings</h2>
+        <h2>Pomodoro Settings</h2>
         <form onSubmit={applySettings}>
           <div className="pane__time-settings">
-            <h3>Time (Minutes)</h3>
-            <div action="" className="time-settings__form">
+            <h3 className="py-1">Time (Minutes)</h3>
+            <div action="" className="time-settings__form text-black">
               <label htmlFor="pomodoro">pomodoro</label>
-              <input type="number" name="pomodoro" id="pomodoro" min="5" max="90" defaultValue={pomoLength} />
+              <input type="number" name="pomodoro" id="pomodoro" min="5" max="90" defaultValue={pomoLength} className="border border-1 border-black py-1 px-1 rounded" />
               <label htmlFor="short-break">short break</label>
-              <input type="number" name="shortBreak" id="short-break" min="1" max="14" defaultValue={shortLength} />
+              <input type="number" name="shortBreak" id="short-break" min="1" max="14" defaultValue={shortLength} className="border border-1 border-black py-1 px-1 rounded"/>
               <label htmlFor="long-break">long break</label>
-              <input type="number" name="longBreak" id="long-break" min="15" max="30" defaultValue={longLength} />
+              <input type="number" name="longBreak" id="long-break" min="15" max="30" defaultValue={longLength} className="border border-1 border-black py-1 px-1 rounded" />
             </div>
           </div>
 
           <div className="pane__font-preference">
-            <h3>Font</h3>
+            <h3 className="py-5">Font</h3>
             <input type="radio" id="fontPref1" name="font" value="kumbh" defaultChecked={fontPref === 'kumbh'} />
             <label htmlFor="fontPref1" className="font-preference__kumbh">Aa</label>
             <input type="radio" id="fontPref2" name="font" value="roboto" defaultChecked={fontPref === 'roboto'} />
@@ -87,7 +87,7 @@ const Settings = ({ visible,
           </div>
 
           <div className="pane__color-preference">
-            <h3>Color</h3>
+            <h3 className="py-5">Color</h3>
             <input type="radio" id="colorPref1" name="color" value="default" defaultChecked={accentColor === 'default'} />
             <label htmlFor="colorPref1" className="color-preference__default"></label>
 
@@ -97,7 +97,7 @@ const Settings = ({ visible,
             <input type="radio" id="colorPref3" name="color" value="purple" defaultChecked={accentColor === 'purple'} />
             <label htmlFor="colorPref3" className="color-preference__purple"></label>
           </div>
-          <Button type="apply" buttonText="Apply" />
+          <Button type="apply" buttonText="Apply"   />
         </form>
       </div>
     </div>

@@ -19,7 +19,7 @@ const Button = ({ type, buttonText = '', toggleVisibility }) => {
 
   if(type === 'apply') {
     return(
-      <div className="pane__apply-row">
+      <div className="pane__apply-row mt-5">
         <input type="submit" value={buttonText} className="pane__apply-preferences" />
       </div>
     )
