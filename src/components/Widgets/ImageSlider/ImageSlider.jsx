@@ -75,8 +75,18 @@ const ImageSlider = () => {
         {isModalOpen && (
           <div className="modal-overlay-images">
             <div className="modal-content-image">
-              <h2 className="text-center uppercase " style={{ letterSpacing: "2px" }}>Upload Image</h2>
-              <form className="mt-3 flex flex-col" onSubmit={handleAddImage}>
+            <div className="w-[120px] 2xl:w-[180px] absolute top-0 2xl:top-[-20px] left-0">
+          <img className="w-full logo-modal" src="images/logo.png" alt="" />
+        </div>
+        <h2
+              className="text-center uppercase 2xl:text-[18px] text-[#404751] py-5 2xl:py-6"
+              style={{ letterSpacing: "2px" }}
+            >
+              ımage settings
+            </h2>
+            <hr className=" opacity-25 my-1" />
+
+              <form className="mt-10 flex flex-col" onSubmit={handleAddImage}>
                 <label className="btn bg-gray-100 w-[80%] m-auto mt-1 py-2 pl-2 hover:opacity-45 text-black uppercase cursor-pointer rounded text-[12px]">
                   {imageInput ? imageInput.name : 'Choose File'}
                   <input
@@ -89,10 +99,10 @@ const ImageSlider = () => {
                 <button className="btn bg-gray-600 m-auto mt-3 rounded py-1 hover:opacity-45 text-black p-4 uppercase" type="submit">Add</button>
               </form>
 
-              <div className="image-preview-container bg-black p-2">
+              <div className="image-preview-container bg-black p-2 flex gap-3 justify-center mt-3">
                 {images.map((image, index) => (
                   <div key={index} className="image-preview">
-                    <img src={image} alt={`Uploaded ${index}`} />
+                    <img className="w-[200px]" src={image} alt={`Uploaded ${index}`} />
                     <span className="remove-icon" onClick={() => handleRemoveImage(index)}>&times;</span>
                   </div>
                 ))}
