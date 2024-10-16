@@ -38,20 +38,21 @@ const CoinInfo = ({
   return (
     <div className=" h-[100%] w-full">
       <div className="flex justify-between items-center w-full h-[10%] 2xl:justify-center 2xl:gap-10">
-        <p
-          className={`text-[#213A8A] uppercase text-[12px] 2xl:text-[16px] ${
-            visibleParagraphs[0] ? "opacity-100" : "opacity-0"
-          } transition-opacity duration-500`}
-        >
-          {displayFavorite}
-        </p>
-        <p
+      <p
           className={`text-[13px] 2xl:text-[16px] ${
             visibleParagraphs[1] ? "opacity-100" : "opacity-0"
           } transition-opacity duration-500`}
         >
           $ {price?.toFixed(2) || "Yükleniyor..."}
         </p>
+        <p
+          className={`text-white uppercase text-[12px] 2xl:text-[16px] ${
+            visibleParagraphs[0] ? "opacity-100" : "opacity-0"
+          } transition-opacity duration-500`}
+        >
+          {displayFavorite}
+        </p>
+       
         <p
           className={`flex justify-center items-center gap-1 ${
             visibleParagraphs[2] ? "opacity-100" : "opacity-0"
