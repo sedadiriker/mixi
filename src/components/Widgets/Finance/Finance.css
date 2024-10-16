@@ -40,7 +40,9 @@
     width: 30px;
   }
 
-
+  .finance-info .modal-content-finance button:hover{
+    opacity: 0.8;
+  }
   .settings-icon-finance {
     position: absolute;
     top: -25px; 

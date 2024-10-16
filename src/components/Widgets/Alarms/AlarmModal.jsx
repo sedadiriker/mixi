@@ -107,7 +107,7 @@ const AlarmModal = ({
                   />
                 </div>
                 <div className="flex justify-center mt-5">
-              <button onClick={handleAddOrUpdateAlarm}>
+              <button className=" uppercase text-[10px] bg-gray-800 p-3 rounded" onClick={handleAddOrUpdateAlarm}>
                 {newAlarm.id ? "Update Alarm" : "Add Alarm"}
               </button>
               {/* <button onClick={() => setModalOpen(false)}>Close</button> */}
