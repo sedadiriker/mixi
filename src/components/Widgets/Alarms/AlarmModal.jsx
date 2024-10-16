@@ -77,7 +77,7 @@ const AlarmModal = ({
                 <div className="flex flex-col 2xl:gap-3">
                   <div className="flex justify-center">
                   <input
-                    className="w-[60%] mx-auto bg-gray-400 text-black"
+                    className="w-[60%] mx-auto bg-gray-400 text-black 2xl:py-4 p-2"
                     type="text"
                     placeholder="Alarm Name"
                     value={newAlarm.name}
@@ -88,7 +88,7 @@ const AlarmModal = ({
                 </div>
                 <div className="flex justify-center">
                   <input
-                    className="w-[60%] mx-auto bg-gray-400"
+                    className="w-[60%] mx-auto bg-gray-400 2xl:py-4 p-2"
                     type="time"
                     value={newAlarm.time}
                     onChange={(e) =>
@@ -98,7 +98,7 @@ const AlarmModal = ({
                 </div>
                 <div className="flex justify-center">
                   <input
-                    className="w-[60%] mx-auto bg-gray-400"
+                    className="w-[60%] mx-auto bg-gray-400 2xl:py-4 p-2"
                     type="text"
                     placeholder="Additional Info"
                     value={newAlarm.info}
@@ -109,7 +109,7 @@ const AlarmModal = ({
                 </div>
                 </div>
                 <div className="flex justify-center mt-5">
-              <button className=" uppercase text-[10px] bg-gray-800 p-3 rounded" onClick={handleAddOrUpdateAlarm}>
+              <button className=" uppercase text-[10px] 2xl:text-[15px] bg-gray-800 p-3 rounded" onClick={handleAddOrUpdateAlarm}>
                 {newAlarm.id ? "Update Alarm" : "Add Alarm"}
               </button>
               {/* <button onClick={() => setModalOpen(false)}>Close</button> */}
