@@ -142,45 +142,43 @@ const Reminder = () => {
     }
   };
 
-useEffect(() => {
-  const storedData = localStorage.getItem('weeklyData');
-  if (storedData) {
-    setWeeklyData(JSON.parse(storedData));
-  }
-}, []);
+  useEffect(() => {
+    const storedData = localStorage.getItem("weeklyData");
+    if (storedData) {
+      setWeeklyData(JSON.parse(storedData));
+    }
+  }, []);
 
-const handleExerciseResponse = (done) => {
-  const today = new Date().getDay();
-  const updatedData = { ...weeklyData };
-  
-  if (done) {
-    updatedData.done[today]++;
-  } else {
-    updatedData.skipped[today]++;
-  }
+  const handleExerciseResponse = (done) => {
+    const today = new Date().getDay();
+    const updatedData = { ...weeklyData };
 
-  setWeeklyData(updatedData);
-  localStorage.setItem('weeklyData', JSON.stringify(updatedData));
+    if (done) {
+      updatedData.done[today]++;
+    } else {
+      updatedData.skipped[today]++;
+    }
 
-  setPopupVisible(false);
-  
-  stopAlarmSound(); 
+    setWeeklyData(updatedData);
+    localStorage.setItem("weeklyData", JSON.stringify(updatedData));
 
-  startTimer()
-};
+    setPopupVisible(false);
 
-const stopAlarmSound = () => {
-  const audio = new Audio(`/sounds/reminder/${alarmSound}.mp3`);
-  audio.pause(); 
-  audio.currentTime = 0; 
-};
+    stopAlarmSound();
 
+    startTimer();
+  };
+
+  const stopAlarmSound = () => {
+    const audio = new Audio(`/sounds/reminder/${alarmSound}.mp3`);
+    audio.pause();
+    audio.currentTime = 0;
+  };
 
   const playAlarmSound = () => {
     const audio = new Audio(`/sounds/reminder/${alarmSound}.mp3`);
     audio.play();
   };
-  
 
   const getWeekLabels = () => {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -212,7 +210,19 @@ const stopAlarmSound = () => {
       </div>
 
       {showSettings && (
-        <div className="modal">
+        <div className="modal flex flex-col w-full">
+          <div className="w-[120px] 2xl:w-[180px] absolute top-0 2xl:top-[-20px] left-0">
+            <img className="w-full logo-modal" src="images/logo.png" alt="" />
+          </div>
+          <div className="w-full">
+            <h2
+              className="text-center uppercase 2xl:text-[18px] text-[#404751] py-10 2xl:py-6"
+              style={{ letterSpacing: "2px" }}
+            >
+              Reminder settings
+            </h2>
+            <hr className=" opacity-25 my-1 w-[98%] mx-auto" />
+          </div>
           <div className="modal-content mt-28">
             <span className="close" onClick={closeModal}>
               &times;
@@ -398,32 +408,31 @@ const stopAlarmSound = () => {
         </>
       )}
 
-{popupVisible && (
-  <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md">
-      <h2 className="text-2xl font-bold text-center mb-4 uppercase text-gray-800 dark:text-gray-200">
-        Exercise Time!
-      </h2>
-      
-      <div className="flex justify-center space-x-4">
-        <button
-          onClick={() => handleExerciseResponse(true)}
-          className="bg-green-900 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
-        >
-          I exercised
-        </button>
-        
-        <button
-          onClick={() => handleExerciseResponse(false)}
-          className="bg-red-900 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
-        >
-          I didn't exercise
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+      {popupVisible && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md">
+            <h2 className="text-2xl font-bold text-center mb-4 uppercase text-gray-800 dark:text-gray-200">
+              Exercise Time!
+            </h2>
 
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={() => handleExerciseResponse(true)}
+                className="bg-green-900 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
+              >
+                I exercised
+              </button>
+
+              <button
+                onClick={() => handleExerciseResponse(false)}
+                className="bg-red-900 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+              >
+                I didn't exercise
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
