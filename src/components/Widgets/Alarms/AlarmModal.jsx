@@ -76,7 +76,7 @@ const AlarmModal = ({
 
                 <div className="flex justify-center">
                   <input
-                    className="w-[60%] mx-auto"
+                    className="w-[60%] mx-auto bg-gray-400 text-black"
                     type="text"
                     placeholder="Alarm Name"
                     value={newAlarm.name}
@@ -87,7 +87,7 @@ const AlarmModal = ({
                 </div>
                 <div className="flex justify-center">
                   <input
-                    className="w-[60%] mx-auto"
+                    className="w-[60%] mx-auto bg-gray-400"
                     type="time"
                     value={newAlarm.time}
                     onChange={(e) =>
@@ -97,7 +97,7 @@ const AlarmModal = ({
                 </div>
                 <div className="flex justify-center">
                   <input
-                    className="w-[60%] mx-auto"
+                    className="w-[60%] mx-auto bg-gray-400"
                     type="text"
                     placeholder="Additional Info"
                     value={newAlarm.info}
@@ -123,7 +123,7 @@ const AlarmModal = ({
                     <div
                       key={alarm.id}
                       className={`alarm ${!alarm.isActive ? "off" : ""}`}
-                      style={{ background: "black" }}
+                      
                     >
                       <div className="alarm-details">
                         <div className="alarm-name">{alarm.name}</div>
