@@ -67,6 +67,4 @@
   display: flex;
 }
 
-.text-shadow {
-  text-shadow: .3px .3px .4px rgba(250, 250, 250, 250); /* Gölge ayarlarını buradan değiştirebilirsiniz */
-}
+

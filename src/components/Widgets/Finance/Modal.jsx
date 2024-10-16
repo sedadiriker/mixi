@@ -7,7 +7,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
   const [currentAsset, setCurrentAsset] = useState('bitcoin');
   const [currentPrice, setCurrentPrice] = useState(0);
   const [priceChange, setPriceChange] = useState(0);
-  const [chartData, setChartData] = useState({ labels: [], data: [] });
+  const [chartDataModal, setChartData] = useState({ labels: [], data: [] });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const ctxRef = useRef(null);
@@ -126,10 +126,10 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
   }, [isOpen, fetchData]);
 
   useEffect(() => {
-    if (chartData.labels.length > 0 && ctxRef.current) {
-      createChart(chartData.labels, chartData.data);
+    if (chartDataModal.labels.length > 0 && ctxRef.current) {
+      createChart(chartDataModal.labels, chartDataModal.data);
     }
-  }, [chartData]);
+  }, [chartDataModal]);
 
   const handleAssetChange = (e) => {
     setCurrentAsset(e.target.value);
@@ -142,10 +142,10 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
   };
 
   useEffect(() => {
-    if (chartData.labels?.length > 0 && chartData.data?.length > 0 && ctxRef.current) {
-      createChart(chartData.labels, chartData.data);
+    if (chartDataModal.labels?.length > 0 && chartDataModal.data?.length > 0 && ctxRef.current) {
+      createChart(chartDataModal.labels, chartDataModal.data);
     }
-  }, [chartData]);
+  }, [chartDataModal]);
   
 
 const priceDisplayStyle = priceChange >= 0 ? 'up' : 'down';

@@ -50,10 +50,10 @@ const CoinInfo = ({
             visibleParagraphs[1] ? "opacity-100" : "opacity-0"
           } transition-opacity duration-500`}
         >
-          ${price?.toFixed(2) || "Yükleniyor..."}
+          $ {price?.toFixed(2) || "Yükleniyor..."}
         </p>
         <p
-          className={`flex justify-center items-center gap-2 ${
+          className={`flex justify-center items-center gap-1 ${
             visibleParagraphs[2] ? "opacity-100" : "opacity-0"
           } transition-opacity duration-500`}
         >
@@ -67,15 +67,14 @@ const CoinInfo = ({
             alt={priceChange > 0 ? "Price Up" : "Price Down"}
           />
           <span
-  className={`text-[12px] 2xl:text-[16px] ${
-    priceChange > 0 ? "text-green-500" : "text-red-500"
-  }`} 
->
-  {priceChange !== undefined
-    ? (priceChange > 0 ? "+" : "") + priceChange.toFixed(2) + "%"
-    : "Yükleniyor..."}
-</span>
-
+            className={`text-[12px] 2xl:text-[16px] ${
+              priceChange > 0 ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {priceChange !== undefined
+              ? (priceChange > 0 ? "+" : "") + priceChange.toFixed(2) + "%"
+              : "Yükleniyor..."}
+          </span>
         </p>
       </div>
       <div className="w-full h-[90%]">
@@ -91,7 +90,7 @@ const CoinInfo = ({
                   labels: {
                     color: "gray",
                     font: {
-                      size: setLegendFontSize,
+                      size: legendFontSize,
                     },
                     boxWidth: 15,
                   },

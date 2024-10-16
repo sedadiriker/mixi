@@ -12,12 +12,13 @@ const FinanceInfo = () => {
     labels: [],
     datasets: [
       {
-        label: "Price",
-        data: prices,
-        fill: false,
-        borderColor: "white",
-        tension: 0.1,
-        borderWidth: 2,
+        label: "Price Coin",
+        data: [10, 20, 15, 25, 30, 40],
+        borderColor: "gray",
+        backgroundColor: "gray",
+        fill: true, 
+        tension: 1, 
+        borderWidth:1
       },
     ],
   });
@@ -105,9 +106,11 @@ const FinanceInfo = () => {
             label: "Price (USD)",
             data: prices,
             fill: false,
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
+            backgroundColor: "gray",
+            borderColor: "gray",
             tension: 0.1,
+            borderWidth:1
+            
           },
         ],
       });
