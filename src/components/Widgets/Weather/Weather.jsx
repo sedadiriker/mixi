@@ -4,9 +4,13 @@ import "./Weather.css";
 
 const Weather = () => {
   const [weatherData, setWeatherData] = useState([]);
-  const [currentCityIndex, setCurrentCityIndex] = useState(0); // State for current city index
+  const [currentCityIndex, setCurrentCityIndex] = useState(0); 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const apiKey = "44df26f596aedf257812c7a8beefd005";
+
+  useEffect(() => {
+    console.log(weatherData); // `useEffect` içinde konsolda her güncellemede ne geldiğini görebilirsin
+  }, [weatherData]);
+    const apiKey = "44df26f596aedf257812c7a8beefd005";
 
   const fetchFavoriteCitiesWeather = async () => {
     const favorites = JSON.parse(localStorage.getItem("favorite_cities")) || [];
@@ -27,6 +31,7 @@ const Weather = () => {
           const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
           );
+          console.log(response)
           const weatherData = await response.json();
 
           if (weatherData.cod === 200) {
@@ -73,16 +78,15 @@ const Weather = () => {
     fetchFavoriteCitiesWeather();
   }, []);
 
-  // Slider functionality
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentCityIndex((prevIndex) => {
         if (weatherData.length === 0) return 0;
-        return (prevIndex + 1) % weatherData.length; // Cycle through cities
+        return (prevIndex + 1) % weatherData.length;
       });
-    }, 10000); // Change every 10 seconds
+    }, 10000);
 
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    return () => clearInterval(intervalId);
   }, [weatherData]);
 
   const handleOpenModal = () => {
@@ -97,7 +101,7 @@ const Weather = () => {
     event.preventDefault();
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
       );
       const data = await response.json();
 
@@ -138,14 +142,11 @@ const Weather = () => {
     ));
   };
 
-  // Handle scroll event for slider
   const handleWheel = (event) => {
-    event.preventDefault(); // Prevent default scroll behavior
+    event.preventDefault(); 
     if (event.deltaY < 0) {
-      // Scroll up
       setCurrentCityIndex((prevIndex) => (prevIndex - 1 + weatherData.length) % weatherData.length);
     } else if (event.deltaY > 0) {
-      // Scroll down
       setCurrentCityIndex((prevIndex) => (prevIndex + 1) % weatherData.length);
     }
   };
