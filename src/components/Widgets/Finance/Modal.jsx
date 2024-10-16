@@ -169,22 +169,26 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favorites, setFavorites }) => {
       className="modal-overlay-finance flex flex-col gap-2"
       onClick={onClose}
     >
-      <div className="w-[120px]">
+      <div className="w-[120px] 2xl:w-[180px] absolute top-0 2xl:top-[-20px] left-0">
         <img className="w-full logo-modal" src="images/logo.png" alt="" />
       </div>
+
       <div
         className="modal-content-finance"
         onClick={(e) => e.stopPropagation()}
       >
-        <span className="close-button text-black" onClick={onClose}>
+        <span className="close-button text-white" onClick={onClose}>
           &times;
         </span>
         <div id="widget-content">
-          <h2 className="uppercase" style={{ letterSpacing: "1px" }}>
+          <h2
+            className="uppercase 2xl:text-[18px] text-[#404751] py-5 2xl:py-6"
+            style={{ letterSpacing: "1px" }}
+          >
             Finance Settings
           </h2>
           <hr className=" opacity-25 my-1" />
-          <div className="flex justify-between px-20 h-[50px]">
+          <div className="flex justify-between px-20 h-[50px] 2xl:h-[100px]">
             <div className="flex gap-2 items-center my-4">
               <select
                 id="asset-selector"
@@ -205,7 +209,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favorites, setFavorites }) => {
                 Add favorites
               </button>
             </div>
-            <div className="h-full w-[20%]">
+            <div className="h-full w-[20%] 2xl:w-[15%]">
               {/* {error && <div className="error">{error}</div>} */}
               <div id="coin-display" className="text-white h-full">
                 {/* <div className="mt-2 flex items-center gap-3">
@@ -238,35 +242,34 @@ const Modal = ({ isOpen, onClose, onAddFavorite, favorites, setFavorites }) => {
                 </div>
                 <div id="price-display">$ {currentPrice.toFixed(2)}</div> */}
                 <div className="h-full">
-                {/* <h2 className="uppercase">Favorites</h2> */}
-                <div className="favorites-list h-full mt-2">
-                  <ul>
-                    {favorites.map((fav) => (
-                      <li
-                        key={fav}
-                        className="flex justify-between items-center"
-                      >
-                        <span className="text-[12px]">
-                          {coins.find((coin) => coin.id === fav)?.name}
-                        </span>
-                        <button
-                          onClick={() => handleRemoveFavorite(fav)}
-                          className="remove-favorite-button text-red-600"
+                  {/* <h2 className="uppercase">Favorites</h2> */}
+                  <div className="favorites-list h-full mt-2">
+                    <ul>
+                      {favorites.map((fav) => (
+                        <li
+                          key={fav}
+                          className="flex justify-between items-center"
                         >
-                          x
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
+                          <span className="text-[12px]">
+                            {coins.find((coin) => coin.id === fav)?.name}
+                          </span>
+                          <button
+                            onClick={() => handleRemoveFavorite(fav)}
+                            className="remove-favorite-button text-red-800"
+                          >
+                            x
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                </div>
-                
               </div>
             </div>
           </div>
 
-          <div id="chart-container">
-            <canvas id="price-chart" style={{ height: "300px" }}></canvas>
+          <div id="chart-container" className="w-[90%] mx-auto">
+            <canvas className="w-full h-[70vh] py-1" id="price-chart"></canvas>
           </div>
         </div>
       </div>
