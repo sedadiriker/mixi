@@ -76,72 +76,74 @@ const AlarmModal = ({
 
                 <div className="flex flex-col 2xl:gap-3">
                   <div className="flex justify-center">
-                  <input
-                    className="w-[60%] mx-auto bg-gray-400 text-black 2xl:py-4 p-2"
-                    type="text"
-                    placeholder="Alarm Name"
-                    value={newAlarm.name}
-                    onChange={(e) =>
-                      setNewAlarm({ ...newAlarm, name: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="flex justify-center">
-                  <input
-                    className="w-[60%] mx-auto bg-gray-400 2xl:py-4 p-2"
-                    type="time"
-                    value={newAlarm.time}
-                    onChange={(e) =>
-                      setNewAlarm({ ...newAlarm, time: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="flex justify-center">
-                  <input
-                    className="w-[60%] mx-auto bg-gray-400 2xl:py-4 p-2"
-                    type="text"
-                    placeholder="Additional Info"
-                    value={newAlarm.info}
-                    onChange={(e) =>
-                      setNewAlarm({ ...newAlarm, info: e.target.value })
-                    }
-                  />
-                </div>
+                    <input
+                      className="w-[60%] mx-auto bg-gray-400 text-black 2xl:py-4 p-2"
+                      type="text"
+                      placeholder="Alarm Name"
+                      value={newAlarm.name}
+                      onChange={(e) =>
+                        setNewAlarm({ ...newAlarm, name: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="flex justify-center">
+                    <input
+                      className="w-[60%] mx-auto bg-gray-400 2xl:py-4 p-2"
+                      type="time"
+                      value={newAlarm.time}
+                      onChange={(e) =>
+                        setNewAlarm({ ...newAlarm, time: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="flex justify-center">
+                    <input
+                      className="w-[60%] mx-auto bg-gray-400 2xl:py-4 p-2"
+                      type="text"
+                      placeholder="Additional Info"
+                      value={newAlarm.info}
+                      onChange={(e) =>
+                        setNewAlarm({ ...newAlarm, info: e.target.value })
+                      }
+                    />
+                  </div>
                 </div>
                 <div className="flex justify-center mt-5">
-              <button className=" uppercase text-[10px] 2xl:text-[15px] bg-gray-800 p-3 rounded" onClick={handleAddOrUpdateAlarm}>
-                {newAlarm.id ? "Update Alarm" : "Add Alarm"}
-              </button>
-              {/* <button onClick={() => setModalOpen(false)}>Close</button> */}
-            </div>
+                  <button
+                    className=" uppercase text-[10px] 2xl:text-[15px] bg-gray-800 p-3 rounded"
+                    onClick={handleAddOrUpdateAlarm}
+                  >
+                    {newAlarm.id ? "Update Alarm" : "Add Alarm"}
+                  </button>
+                  {/* <button onClick={() => setModalOpen(false)}>Close</button> */}
+                </div>
               </div>
 
               <div className="flex-1">
                 <h3 className="text-center uppercase mb-2 text-white text-[13px] py-3 2xl:text-[16px]">
                   Existing Alarms
                 </h3>
-                <div className="existing-alarms py-1 max-h-[210px] 2xl:max-h-[400px] 2xl:w-[90%] mx-auto">
+                <div className="existing-alarms py-1 max-h-[300px] 2xl:max-h-[400px] 2xl:w-[90%] mx-auto">
                   {alarms.map((alarm) => (
                     <div
                       key={alarm.id}
                       className={`alarm ${!alarm.isActive ? "off" : ""}`}
-                      
                     >
-                      <div className="alarm-details">
+                      <div className="alarm-details px-10">
                         <div className="alarm-name">{alarm.name}</div>
                         <div className="alarm-time">
                           <span className="alarm-timing">{alarm.time}</span> AM
                         </div>
                         <div className="alarm-info">{alarm.info}</div>
                       </div>
-                      <div className="alarm-toggle">
-                        <label className="switch">
+                      <div className="alarm-toggle px-10">
+                        <label className="switch w-[20px] h-[9px] 2xl:w-[30px] 2xl:h-[12px]">
                           <input
                             type="checkbox"
                             checked={alarm.isActive}
                             onChange={() => toggleAlarm(alarm.id)}
                           />
-                          <span className="slider round"></span>
+                          <span className="slider round before:w-[10px] before:h-[10px] 2xl:before:w-[13px] 2xl:before:h-[13px]"></span>
                         </label>
                       </div>
                       <div className="alarm-actions">
@@ -163,7 +165,6 @@ const AlarmModal = ({
                 </div>
               </div>
             </div>
-           
           </>
         )}
       </div>
