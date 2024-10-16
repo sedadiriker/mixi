@@ -2,86 +2,74 @@ import React, { useEffect, useRef, useState } from "react";
 import "./News.css";
 
 const News = () => {
-  const apiKey =   "3d2c4d7bd714e98cbcfc04fafcdac495"  ;
+  const apiKey = "731b9807fa2573adda1d402dd46390d2"; 
   const [articles, setArticles] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
-  const [country, setCountry] = useState("us");
-  const [category, setCategory] = useState("general");
-  const [language, setLanguage] = useState("en");
+  const [country, setCountry] = useState(() => localStorage.getItem("country") || "us");
+  const [category, setCategory] = useState(() => localStorage.getItem("category") || "general");
+  const [language, setLanguage] = useState(() => localStorage.getItem("language") || "en");
   const [loading, setLoading] = useState(true);
-  const [cache, setCache] = useState({}); 
   const newsRef = useRef(null);
-  // const countries = [
-  //   { code: "au", name: "Australia" },
-  //   { code: "br", name: "Brazil" },
-  //   { code: "ca", name: "Canada" },
-  //   { code: "cn", name: "China" },
-  //   { code: "eg", name: "Egypt" },
-  //   { code: "fr", name: "France" },
-  //   { code: "de", name: "Germany" },
-  //   { code: "gr", name: "Greece" },
-  //   { code: "hk", name: "Hong Kong" },
-  //   { code: "in", name: "India" },
-  //   { code: "ie", name: "Ireland" },
-  //   { code: "il", name: "Israel" },
-  //   { code: "it", name: "Italy" },
-  //   { code: "jp", name: "Japan" },
-  //   { code: "nl", name: "Netherlands" },
-  //   { code: "no", name: "Norway" },
-  //   { code: "pk", name: "Pakistan" },
-  //   { code: "pe", name: "Peru" },
-  //   { code: "ph", name: "Philippines" },
-  //   { code: "pt", name: "Portugal" },
-  //   { code: "ro", name: "Romania" },
-  //   { code: "ru", name: "Russia" },
-  //   { code: "sg", name: "Singapore" },
-  //   { code: "es", name: "Spain" },
-  //   { code: "se", name: "Sweden" },
-  //   { code: "ch", name: "Switzerland" },
-  //   { code: "tw", name: "Taiwan" },
-  //   { code: "ua", name: "Ukraine" },
-  //   { code: "gb", name: "United Kingdom" },
-  //   { code: "us", name: "United States" },
-  // ];
+
   const countries = [
-    { code: "tr", name: "Turkey" },
-    { code: "us", name: "USA" },
-    { code: "gb", name: "United Kingdom" },
-    { code: "de", name: "Germany" },
+    { code: "au", name: "Australia" },
+    { code: "br", name: "Brazil" },
+    { code: "ca", name: "Canada" },
+    { code: "cn", name: "China" },
+    { code: "eg", name: "Egypt" },
     { code: "fr", name: "France" },
-  ]
-  // const languages = [
-  //   { code: "ar", name: "Arabic" },
-  //   { code: "zh", name: "Chinese" },
-  //   { code: "nl", name: "Dutch" },
-  //   { code: "en", name: "English" },
-  //   { code: "fr", name: "French" },
-  //   { code: "de", name: "German" },
-  //   { code: "el", name: "Greek" },
-  //   { code: "he", name: "Hebrew" },
-  //   { code: "hi", name: "Hindi" },
-  //   { code: "it", name: "Italian" },
-  //   { code: "ja", name: "Japanese" },
-  //   { code: "ml", name: "Malayalam" },
-  //   { code: "mr", name: "Marathi" },
-  //   { code: "no", name: "Norwegian" },
-  //   { code: "pt", name: "Portuguese" },
-  //   { code: "ro", name: "Romanian" },
-  //   { code: "ru", name: "Russian" },
-  //   { code: "es", name: "Spanish" },
-  //   { code: "sv", name: "Swedish" },
-  //   { code: "ta", name: "Tamil" },
-  //   { code: "te", name: "Telugu" },
-  //   { code: "uk", name: "Ukrainian" },
-  // ];
+    { code: "de", name: "Germany" },
+    { code: "gr", name: "Greece" },
+    { code: "hk", name: "Hong Kong" },
+    { code: "in", name: "India" },
+    { code: "ie", name: "Ireland" },
+    { code: "il", name: "Israel" },
+    { code: "it", name: "Italy" },
+    { code: "jp", name: "Japan" },
+    { code: "nl", name: "Netherlands" },
+    { code: "no", name: "Norway" },
+    { code: "pk", name: "Pakistan" },
+    { code: "pe", name: "Peru" },
+    { code: "ph", name: "Philippines" },
+    { code: "pt", name: "Portugal" },
+    { code: "ro", name: "Romania" },
+    { code: "ru", name: "Russia" },
+    { code: "sg", name: "Singapore" },
+    { code: "es", name: "Spain" },
+    { code: "se", name: "Sweden" },
+    { code: "ch", name: "Switzerland" },
+    { code: "tw", name: "Taiwan" },
+    { code: "ua", name: "Ukraine" },
+    { code: "gb", name: "United Kingdom" },
+    { code: "us", name: "United States" },
+  ];
 
   const languages = [
-    { code: "tr", name: "Turkish" },
+    { code: "ar", name: "Arabic" },
+    { code: "zh", name: "Chinese" },
+    { code: "nl", name: "Dutch" },
     { code: "en", name: "English" },
-    { code: "de", name: "German" },
     { code: "fr", name: "French" },
-  ]
+    { code: "de", name: "German" },
+    { code: "el", name: "Greek" },
+    { code: "he", name: "Hebrew" },
+    { code: "hi", name: "Hindi" },
+    { code: "it", name: "Italian" },
+    { code: "ja", name: "Japanese" },
+    { code: "ml", name: "Malayalam" },
+    { code: "mr", name: "Marathi" },
+    { code: "no", name: "Norwegian" },
+    { code: "pt", name: "Portuguese" },
+    { code: "ro", name: "Romanian" },
+    { code: "ru", name: "Russian" },
+    { code: "es", name: "Spanish" },
+    { code: "sv", name: "Swedish" },
+    { code: "ta", name: "Tamil" },
+    { code: "te", name: "Telugu" },
+    { code: "uk", name: "Ukrainian" },
+  ];
+
   const categories = [
     { code: "general", name: "General" },
     { code: "business", name: "Business" },
@@ -90,49 +78,50 @@ const News = () => {
     { code: "science", name: "Science" },
     { code: "sports", name: "Sports" },
     { code: "technology", name: "Technology" },
-    { code: "world", name: "World" },
-    { code: "nation", name: "National" },
   ];
-
 
   const getNews = async () => {
     setLoading(true);
-
+    
     const cacheKey = `${country}-${category}-${language}`;
-    if (cache[cacheKey]) {
-        setArticles(cache[cacheKey]);
-        setLoading(false);
-        return;
+    const cachedData = localStorage.getItem(cacheKey);
+    
+    // Eğer önbellekten veri varsa, onu kullan
+    if (cachedData) {
+      setArticles(JSON.parse(cachedData));
+      setLoading(false);
+      return;
     }
-
-    const url = `https://gnews.io/api/v4/top-headlines?country=${country}&category=${category}&lang=${language}&max=10&apikey=${apiKey}`;
-
+  
+    const url = `https://gnews.io/api/v4/top-headlines?country=${country}&category=${category}&lang=${language}&apikey=${apiKey}`;
+  
     try {
-        const response = await fetch(url);
-        const data = await response.json();
-        setArticles(data.articles);
-        setCache((prevCache) => ({
-            ...prevCache,
-            [cacheKey]: data.articles,
-        }));
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data);
+      setArticles(data.articles);
+      
+      // Yeni veriyi localStorage'a kaydet
+      localStorage.setItem(cacheKey, JSON.stringify(data.articles));
     } catch (error) {
-        console.error("Haber alınırken hata oluştu:", error);
+      console.error("Haber alınırken hata oluştu:", error);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
+  
 
-useEffect(() => {
+  useEffect(() => {
     getNews();
-}, [country, category, language]);
+  }, [country, category, language]);
 
-useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % articles?.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % articles.length);
     }, 10000);
 
     return () => clearInterval(interval);
-}, [articles?.length]);
+  }, [articles.length]);
 
   const handleScroll = (event) => {
     event.preventDefault();
@@ -144,13 +133,11 @@ useEffect(() => {
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % articles?.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % articles.length);
   };
 
   const handlePrev = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + articles?.length) % articles?.length
-    );
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + articles.length) % articles.length);
   };
 
   useEffect(() => {
@@ -165,34 +152,37 @@ useEffect(() => {
         currentNewsRef.removeEventListener("wheel", handleScroll);
       }
     };
-  }, [articles?.length]);
+  }, [articles.length]);
 
   const handleSettingsSubmit = (e) => {
     e.preventDefault();
     setModalOpen(false);
+    localStorage.setItem("country", country);
+    localStorage.setItem("category", category);
+    localStorage.setItem("language", language);
     getNews();
   };
 
   return (
-    <div className="news-slider h-[100%] relative " ref={newsRef}>
+    <div className="news-slider h-full relative" ref={newsRef}>
       <div className="settings-icon-news" onClick={() => setModalOpen(true)}>
         <i className="fas fa-cog"></i>
       </div>
-      {loading ? ( // Conditionally render loading message
-        <div className="flex justify-center items-center text-gray-600 loading-message w-[100%] h-[100%] uppercase text-[12px]" style={{letterSpacing:"2px"}}>Loading...</div>
-      ) : articles?.length > 0 ? (
+      {loading ? (
+        <div className="flex justify-center items-center text-gray-600 loading-message w-full h-full uppercase text-xs" style={{ letterSpacing: "2px" }}>Loading...</div>
+      ) : articles.length > 0 ? (
         <div className="article h-full" style={{ cursor: "pointer" }}>
           <img
             onClick={() => window.open(articles[currentIndex].url, "_blank")}
             src={articles[currentIndex]?.image}
             alt={articles[currentIndex]?.title}
           />
-          <h2 className="h-[40%] 2xl:text-[18px] text-[9px]" onClick={() => window.open(articles[currentIndex].url, "_blank")}>
+          <h2 className="h-[40%] text-[10px] 2xl:text-[18px]" onClick={() => window.open(articles[currentIndex].url, "_blank")}>
             {articles[currentIndex].title}
           </h2>
         </div>
       ) : (
-        <div className="no-articles-message">No articles available.</div> // Handle no articles case
+        <div className="no-articles-message">No articles available.</div>
       )}
 
       {/* Modal */}
@@ -202,69 +192,67 @@ useEffect(() => {
             <span className="close text-white" onClick={() => setModalOpen(false)}>
               &times;
             </span>
-            <h2
-              className="uppercase text-center bg-black py-2 text-gray-500 w-[100%] modal-title"
-              style={{ letterSpacing: "1px" }}
-            >
+            <h2 className="uppercase text-center bg-black py-2 text-gray-500 w-full modal-title" style={{ letterSpacing: "1px" }}>
               News Settings
             </h2>
-            <div className="flex flex-col p-[10px] w-[80%] m-auto">
+            <div className="flex flex-col p-2 w-4/5 m-auto">
               <label className="flex justify-between py-1">
-                <div className="w-[100px] flex justify-between text-white">
+                <div className="w-24 flex justify-between text-white">
                   <span>Country</span>
                   <span>:</span>
                 </div>
                 <select
-                  className="w-[50%] text-start cursor-pointer"
+                  className="w-1/2 text-start cursor-pointer"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
                 >
-                  {countries.map(({ code, name }) => (
-                    <option key={code} value={code}>
-                      {name}
+                  {countries.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.name}
                     </option>
                   ))}
                 </select>
               </label>
-              <label className="flex justify-between my-2">
-                <div className="w-[100px] flex justify-between text-white">
-                  <span> Dil</span>
+
+              <label className="flex justify-between py-1">
+                <div className="w-24 flex justify-between text-white">
+                  <span>Category</span>
                   <span>:</span>
                 </div>
                 <select
-                  className="w-[50%] text-start cursor-pointer"
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
-                >
-                  {languages.map(({ code, name }) => (
-                    <option key={code} value={code}>
-                      {name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="flex justify-between my-2 ">
-                <div className="w-[100px] flex justify-between text-white">
-                  <span>Kategori</span>
-                  <span>:</span>
-                </div>
-                <select
-                  className="w-[50%] text-start cursor-pointer"
+                  className="w-1/2 text-start cursor-pointer"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
-                  {categories.map(({ code, name }) => (
-                    <option key={code} value={code}>
-                      {name}
+                  {categories.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.name}
                     </option>
                   ))}
                 </select>
               </label>
-              <button
-                className="btn-blue py-2 mt-4 bg-gray-700 w-[50%] m-auto text-white rounded"
-                onClick={handleSettingsSubmit}
-              >
-                Apply Settings
+
+              <label className="flex justify-between py-1">
+                <div className="w-24 flex justify-between text-white">
+                  <span>Language</span>
+                  <span>:</span>
+                </div>
+                <select
+                  className="w-1/2 text-start cursor-pointer"
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                >
+                  {languages.map((l) => (
+                    <option key={l.code} value={l.code}>
+                      {l.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <div className="flex justify-center py-3">
+              <button className="submit-button" onClick={handleSettingsSubmit}>
+                Save Settings
               </button>
             </div>
           </div>
