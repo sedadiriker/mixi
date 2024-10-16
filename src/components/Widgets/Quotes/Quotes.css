@@ -47,13 +47,10 @@
   }
   
   .quotes-widget  .quotes-list {
-    max-height: 100%; 
+    max-height: 300px; 
     overflow-y: auto;
     /* border: 1px solid #cccccc49;  */
     background-color: black;
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 5px;
   }
   
   .quotes-widget .quote-item {
@@ -67,6 +64,10 @@
     outline: none;
     padding: 5px;
     font-size: 12px;
+    &::placeholder{
+      font-size: 10px;
+      color:black
+    }
   }
 
   

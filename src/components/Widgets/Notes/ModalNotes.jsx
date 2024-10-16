@@ -136,9 +136,13 @@ const ModalNotes = ({ isOpen, onClose, notes, setNotes }) => {
   return (
     <div className="modal-overlay-notes">
       <div className={`modal-content-notes flex justify-center ${isMinimized ? 'minimized' : ''}`}>
+      <div className="w-[120px] 2xl:w-[180px] absolute top-0 2xl:top-[-20px] left-0">
+          <img className="w-full logo-modal" src="images/logo.png" alt="" />
+        </div>
+        
         <div id="note-widget" className={isMinimized ? 'minimized' : ''}>
           <div id="widget-header">
-            <div id="widget-title">Note Taking Application</div>
+            <div id="widget-title">Take Notes</div>
             <div className="flex gap-3">
               <button id="resize-button" onClick={toggleSize}>
                 {isMinimized ? <i className="fas fa-expand-alt"></i> : <i className="fas fa-compress-alt"></i>}

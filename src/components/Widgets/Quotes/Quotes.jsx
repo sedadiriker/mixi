@@ -105,34 +105,45 @@ const Quotes = () => {
         </div>
             <span className="close" onClick={closeModal}>&times;</span>
             <h2
-              className="text-center uppercase 2xl:text-[18px] text-[#404751] py-4 2xl:py-6"
+              className="text-center uppercase 2xl:text-[18px] text-[#404751] py-5 2xl:py-6"
               style={{ letterSpacing: "2px" }}
             >
               quotes settings
             </h2>
-            
+          
+            <hr className=" opacity-25 my-1" />
+
+              
+            <div className="flex mt-20">
+            <div className="flex-1">
             <h3
                   className="text-center uppercase mb-2 text-white text-[13px] py-3 2xl:text-[16px] 2xl:mb-5"
                   style={{ letterSpacing: "2px" }}
                 >
               {editIndex !== null ? 'Edit Quote' : 'Add New Quote'}
             </h3>
-            <hr className=" opacity-25 my-1" />
             <div className="flex flex-col items-center gap-3">
               <textarea
-                className="text-black fixed-textarea rounded text-[11px]"
+                className="text-black fixed-textarea rounded text-[11px] bg-gray-400"
                 value={newQuote}
                 onChange={(e) => setNewQuote(e.target.value)}
                 rows="1"
                 cols="28"
                 placeholder='Add new quote'
               />
-              <button className="my-2 bg-gray-600 p-2 rounded" onClick={handleSave}>
+              <button className=" uppercase text-[10px] 2xl:text-[15px] bg-gray-800 p-3 rounded" onClick={handleSave}>
                 {editIndex !== null ? 'Update Quote' : 'Add Quote'}
               </button>
             </div>
+            </div>
   
-            <div className="quotes-list">
+            <div className="quotes-list flex-1">
+            <h3
+                  className="text-center uppercase mb-2 text-white text-[13px] py-3 2xl:text-[16px] 2xl:mb-5"
+                  style={{ letterSpacing: "2px" }}
+                >
+              quotes list
+            </h3>
               {quotes.map((quote, index) => (
                 <div key={index} className="quote-item">
                   <span className="italic text-[10px]">{quote}</span>
@@ -144,9 +155,10 @@ const Quotes = () => {
                       🗑️
                     </button>
                   </div>
-                  <hr className="opacity-20" />
+                  <hr className="opacity-10" />
                 </div>
               ))}
+            </div>
             </div>
           </div>
         </div>
