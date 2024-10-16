@@ -65,16 +65,17 @@ const AlarmModal = ({
             </h2>
             <hr className=" opacity-25 my-1" />
 
-            <div className="flex gap-10 px-5 py-20 mt-5">
+            <div className="flex gap-10 px-5 py-20 mt-5 2xl:mt-20">
               <div className="flex-1">
                 <h3
-                  className="text-center uppercase mb-2 text-white text-[13px] py-3"
+                  className="text-center uppercase mb-2 text-white text-[13px] py-3 2xl:text-[16px] 2xl:mb-5"
                   style={{ letterSpacing: "2px" }}
                 >
                   {newAlarm.id ? "Edit Alarm" : "Add New Alarm"}
                 </h3>
 
-                <div className="flex justify-center">
+                <div className="flex flex-col 2xl:gap-3">
+                  <div className="flex justify-center">
                   <input
                     className="w-[60%] mx-auto bg-gray-400 text-black"
                     type="text"
@@ -106,6 +107,7 @@ const AlarmModal = ({
                     }
                   />
                 </div>
+                </div>
                 <div className="flex justify-center mt-5">
               <button className=" uppercase text-[10px] bg-gray-800 p-3 rounded" onClick={handleAddOrUpdateAlarm}>
                 {newAlarm.id ? "Update Alarm" : "Add Alarm"}
@@ -115,10 +117,10 @@ const AlarmModal = ({
               </div>
 
               <div className="flex-1">
-                <h3 className="text-center uppercase mb-2 text-white text-[13px] py-3">
+                <h3 className="text-center uppercase mb-2 text-white text-[13px] py-3 2xl:text-[16px]">
                   Existing Alarms
                 </h3>
-                <div className="existing-alarms">
+                <div className="existing-alarms py-1 max-h-[210px] 2xl:max-h-[400px] 2xl:w-[90%] mx-auto">
                   {alarms.map((alarm) => (
                     <div
                       key={alarm.id}
