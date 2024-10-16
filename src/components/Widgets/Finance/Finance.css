@@ -10,21 +10,24 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #F0F0F0;
+    background-color: #C8C6C6;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000; 
   }
-  
+
+  .logo-modal{
+    filter: brightness(0) contrast(1) saturate(1);
+    transition: all 0.3s;
+  }
   .modal-content-finance {
     background: black;
     border-radius: 10px;
     padding: 20px;
-    max-width: 500px;
-    width: 100%;
+    width: 90%;
     margin-bottom: 60px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
   }
   
   .close-button {

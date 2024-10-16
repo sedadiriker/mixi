@@ -58,7 +58,8 @@ const Footer = ({ hasSearchResults }) => {
     setIsCollapsed(hasSearchResults);
   }, [hasSearchResults]);
   return (
-    <footer className={`footer-widget-container w-[93%] ${isCollapsed ? 'collapsed' : 'expanded'}`}>
+    <div>
+      <footer className={`footer-widget-container w-[93%] ${isCollapsed ? 'collapsed' : 'expanded'}`}>
       <div id="toggle-footer" className="toggle-footer" onClick={() => setIsCollapsed(!isCollapsed)}>
         {isCollapsed ? "▲" : "▼"}
       </div>
@@ -102,6 +103,7 @@ const Footer = ({ hasSearchResults }) => {
         &gt;
       </div>
     </footer>
+    </div>
   );
 };
 

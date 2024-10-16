@@ -1,87 +1,101 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Chart, registerables } from 'chart.js';
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { Chart, registerables } from "chart.js";
 
 Chart.register(...registerables);
 
 const Modal = ({ isOpen, onClose, onAddFavorite }) => {
-  const [currentAsset, setCurrentAsset] = useState('bitcoin');
+  const [currentAsset, setCurrentAsset] = useState("bitcoin");
   const [currentPrice, setCurrentPrice] = useState(0);
   const [priceChange, setPriceChange] = useState(0);
   const [chartDataModal, setChartData] = useState({ labels: [], data: [] });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const ctxRef = useRef(null);
-  const chartRef = useRef(null); 
+  const chartRef = useRef(null);
 
   const coins = [
-    { id: 'bitcoin', name: 'Bitcoin (BTC)' },
-    { id: 'ethereum', name: 'Ethereum (ETH)' },
-    { id: 'binancecoin', name: 'Binance Coin (BNB)' },
-    { id: 'cardano', name: 'Cardano (ADA)' },
-    { id: 'solana', name: 'Solana (SOL)' }
+    { id: "bitcoin", name: "Bitcoin (BTC)" },
+    { id: "ethereum", name: "Ethereum (ETH)" },
+    { id: "binancecoin", name: "Binance Coin (BNB)" },
+    { id: "cardano", name: "Cardano (ADA)" },
+    { id: "solana", name: "Solana (SOL)" },
   ];
-
-  const [cache, setCache] = useState({});
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
-
-    if (cache[currentAsset]) {
-      const { price, change, labels, data } = cache[currentAsset];
-      setCurrentPrice(price);
-      setPriceChange(change);
-      setChartData({ labels, data });
-      setLoading(false);
-      return; 
+  
+    const cachedData = JSON.parse(localStorage.getItem(currentAsset));
+    const cacheTimestamp = localStorage.getItem(`${currentAsset}_timestamp`);
+  
+    if (cachedData && cacheTimestamp) {
+      const currentTime = new Date().getTime();
+      const cacheAge = currentTime - cacheTimestamp;
+  
+      if (cacheAge < 300000) {
+        const { price, change, labels, data } = cachedData;
+        setCurrentPrice(price);
+        setPriceChange(change);
+        setChartData({ labels, data });
+        setLoading(false);
+        return;
+      }
     }
-
+  
     try {
-      const currentResponse = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${currentAsset}&vs_currencies=usd&include_24hr_change=true`);
+      const currentResponse = await fetch(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${currentAsset}&vs_currencies=usd&include_24hr_change=true`
+      );
       const currentData = await currentResponse.json();
       const price = currentData[currentAsset].usd;
       const change = currentData[currentAsset].usd_24h_change;
-
-      const historyResponse = await fetch(`https://api.coingecko.com/api/v3/coins/${currentAsset}/market_chart?vs_currency=usd&days=30`);
+  
+      const historyResponse = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${currentAsset}/market_chart?vs_currency=usd&days=30`
+      );
       const historyData = await historyResponse.json();
-      const prices = historyData.prices.map(price => price[1]) || [];
-      const dates = historyData.prices.map(price => new Date(price[0]).toLocaleDateString()) || [];
-
+      const prices = historyData.prices.map((price) => price[1]) || [];
+      const dates =
+        historyData.prices.map((price) =>
+          new Date(price[0]).toLocaleDateString()
+        ) || [];
+  
       setCurrentPrice(price);
       setPriceChange(change);
       setChartData({ labels: dates, data: prices });
-
-      setCache(prevCache => ({
-        ...prevCache,
-        [currentAsset]: {
-          price,
-          change,
-          labels: dates,
-          data: prices,
-        },
+  
+      localStorage.setItem(currentAsset, JSON.stringify({
+        price,
+        change,
+        labels: dates,
+        data: prices,
       }));
+      localStorage.setItem(`${currentAsset}_timestamp`, new Date().getTime());
+  
     } catch (error) {
-      console.error('Data fetching error:', error);
-      setError('Error fetching data.');
+      console.error("Data fetching error:", error);
+      setError("Error fetching data.");
     } finally {
       setLoading(false);
     }
-  }, [currentAsset, cache]);
+  }, [currentAsset]);
 
   const createChart = (labels, data) => {
     if (chartRef.current) {
       chartRef.current.destroy();
     }
     chartRef.current = new Chart(ctxRef.current, {
-      type: 'line',
+      type: "line",
       data: {
         labels: labels,
-        datasets: [{
-          label: 'Price',
-          data: data,
-          borderColor: 'white',
-          tension: 0.1,
-        }],
+        datasets: [
+          {
+            label: "Price",
+            data: data,
+            borderColor: "white",
+            tension: 0.1,
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -89,25 +103,25 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
         plugins: {
           legend: {
             labels: {
-              color: 'white',
+              color: "white",
             },
           },
         },
         scales: {
           x: {
             ticks: {
-              color: 'white',
+              color: "white",
             },
             grid: {
-              color: 'rgba(255, 255, 255, 0.2)',
+              color: "rgba(255, 255, 255, 0.2)",
             },
           },
           y: {
             ticks: {
-              color: 'white',
+              color: "white",
             },
             grid: {
-              color: 'rgba(255, 255, 255, 0.2)',
+              color: "rgba(255, 255, 255, 0.2)",
             },
           },
         },
@@ -118,7 +132,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
   useEffect(() => {
     if (!isOpen) return;
 
-    ctxRef.current = document.getElementById('price-chart').getContext('2d');
+    ctxRef.current = document.getElementById("price-chart").getContext("2d");
     fetchData();
 
     const intervalId = setInterval(fetchData, 300000);
@@ -138,55 +152,68 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
 
   const handleAddFavorite = () => {
     onAddFavorite(currentAsset);
-    fetchData()
+    fetchData();
   };
 
-  useEffect(() => {
-    if (chartDataModal.labels?.length > 0 && chartDataModal.data?.length > 0 && ctxRef.current) {
-      createChart(chartDataModal.labels, chartDataModal.data);
-    }
-  }, [chartDataModal]);
-  
-
-const priceDisplayStyle = priceChange >= 0 ? 'up' : 'down';
+  const priceDisplayStyle = priceChange >= 0 ? "up" : "down";
 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay-finance" onClick={onClose}>
-      <div className="modal-content-finance" onClick={(e) => e.stopPropagation()}>
-        <span className="close-button text-white" onClick={onClose}>&times;</span>
+    <div
+      className="modal-overlay-finance flex flex-col gap-2"
+      onClick={onClose}
+    >
+      <div className="w-[120px]">
+        <img className="w-full logo-modal" src="images/logo.png" alt="" />
+      </div>
+      <div
+        className="modal-content-finance"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <span className="close-button text-black" onClick={onClose}>
+          &times;
+        </span>
         <div id="widget-content">
-          <div className="flex flex-col gap-4">
-            {/* Dropdown menu */}
-            <select 
-              id="asset-selector" 
-              className="text-black p-2 rounded outline-none" 
-              value={currentAsset}
-              onChange={handleAssetChange}
-            >
-              {coins?.map(coin => (
-                <option key={coin.id} value={coin.id}>
-                  {coin.name}
-                </option>
-              ))}
-            </select>
-            <button 
-              onClick={handleAddFavorite} 
-              className="add-favorite-button uppercase text-[10px] bg-gray-800 p-3 rounded"
-            >
-              Add favorites
-            </button>
+          <h1 className="uppercase" style={{ letterSpacing: "1px" }}>
+            Finance Settings
+          </h1>
+          <div className="flex justify-between px-20">
+            <div className="flex gap-2 items-center my-4">
+              <select
+                id="asset-selector"
+                className="text-black p-2 rounded outline-none"
+                value={currentAsset}
+                onChange={handleAssetChange}
+              >
+                {coins?.map((coin) => (
+                  <option key={coin.id} value={coin.id}>
+                    {coin.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={handleAddFavorite}
+                className="add-favorite-button uppercase text-[10px] bg-gray-800 p-3 rounded"
+              >
+                Add favorites
+              </button>
+            </div>
+            <div>
+              {error && <div className="error">{error}</div>}
+              <div id="coin-display" className="text-white">
+                <div>{coins.find(coin => coin.id === currentAsset)?.name}</div>
+                <div id="price-display">${currentPrice.toFixed(2)}</div>
+                <div id="change-display" className={`${priceDisplayStyle} ${priceChange >= 0 ? "text-green-600" : "text-red-600"}`}>
+                  {priceChange > 0 ? "+" : ""}
+                  {priceChange.toFixed(2)}%
+                </div>
+              </div>
+            </div>
           </div>
-          {loading && <div className="loading h-[120px] flex justify-center items-center">Loading...</div>}
-          {error && <div className="error">{error}</div>}
-          <div id="price-display">${currentPrice.toFixed(2)}</div>
-          <div id="change-display" className={priceDisplayStyle}>
-            {priceChange > 0 ? '+' : ''}
-            {priceChange.toFixed(2)}%
-          </div>
+
           <div id="chart-container">
-            <canvas id="price-chart" style={{ height: '300px' }}></canvas>
+            <canvas id="price-chart" style={{ height: "300px" }}></canvas>
           </div>
         </div>
       </div>

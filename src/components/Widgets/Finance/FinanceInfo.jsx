@@ -18,7 +18,7 @@ const FinanceInfo = () => {
         backgroundColor: "gray",
         fill: true, 
         tension: 1, 
-        borderWidth:1
+        borderWidth: 1,
       },
     ],
   });
@@ -55,14 +55,8 @@ const FinanceInfo = () => {
   };
 
   useEffect(() => {
-    const storedFavorites =
-      JSON.parse(localStorage.getItem("favoriteCoins")) || [];
-
-    if (storedFavorites.length === 0) {
-      setFavorites(["bitcoin", "ethereum"]); 
-    } else {
-      setFavorites(storedFavorites);
-    }
+    const storedFavorites = JSON.parse(localStorage.getItem("favoriteCoins")) || [];
+    setFavorites(storedFavorites.length === 0 ? ["bitcoin", "ethereum"] : storedFavorites);
   }, []);
 
   useEffect(() => {
@@ -72,50 +66,67 @@ const FinanceInfo = () => {
   const fetchFavoritePrices = async () => {
     if (favorites.length === 0) return;
 
-    try {
-      const ids = favorites.join(",");
-      const response = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`
-      );
-      const data = await response.json();
-      setPrices(data);
-      fetchHistoricalData(favorites[currentIndex]);
-    } catch (error) {
-      console.error("Favori fiyatları alınırken hata:", error);
+    const cachedPrices = JSON.parse(localStorage.getItem("favoritePrices")) || {};
+
+    // Eğer fiyatlar önbellekte mevcutsa, onları kullan
+    if (Object.keys(cachedPrices).length > 0) {
+      setPrices(cachedPrices);
+    } else {
+      try {
+        const ids = favorites.join(",");
+        const response = await fetch(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`
+        );
+        const data = await response.json();
+        setPrices(data);
+        localStorage.setItem("favoritePrices", JSON.stringify(data)); // Verileri önbelleğe al
+        fetchHistoricalData(favorites[currentIndex]);
+      } catch (error) {
+        console.error("Favori fiyatları alınırken hata:", error);
+      }
     }
   };
 
   const fetchHistoricalData = async (coin) => {
-    try {
-      const historyResponse = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=30`
-      );
-      const historyData = await historyResponse.json();
+    const cachedHistoricalData = JSON.parse(localStorage.getItem(`historicalData_${coin}`)) || null;
 
-      if (!historyData.prices || historyData.prices.length === 0) return;
+    // Eğer tarihsel veriler önbellekte mevcutsa, onları kullan
+    if (cachedHistoricalData) {
+      setChartData(cachedHistoricalData);
+    } else {
+      try {
+        const historyResponse = await fetch(
+          `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=30`
+        );
+        const historyData = await historyResponse.json();
 
-      const prices = historyData.prices.map((price) => price[1]);
-      const dates = historyData.prices.map((price) =>
-        new Date(price[0]).toLocaleDateString()
-      );
+        if (!historyData.prices || historyData.prices.length === 0) return;
 
-      setChartData({
-        labels: dates,
-        datasets: [
-          {
-            label: "Price (USD)",
-            data: prices,
-            fill: false,
-            backgroundColor: "gray",
-            borderColor: "gray",
-            tension: 0.1,
-            borderWidth:1
-            
-          },
-        ],
-      });
-    } catch (error) {
-      console.error("Tarihsel veriler alınırken hata:", error);
+        const prices = historyData.prices.map((price) => price[1]);
+        const dates = historyData.prices.map((price) =>
+          new Date(price[0]).toLocaleDateString()
+        );
+
+        const newChartData = {
+          labels: dates,
+          datasets: [
+            {
+              label: "Price (USD)",
+              data: prices,
+              fill: false,
+              backgroundColor: "gray",
+              borderColor: "gray",
+              tension: 0.1,
+              borderWidth: 1,
+            },
+          ],
+        };
+
+        setChartData(newChartData);
+        localStorage.setItem(`historicalData_${coin}`, JSON.stringify(newChartData)); // Verileri önbelleğe al
+      } catch (error) {
+        console.error("Tarihsel veriler alınırken hata:", error);
+      }
     }
   };
 
