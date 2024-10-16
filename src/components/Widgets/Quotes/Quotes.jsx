@@ -100,9 +100,24 @@ const Quotes = () => {
       {modalVisible && (
         <div className="modal">
           <div className="modal-content">
+          <div className="w-[120px] 2xl:w-[180px] absolute top-0 2xl:top-[-20px] left-0">
+          <img className="w-full logo-modal" src="images/logo.png" alt="" />
+        </div>
             <span className="close" onClick={closeModal}>&times;</span>
+            <h2
+              className="text-center uppercase 2xl:text-[18px] text-[#404751] py-4 2xl:py-6"
+              style={{ letterSpacing: "2px" }}
+            >
+              quotes settings
+            </h2>
             
-            <h2 className="text-center uppercase my-3 mb-5" style={{ letterSpacing: "2px" }}>{editIndex !== null ? 'Edit Quote' : 'Add New Quote'}</h2>
+            <h3
+                  className="text-center uppercase mb-2 text-white text-[13px] py-3 2xl:text-[16px] 2xl:mb-5"
+                  style={{ letterSpacing: "2px" }}
+                >
+              {editIndex !== null ? 'Edit Quote' : 'Add New Quote'}
+            </h3>
+            <hr className=" opacity-25 my-1" />
             <div className="flex flex-col items-center gap-3">
               <textarea
                 className="text-black fixed-textarea rounded text-[11px]"
