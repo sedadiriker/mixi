@@ -374,7 +374,7 @@ const Home = () => {
 }, []);
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto  home">
-      <Header showLogo={isVisible} onLogoClick={handleLogoClick} />
+      {/* <Header showLogo={isVisible} onLogoClick={handleLogoClick} /> */}
       <main
         className={`search-main flex-grow p-4 flex flex-col justify-center`}
       >
@@ -597,7 +597,7 @@ const Home = () => {
           </div>
        
       </main>
-      <Footer hasSearchResults={isVisible} />
+      {/* <Footer hasSearchResults={isVisible} /> */}
     </div>
   );
 };

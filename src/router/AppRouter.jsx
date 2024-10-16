@@ -8,6 +8,7 @@ import Admin from '../pages/Admin/Admin';
 import User from '../pages/User/User';
 import AuthProvider from '../context/AuthProvider';
 import AirQualityDashboard from '../components/dashboard-component';
+import Footer from '../components/Footer/Footer';
 
 
 const AppRouter = () => {
@@ -24,7 +25,7 @@ const AppRouter = () => {
           <Route path="/user" element={<AirQualityDashboard/>} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
-        
+      <Footer/>  
       </div>
       </AuthProvider>
     </Router>
