@@ -174,20 +174,20 @@ useEffect(() => {
   };
 
   return (
-    <div className="news-slider h-[100%] mt-1 relative" ref={newsRef}>
+    <div className="news-slider h-[100%] relative " ref={newsRef}>
       <div className="settings-icon-news" onClick={() => setModalOpen(true)}>
         <i className="fas fa-cog"></i>
       </div>
       {loading ? ( // Conditionally render loading message
-        <div className="flex justify-center items-center text-gray-600 loading-message w-[100%] h-[120px] uppercase text-[12px]" style={{letterSpacing:"2px"}}>Loading...</div>
+        <div className="flex justify-center items-center text-gray-600 loading-message w-[100%] h-[100%] uppercase text-[12px]" style={{letterSpacing:"2px"}}>Loading...</div>
       ) : articles?.length > 0 ? (
-        <div className="article" style={{ cursor: "pointer" }}>
+        <div className="article h-full" style={{ cursor: "pointer" }}>
           <img
             onClick={() => window.open(articles[currentIndex].url, "_blank")}
             src={articles[currentIndex]?.image}
             alt={articles[currentIndex]?.title}
           />
-          <h2 onClick={() => window.open(articles[currentIndex].url, "_blank")}>
+          <h2 className="h-[40%] 2xl:text-[18px] text-[9px]" onClick={() => window.open(articles[currentIndex].url, "_blank")}>
             {articles[currentIndex].title}
           </h2>
         </div>
