@@ -6,3 +6,7 @@ body {
     height: 100vh;
 }
 
+.custom-toast-container {
+    z-index: 20003464364564565645 !important; 
+  }
+  

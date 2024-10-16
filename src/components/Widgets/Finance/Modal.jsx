@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Chart, registerables } from "chart.js";
-
+import { toastSuccessNotify, toastErrorNotify } from "../../../helper/ToastNotify"; // ToastErrorNotify import ettik
 Chart.register(...registerables);
 
-const Modal = ({ isOpen, onClose, onAddFavorite }) => {
+const Modal = ({ isOpen, onClose, onAddFavorite, favoriteCoins }) => { // favoriteCoins prop olarak alıyoruz
   const [currentAsset, setCurrentAsset] = useState("bitcoin");
   const [currentPrice, setCurrentPrice] = useState(0);
   const [priceChange, setPriceChange] = useState(0);
@@ -24,14 +24,14 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
-  
+
     const cachedData = JSON.parse(localStorage.getItem(currentAsset));
     const cacheTimestamp = localStorage.getItem(`${currentAsset}_timestamp`);
-  
+
     if (cachedData && cacheTimestamp) {
       const currentTime = new Date().getTime();
       const cacheAge = currentTime - cacheTimestamp;
-  
+
       if (cacheAge < 300000) {
         const { price, change, labels, data } = cachedData;
         setCurrentPrice(price);
@@ -41,7 +41,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
         return;
       }
     }
-  
+
     try {
       const currentResponse = await fetch(
         `https://api.coingecko.com/api/v3/simple/price?ids=${currentAsset}&vs_currencies=usd&include_24hr_change=true`
@@ -49,7 +49,7 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
       const currentData = await currentResponse.json();
       const price = currentData[currentAsset].usd;
       const change = currentData[currentAsset].usd_24h_change;
-  
+
       const historyResponse = await fetch(
         `https://api.coingecko.com/api/v3/coins/${currentAsset}/market_chart?vs_currency=usd&days=30`
       );
@@ -59,19 +59,21 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
         historyData.prices.map((price) =>
           new Date(price[0]).toLocaleDateString()
         ) || [];
-  
+
       setCurrentPrice(price);
       setPriceChange(change);
       setChartData({ labels: dates, data: prices });
-  
-      localStorage.setItem(currentAsset, JSON.stringify({
-        price,
-        change,
-        labels: dates,
-        data: prices,
-      }));
+
+      localStorage.setItem(
+        currentAsset,
+        JSON.stringify({
+          price,
+          change,
+          labels: dates,
+          data: prices,
+        })
+      );
       localStorage.setItem(`${currentAsset}_timestamp`, new Date().getTime());
-  
     } catch (error) {
       console.error("Data fetching error:", error);
       setError("Error fetching data.");
@@ -151,9 +153,15 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
   };
 
   const handleAddFavorite = () => {
+  
     onAddFavorite(currentAsset);
-    fetchData();
-  };
+    
+    fetchData(); 
+};
+
+
+
+  
 
   const priceDisplayStyle = priceChange >= 0 ? "up" : "down";
 
@@ -175,9 +183,10 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
           &times;
         </span>
         <div id="widget-content">
-          <h1 className="uppercase" style={{ letterSpacing: "1px" }}>
+          <h2 className="uppercase" style={{ letterSpacing: "1px" }}>
             Finance Settings
-          </h1>
+          </h2>
+          <hr className=" opacity-25 my-1" />
           <div className="flex justify-between px-20">
             <div className="flex gap-2 items-center my-4">
               <select
@@ -202,12 +211,35 @@ const Modal = ({ isOpen, onClose, onAddFavorite }) => {
             <div>
               {error && <div className="error">{error}</div>}
               <div id="coin-display" className="text-white">
-                <div>{coins.find(coin => coin.id === currentAsset)?.name}</div>
-                <div id="price-display">${currentPrice.toFixed(2)}</div>
-                <div id="change-display" className={`${priceDisplayStyle} ${priceChange >= 0 ? "text-green-600" : "text-red-600"}`}>
-                  {priceChange > 0 ? "+" : ""}
-                  {priceChange.toFixed(2)}%
+                <div className="mt-2 flex items-center gap-3">
+                  <div className="uppercase text-[14px] ">
+                    {coins.find((coin) => coin.id === currentAsset)?.name}
+                  </div>
+                  <div className="flex items-center gap-2">
+                 
+                  <div
+                    id="change-display"
+                    className={`${priceDisplayStyle} ${
+                      priceChange >= 0 ? "text-green-600" : "text-red-600"
+                    } text-[12px]`}
+                  >
+                 
+                    {priceChange > 0 ? "+" : ""}
+                    {priceChange.toFixed(2)}%
+                  </div>
+                  <img
+                      className="w-[7px] h-[10px]"
+                      src={
+                        priceChange > 0
+                          ? "./images/elevator-arrow-up.gif"
+                          : "./images/elevator-arrow-down.gif"
+                      }
+                      alt={priceChange > 0 ? "Price Up" : "Price Down"}
+                    />
+                  </div>
+                  
                 </div>
+                <div id="price-display" className="text-[14px]">$ {currentPrice.toFixed(2)}</div>
               </div>
             </div>
           </div>

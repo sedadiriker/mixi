@@ -16,7 +16,7 @@ function App() {
         </UserProvider>
      
 
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="bottom-right" className="custom-toast-container" />
     </>
   );
 }

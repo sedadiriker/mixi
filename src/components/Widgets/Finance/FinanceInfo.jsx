@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Finance.css";
 import Modal from "./Modal";
 import CoinInfo from "../../CoinInfo";
-
+import { toastSuccessNotify,toastErrorNotify } from "../../../helper/ToastNotify";
 const FinanceInfo = () => {
   const [favorites, setFavorites] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -163,15 +163,19 @@ const FinanceInfo = () => {
         visibleParagraphs={visibleParagraphs}
       />
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        onAddFavorite={(asset) => {
-          if (!favorites.includes(asset)) {
-            setFavorites([...favorites, asset]);
-          }
-        }}
-      />
+<Modal
+  isOpen={isModalOpen}
+  onClose={() => setModalOpen(false)}
+  onAddFavorite={(asset) => {
+    if (favorites && !favorites.includes(asset)) {
+      setFavorites([...favorites, asset]); // Favorilere ekle
+      toastSuccessNotify(`${asset} favorilere eklendi!`); // Başarılı bildirim
+    } else {
+      toastErrorNotify(`${asset} zaten favorilerde!`); // Hata bildirimi
+    }
+  }}
+/>
+
     </div>
   );
 };
