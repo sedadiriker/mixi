@@ -3,7 +3,7 @@ import Login from '../pages/Login/Login';
 import Register from '../pages/Register/Register';
 import Header from '../components/Header/Header';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Home from '../pages/Home/Home'; 
+import Home from '../pages/Home/Home'; 
 import Admin from '../pages/Admin/Admin'; 
 import User from '../pages/User/User';
 import AuthProvider from '../context/AuthProvider';
@@ -18,7 +18,7 @@ const AppRouter = () => {
       <div>
       <Header/> 
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/admin" element={<Admin/>} />

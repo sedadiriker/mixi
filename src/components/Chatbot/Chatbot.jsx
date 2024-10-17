@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // Ensure axios is imported
-import "./Chatbot.css"; // Your styles here
+import axios from "axios";
+import "./Chatbot.css";
 
-const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY'; // Replace with your API key
-const ELEVENLABS_API_KEY = 'YOUR_ELEVENLABS_API_KEY'; // Replace with your API key
-const VOICE_ID = '21m00Tcm4TlvDq8ikWAM'; // Rachel voice ID, you can change this
+const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY';
+const ELEVENLABS_API_KEY = 'YOUR_ELEVENLABS_API_KEY'; 
+const VOICE_ID = '21m00Tcm4TlvDq8ikWAM';
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
@@ -119,7 +119,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div className={`chatbot ${isOpen ? "open" : "closed"}`}>
+    <div className={`chatbot right-[60px] 2xl:right-[100px] top-[60%] 2xl:top-[58%] ${isOpen ? "open top-[25%] 2xl:top-[30%]" : "closed"}`}>
       {isOpen ? (
         <div className="chatbot-container relative">
           <div className="chatbot-content relative">
@@ -154,17 +154,17 @@ const Chatbot = () => {
               🎤 {/* Microphone icon */}
             </button>
           </div>
-          <div className="chatbot-circle-open" onClick={() => setIsOpen(false)}>
+          <div className="chatbot-circle-open w-[100px] h-[100px]" onClick={() => setIsOpen(false)}>
             <img
               src="images/chatbot.png"
               alt="Bot"
-              className="chatbot-icon-open w-[100%] cursor-pointer"
+              className="chatbot-icon-open w-[100%] h-[100%] object-cover rounded-full cursor-pointer border-[5px] border-black"
               width={50}
             />
           </div>
         </div>
       ) : (
-        <div className="chatbot-circle" onClick={() => setIsOpen(true)}>
+        <div className="chatbot-circle w-[60px] h-[60px] 2xl:w-[100px] 2xl:h-[100px]" onClick={() => setIsOpen(true)}>
           <img src="images/chatbot.png" alt="Bot" className="chatbot-icon" />
         </div>
       )}
