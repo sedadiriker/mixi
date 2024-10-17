@@ -163,9 +163,8 @@ const Chatbot = () => {
         console.log("Stopping recognition");
         setIsListening(false);
       } else {
-        // Bot sesi çalıyorsa durdur
         if (audioElement) {
-          audioElement.pause(); // Botun sesini durdur
+          audioElement.pause(); 
           audioElement.currentTime = 0;
         }
         recognition.start();
@@ -177,10 +176,9 @@ const Chatbot = () => {
 
   const synthesizeSpeech = async (text) => {
     try {
-      // Eğer önceden çalan bir ses varsa durdur
       if (audioElement) {
         audioElement.pause();
-        audioElement.currentTime = 0; // Sesin başa sarılmasını sağlar
+        audioElement.currentTime = 0;
       }
 
       const response = await axios.post(
@@ -268,7 +266,7 @@ const Chatbot = () => {
       } ${settings ? "2xl:top-[23%]" : ""}`}
     >
       <span
-        className="absolute top-[100px] right-5 cursor-pointer"
+        className={`absolute top-[100px] right-5 cursor-pointer ${!isOpen ? "hidden" : ""}`}
         onClick={changeCharacter}
       >
         <i
