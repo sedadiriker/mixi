@@ -12,7 +12,7 @@ const SettingsComponent = forwardRef(({ selectedEngine, setSelectedEngine, showS
   return (
     <div>
     <div className={`settings ${showSettings ? "visible" : "hidden"}`} ref={ref}>
-        <div className={`mb-4 ${selectedEngine == "global-search" ? "mt-9" : "mt-5"} w-[85%] m-auto`}>
+        <div className={`mb-4 ${selectedEngine == "global-search" ? "mt-12" : "mt-1"} w-[85%] m-auto`}>
           <div className="grid grid-cols-3  gap-x-[1rem]">
             <div>
               <label className="flex items-center">

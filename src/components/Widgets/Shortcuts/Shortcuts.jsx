@@ -9,7 +9,6 @@ const Shortcuts = () => {
   useEffect(() => {
     const savedShortcuts = JSON.parse(localStorage.getItem("shortcuts")) || [];
     
-    // Eğer kısayollar boşsa varsayılan kısayolları ayarlayın
     if (savedShortcuts.length === 0) {
       const defaultShortcuts = [
         { name: "Google", url: "https://google.com" },

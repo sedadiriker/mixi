@@ -14,7 +14,7 @@ export const updateArrowPosition = (selectedEngine,showSettings) => {
         searchArrow.style.top = "10%"; 
         searchArrow.style.right = "5%"; 
       } else if (width >= 768 && width < 1500) {
-        searchArrow.style.top = "12%"; 
+        searchArrow.style.top = "20%"; 
         searchArrow.style.right = "5%"; 
       } else { 
         searchArrow.style.top = "8%"; 
@@ -29,10 +29,10 @@ export const updateArrowPosition = (selectedEngine,showSettings) => {
           searchArrow.style.top = "35%"; 
           searchArrow.style.right = "20%"; 
         } else if (width >= 768 && width < 1500) { 
-          searchArrow.style.top = "39%"; 
+          searchArrow.style.top = "41.5%"; 
           searchArrow.style.right = "28%";
         } else { 
-          searchArrow.style.top = "40.5%"; 
+          searchArrow.style.top = "42%"; 
           searchArrow.style.right = "27%"; 
         }
       } else {
@@ -40,10 +40,10 @@ export const updateArrowPosition = (selectedEngine,showSettings) => {
           searchArrow.style.top = "35%"; 
           searchArrow.style.right = "20%"; 
         } else if (width >= 768 && width < 1500) { 
-          searchArrow.style.top = "39%"; 
+          searchArrow.style.top = "41.5%"; 
           searchArrow.style.right = "28%";
         } else { 
-          searchArrow.style.top = "40.5%"; 
+          searchArrow.style.top = "42%"; 
           searchArrow.style.right = "27%"; 
         }
       }

@@ -48,7 +48,7 @@ const CustomSelect = ({selectedLanguage, onLanguageChange}) => {
           {selectedLanguage}
         </button>
         {isOpen && ( 
-          <ul className=" absolute top-10 left-0 right-0 bg-white border border-gray-300 rounded-md mt-1 z-10 w-[20%] m-auto max-h-[100px] overflow-y-auto pb-20 language">
+          <ul className=" absolute top-10 left-0 right-0 bg-white border border-gray-300 rounded-md mt-1  w-[20%] m-auto max-h-[100px] overflow-y-auto pb-20 language z-[346455467567657346456546]">
             {languages.map(lang => (
               <li 
                 key={lang.value} 
