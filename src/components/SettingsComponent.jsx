@@ -18,9 +18,9 @@ const SettingsComponent = forwardRef(({ selectedEngine, setSelectedEngine, showS
               <label className="flex items-center">
                 <input
                   type="radio"
-                  value="google-pro"
-                  checked={selectedEngine === "google-pro"}
-                  onChange={() => setSelectedEngine("google-pro")}
+                  value="google"
+                  checked={selectedEngine === "google"}
+                  onChange={() => setSelectedEngine("google")}
                   className="appearance-none h-4 w-4 border border-gray-300 rounded-full checked:bg-gray-600 checked:border-transparent focus:outline-none"
                 />
                 <span className="ml-2 text-[12px] text-gray-500" style={{ letterSpacing: "1px" }}>
