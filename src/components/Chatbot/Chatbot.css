@@ -69,19 +69,17 @@
   
   .user-message {
     text-align: right;
-    margin: 5px 0;
-    background-color: #d1e7dd;
     padding: 8px;
     border-radius: 5px;
+    font-size: 10px;
   }
   
   .bot-message {
     display: flex;
     align-items: center;
-    margin: 5px 0;
-    background-color: #f8d7da;
     padding: 8px;
     border-radius: 5px;
+    font-size: 10px;
   }
   
   .bot-image {
@@ -151,4 +149,18 @@
     opacity: 1;
     transition: transform 1s ease, opacity 0.8s ease;
   }
+
+/* .settings-icon-bot{
+  opacity: 0.6;
+} */
+.chatbot-icon-open{
+  transition: all 0.5s ease-in;
+}
+
+.chatbot-circle-open:hover .chatbot-icon-open{
+  opacity:0.7 
+}
+.chatbot-circle-open:hover .settings-icon-bot{
+  opacity:1 ;
+}
   
