@@ -120,7 +120,7 @@ const TodoList = () => {
             <li
               key={task.id}
               style={{ display: "flex", alignItems: "center" }}
-              className="mb-1"
+              className="mb-3"
             >
               <input
                 type="checkbox"

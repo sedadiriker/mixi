@@ -32,7 +32,7 @@
   }
   
   .custom-checkbox i {
-    color: white; 
+    color: #00C0FF; 
     position: absolute;
     top: 50%;
     left: 75%;
@@ -60,4 +60,7 @@
     max-height: 300px; 
     overflow-y: auto; 
   }
+  .todo-list-container::-webkit-scrollbar {
+    display: none; 
+}
   
