@@ -33,7 +33,7 @@ const KonusanChatbot = ({ isVisible }) => {
                     wrapDiv.classList.toggle("show", initial);
                     if (initial) {
 
-                        wrapDiv.style.top = isVisible ? "78%" : "55%"; // Adjust top based on isVisible
+                        wrapDiv.style.top = isVisible ? "78%" : "55%";
                     }
                 } else if (e.data.action === "show") {
                     visible = true;
