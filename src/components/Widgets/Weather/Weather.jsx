@@ -11,14 +11,30 @@ const Weather = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [forecastData, setForecastData] = useState([]);
+  const [hourlyData, setHourlyData] = useState([]);
+
   const [selectedCity, setSelectedCity] = useState(null);
 
-  console.log(forecastData);
+  console.log(hourlyData);
   // useEffect(() => {
   //   console.log(weatherData);
   // }, [weatherData]);
   const apiKey = "44df26f596aedf257812c7a8beefd005";
 
+  const fetchHourlyForecast = async (lat, lon) => {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+    );
+    const data = await response.json();
+
+    // Verileri 3 saatlik dilimler halinde döndür
+    if (data.cod === "200") {
+      return data.list; // forecast API'den gelen 3 saatlik veri
+    } else {
+      console.error("Error fetching forecast data:", data);
+      return [];
+    }
+  };
   const fetchForecastWeather = async (city) => {
     try {
       const response = await fetch(
@@ -35,10 +51,16 @@ const Weather = () => {
     }
   };
 
-  const handleCityClick = (city) => {
+  const handleCityClick = async (city) => {
     fetchForecastWeather(city);
     setShowDetail(!showDetail);
-    setSelectedCity(city)
+    setSelectedCity(city);
+
+    const cityWeather = JSON.parse(localStorage.getItem(`weather_${city}`));
+    const { lat, lon } = cityWeather.coord;
+
+    const hourlyForecast = await fetchHourlyForecast(lat, lon);
+    setHourlyData(hourlyForecast);
   };
 
   const fetchFavoriteCitiesWeather = async () => {
@@ -160,21 +182,24 @@ const Weather = () => {
   const displayFavoriteCitiesInModal = () => {
     const favorites = JSON.parse(localStorage.getItem("favorite_cities")) || [];
     return favorites.map((city) => (
-      <div className="w-[75%] mx-auto" key={city}>
+      <div className="w-[75%] 2xl:w-[50%] mx-auto" key={city}>
         <div
-          className="favorite-item flex justify-between items-center w-full m-auto py-2 border border-gray-800 px-3 mb-1"
-          onClick={() => handleCityClick(city)} // Tıklanan şehri ayarla
+          className="favorite-item flex justify-between items-center w-full m-auto py-2 border border-gray-800 px-3 mb-1 2xl:mb-2 cursor-pointer"
+          onClick={() => handleCityClick(city)}
         >
           <div>{city}</div>
-  
+
           <button
             className="text-[10px]"
             onClick={(e) => {
-              e.stopPropagation(); // Butona tıklanınca şehrin detayını açmayı engelle
+              e.stopPropagation();
               let favorites =
                 JSON.parse(localStorage.getItem("favorite_cities")) || [];
               favorites = favorites.filter((favCity) => favCity !== city);
-              localStorage.setItem("favorite_cities", JSON.stringify(favorites));
+              localStorage.setItem(
+                "favorite_cities",
+                JSON.stringify(favorites)
+              );
               localStorage.removeItem(`weather_${city}`);
               toastSuccessNotify(`${city} removed from favorites!`);
               fetchFavoriteCitiesWeather();
@@ -183,38 +208,73 @@ const Weather = () => {
             🗑️
           </button>
         </div>
-  
-        {/* Eğer tıklanan şehir bu şehir ise detayları göster */}
+
         {selectedCity === city && (
           <div className="w-full">
             {showDetail && (
-              <div>
-                {forecastData.length > 0 && (
-                  <div className="forecast-container">
-                    <h3 className="text-center text-white py-4">5-Day Forecast</h3>
-                    <div className="forecast-list flex justify-center gap-5">
-                      {forecastData.filter((item, index) => index % 8 === 0).map((item) => (
-                        <div key={item.dt} className="forecast-item border border-gray-700 rounded w-[125px] px-2 py-4">
-                          <span>{new Date(item.dt * 1000).toLocaleDateString()}</span>
-                          <img
-                            src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
-                            alt="Weather icon"
-                          />
-                          <span>{item.main.temp.toFixed(1)}°C</span>
-                          <span>{item.weather[0].description}</span>
-                        </div>
-                      ))}
+              <>
+                <div>
+                  {forecastData && forecastData.length > 0 && (
+                    <div className="forecast-container">
+                      <h3 className="text-center text-white py-4">
+                        5-Day Forecast
+                      </h3>
+                      <div className="forecast-list flex justify-center gap-5">
+                        {forecastData
+                          .filter((item, index) => index % 8 === 0)
+                          .map((item) => (
+                            <div
+                              key={item.dt}
+                              className="forecast-item border border-gray-700 rounded w-[150px] h-[180px] px-2 py-4 flex flex-col items-center justify-center"
+                            >
+                              <span>
+                                {new Date(item.dt * 1000).toLocaleDateString()}
+                              </span>
+                              <img
+                                src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                                alt="Weather icon"
+                              />
+                              <span>{item.main.temp.toFixed(1)}°C</span>
+                              <span>{item.weather[0].description}</span>
+                            </div>
+                          ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+                <div>
+                {hourlyData && hourlyData.length > 0 && (
+  <div className="hourly-forecast-container">
+    <h3 className="text-center text-white py-4">Hourly Forecast</h3>
+    <div className="hourly-forecast-list flex justify-center gap-3">
+      {hourlyData.slice(0, 12).map((hour, index) => (
+        <div
+          key={index}
+          className="hourly-item border border-gray-700 rounded w-[75px] px-2 py-3"
+        >
+          <span>{new Date(hour.dt * 1000).getHours()}:00</span>
+          <img
+            src={`https://openweathermap.org/img/wn/${hour.weather[0]?.icon}.png`}
+            alt="Weather icon"
+          />
+          <span>
+            {hour.main.temp !== undefined ? `${hour.main.temp.toFixed(1)}°C` : 'N/A'}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+
+                </div>
+              </>
             )}
           </div>
         )}
       </div>
     ));
   };
-  
 
   const handleWheel = (event) => {
     event.preventDefault();
@@ -314,7 +374,7 @@ const Weather = () => {
                   &times;
                 </span>
                 <h2
-                  className="text-center uppercase 2xl:text-[18px] text-[#404751] py-5 2xl:py-6"
+                  className="text-center uppercase 2xl:text-[18px] text-[#404751] py-5 2xl:py-7"
                   style={{ letterSpacing: "2px" }}
                 >
                   weather settings
