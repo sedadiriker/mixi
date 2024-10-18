@@ -711,7 +711,7 @@ const Home = () => {
               </div>
             ) : (
               <div
-                className={`search-container mx-auto mt-8 ${
+                className={`search-container mx-auto mt-16 ${
                   isVisible ? "mt-[-9rem]" : ""
                 }`}
                 onMouseEnter={() => {
