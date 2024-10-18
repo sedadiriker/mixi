@@ -1,0 +1,202 @@
+.alarm-list {
+  & .alarm {
+    padding: 10px;
+    border: 1px solid rgba(250, 250, 250, 0.625);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    margin-bottom: 5px;
+    position: relative;
+  }
+
+  & .alarm-name {
+    color: rgba(255, 255, 255, 0.588);
+  }
+
+  /* & .alarm-time {
+    font-size: 14px; 
+  } */
+
+  .alarm-info {
+    /* font-size: 8px; */
+    color: rgba(255, 255, 255, 0.588);
+  }
+  & .alarm-timing {
+    font-weight: 900;
+    font-size: 14px;
+  }
+  & .alarm-list {
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 120px;
+    overflow-y: auto;
+    /* border: 1px solid red; */
+
+  }
+  & .switch {
+    position: relative;
+    display: inline-block;
+
+  }
+
+  & .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  & .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+
+  & .slider:before {
+    position: absolute;
+    content: "";
+    left: 0px;
+    bottom: -1.2px;
+    border: 1px solid rgba(255, 255, 255, 0.522);
+    background-color: black;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+
+  & input:checked + .slider:before {
+    -webkit-transform: translateX(10px);
+    -ms-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+
+  & .slider.round {
+    border-radius: 34px;
+  }
+
+  & .slider.round:before {
+    border-radius: 50%;
+  }
+  & .alarm.off {
+    opacity: 0.3; 
+  }
+}
+
+.alarm-list {
+  overflow-y: auto;  
+}
+
+
+.alarm-list::-webkit-scrollbar {
+  width: 0
+}
+
+
+.settings-icon-alarm {
+  position: absolute;
+  top: -25px; 
+  right: -5px; 
+  font-size: 12px; 
+  color: transparent;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.alarm-list:hover .settings-icon-alarm {
+  color:#808080; 
+}
+.alarm-list .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #F0F0F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500; 
+}
+
+
+
+.alarm-list .modal-content {
+  background:black;
+  padding:40px 20px;
+  /* border-radius: 10px; */
+  width: 100%;
+  height: 100vh;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.alarm-list .modal-content input {
+  outline: none;
+}
+
+.alarm-list .modal-content input {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: black;
+  &::placeholder{
+    font-size: 10px;
+    color:black
+  }
+}
+
+.alarm-list .modal-content button {
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #1F2937;
+  color: white;
+}
+.alarm-list .modal-content button:hover{
+  opacity: 0.8;
+}
+
+.existing-alarms {
+  overflow-y: auto; 
+}
+
+.icon-button {
+  background: none !important;
+  border: none;
+  cursor: pointer;
+  padding: 0 !important;
+}
+
+.icon-button i {
+  font-size: 10px;
+  color: #989494; 
+  margin-left: 5px;
+  display: none;
+}
+
+.alarm-list .alarm:hover .icon-button i{
+  display: block;
+}
+
+.alarm-actions {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  display: flex;
+  align-items: center;
+}
+
+
+.alarm-toggle{
+  display: flex;
+  align-items: center;
+}

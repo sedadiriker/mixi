@@ -1,0 +1,114 @@
+/* Genel stil ayarları
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+} */
+
+/* Form konteyneri */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Form bölümünü ayarlama */
+.login-container .form-container {
+  border: 1px solid red;
+  background-color: black;
+  border-radius: 10px;
+  padding: 20px 25px;
+  min-width: 300px;
+  width: 350px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); 
+    & h2 {
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+}
+
+
+/* Giriş alanları */
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #3C3C3C;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #2C2C2C;
+  color: white;
+}
+
+.login-container .login-btn {
+  background-color: #425c72; 
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  letter-spacing: 1px;
+}
+
+.login-container button:hover {
+  opacity: 0.7;
+}
+
+/* Sosyal medya butonları */
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+
+/* Hata ve başarı mesajları */
+.error {
+  color: #ff0000; 
+  margin-top: 10px;
+}
+
+.success {
+  color: #00ff00; /* Başarı rengi */
+  margin-top: 10px;
+}
+
+.register-btn,.forgot-btn {
+  cursor: pointer;
+  margin: 5px 0;
+  & span {
+    color: #4B98DB; 
+    text-decoration: none;
+  }
+  & a:hover {
+    text-decoration: underline; 
+  }
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+.social-button{
+  display: flex;
+  gap: 5px;
+  letter-spacing: 1px;
+}
+.facebook {
+  background-color: #3b5998;
+  color: white;
+}
+.google {
+  background-color: #db4437;
+  color: white;
+}
+
+.twitter {
+  background-color: #1da1f2;
+  color: white;
+}

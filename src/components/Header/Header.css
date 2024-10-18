@@ -1,0 +1,87 @@
+header{
+  left: 0;
+  right: 0;
+  width: 93%;
+ z-index: 10;
+}
+.settings-button {
+  border: none;
+  cursor: pointer;
+  color: black;
+}
+
+header .modal-content .modal-title{
+  letter-spacing: 2px;
+  border: 1px solid rgba(128, 128, 128, 0.406);
+  border-radius: 5px;
+}
+
+.widget-select{
+  border:3px double gray ;
+  border-radius: 5px;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover{
+    box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.433);
+  }
+}
+
+.popup-button {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup-button:hover {
+  background-color: #4c6ef5;
+}
+
+.close-button {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: #a3a3a3;
+}
+
+.arrow {
+  width: 10px;
+  height: 0px;
+  border-left: 10px solid transparent; 
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid black;
+  margin: 20px auto;
+  position: absolute;
+  left: 49%;
+  bottom: -30px;
+  transform: rotate(180deg);
+}
+.profile:hover .sign{
+  color: white;
+}
+header .dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: black;
+  border-radius: 5px;
+}
+
+header .dropdown-item {
+  padding: 8px 12px;
+  color: white;
+  text-decoration: none;
+}
+
+header .dropdown-item:hover {
+  background-color: #333; /* Hover efekti */
+}
+
+.hamburger-toggle {
+  @apply [&>div]:h-0 [&>div]:bg-white [&>div]:before:translate-y-0 [&>div]:before:rotate-45 [&>div]:after:translate-y-0 [&>div]:after:-rotate-45;
+}
+.zindex-0{
+  z-index: 0 !important;
+}

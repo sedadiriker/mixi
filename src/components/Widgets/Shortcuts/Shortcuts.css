@@ -1,0 +1,60 @@
+.shortcuts-slider {
+    text-align: center;
+    padding: 10px 0 0;
+  }
+  
+.shortcuts-slider  .slider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+    max-height: 100px; 
+  }
+  
+.shortcuts-container  .shortcut-item {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+.shortcuts-container .slider-controls {
+    margin-top: 10px;
+  }
+  
+.shortcuts-container  button {
+    cursor: pointer;
+    border: none;
+    background-color: #1e2935;
+    transition: background-color 0.3s;
+  }
+  
+.shortcuts-slider  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+.shortcuts-slider  button:hover:not(:disabled) {
+    background-color: #031b36;
+  }
+
+  .settings-icon-shortcuts {
+    position: absolute;
+    top: -25px; 
+    right: -5px; 
+    font-size: 12px; 
+    color: transparent; 
+    transition: color 0.3s; 
+    cursor: pointer;
+  }
+  
+  .shortcuts-slider:hover .settings-icon-shortcuts {
+    color:#808080; 
+  }
+
+  .shortcut-icon img {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+  }
+  
+  .shortcut-icon img:hover {
+    filter: grayscale(0%);
+  }
+  

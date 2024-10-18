@@ -1,0 +1,117 @@
+.modal-overlay-todo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #C8C6C6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000000;
+}
+
+.modal-content-todo {
+  background: black;
+  padding:40px 20px;
+  border-radius: 8px;
+  width: 30%;
+  height: auto;
+  position: relative;
+  
+}
+
+.modal-content-todo .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+#taskList {
+  min-height: 100px;
+  max-height: 120px; 
+  overflow-y: auto; 
+}
+
+
+.modal-content-todo::-webkit-scrollbar {
+  width: 12px;
+}
+
+.modal-content-todo::-webkit-scrollbar-track {
+  background: white;
+}
+
+.modal-content-todo::-webkit-scrollbar-thumb {
+  background: lightgray;
+  border-radius: 6px;
+}
+
+.modal-content-todo::-webkit-scrollbar-thumb:hover {
+  background: gray;
+}
+
+.modal-content-todo {
+  scrollbar-width: thin;
+  scrollbar-color: lightgray white;
+}
+
+.modal-content-todo .todo-input {
+outline: none;
+}
+
+.modal-content-todo .custom-swal {
+  background-color: black;
+  width: 300px;
+  display: flex;
+  gap: 0;
+}
+
+.modal-content-todo  .custom-swal .swal2-title {
+  color: gray; /* Change title text color */
+  padding: 0;
+}
+.modal-content-todo  #swal2-title {
+padding: 0;
+}
+.modal-content-todo  .custom-swal .swal2-text {
+  color: #000000; /* Change text color */
+}
+
+.modal-content-todo  .custom-swal .swal2-confirm {
+  background-color: rgb(93, 78, 78); /* Change confirm button color */
+  color: black; /* Change confirm button text color */
+}
+
+.modal-content-todo  .custom-swal .swal2-cancel {
+  background-color: #9eadbc; /* Change cancel button color */
+  color: black; /* Change cancel button text color */
+}
+
+.modal-content-todo  .swal2-actions{
+  margin: 0;
+}
+.modal-content-todo  #swal2-html-container{
+  margin: 0;
+  padding: 0;
+}
+
+.modal-content-todo .custom-success-swal {
+  width: 300px;
+  background-color: black;
+}
+
+.modal-content-todo  .custom-success-swal .swal2-title {
+  color: #28a745; /* Change success title color (green) */
+}
+
+.modal-content-todo  .custom-success-swal .swal2-text {
+  color: #000; /* Change success text color */
+}
+
+.modal-content-todo .custom-success-swal .swal2-confirm {
+  background-color: #4e504f; /* Change confirm button color */
+  color: #fff; /* Change confirm button text color */
+}

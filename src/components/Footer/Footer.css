@@ -1,0 +1,170 @@
+.footer-widget-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px 0px;
+    background-color: black;
+    color: white;
+    bottom: 0;
+    margin: auto;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 93%;
+    z-index: 46755869876543;
+}
+.toggle-footer {
+    position: absolute;
+    z-index: 5;
+    top: -5px; 
+    right: 25px; 
+    cursor: pointer;
+    font-size: 20px;
+    color: #343434; 
+}
+
+.toggle-footer-2{
+  position: absolute;
+  z-index: 5;
+  bottom: -8px; 
+  right: 25px; 
+  cursor: pointer;
+  font-size: 20px;
+  color: #343434; 
+}
+
+.footer-widget-container.collapsed {
+  height: 7vh; 
+}
+
+
+/* .footer-widget-container.expanded ,.footer-widget-container.collapsed2{
+  transition: height 0.3s ease;
+>>>>>>> 3df2387 (.)
+  height: 7vh;
+}
+.footer-widget-container.expanded2 {
+  transition: height 0.3s ease;
+  height: 80vh;
+
+} */
+.footer-widget-container.expanded {
+  transition: height 0.3s ease;
+  height: 30vh;
+}
+
+.footer-widget-container .widget-header {
+  cursor: pointer; /* Başlık alanına tıklanabilir görünüm */
+}
+
+.footer-widget-container.collapsed .widget-body {
+  opacity: 0; /* Başlangıçta görünmez */
+  height: 0; /* Yükseklik sıfır, gizle */
+  /* overflow: hidden; Taşmayı önler */
+  transition: opacity 0.3s ease, height 0.3s ease; /* Geçiş efektleri */
+}
+
+.footer-widget-container.expanded .widget-body {
+  opacity: 1; /* Tamamen görünür */
+  /* height: auto; */
+  /* overflow: hidden;  */
+  transition: opacity 0.3s ease, height 0.3s ease; /* Geçiş efektleri */
+}
+
+
+
+/* Oklar */
+.footer-widget-container .arrow-right ,.arrow-left{    
+    font-size: 0; 
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent; 
+    border-right: 10px solid transparent; 
+    border-top: 15px solid black; 
+    cursor: pointer;
+    position: absolute;
+}
+#left-arrow {
+  transform: translateY(-50%) rotate(90deg); 
+
+}
+
+#right-arrow {
+  transform: translateY(-50%) rotate(-90deg); 
+}
+
+/* Widget Slider */
+/* .widget-slider {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+} */
+
+.widget-container {
+    display: flex;
+    justify-content: space-between; 
+    width: 100%;
+    height: 100%; 
+}
+
+
+.footer-widget-container .widget {
+  flex: 1 0 calc(20% - 10px); 
+  margin: 0 5px; 
+  padding: 10px 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+
+@media (max-width: 800px) {
+    .widget {
+        flex: 0 1 calc((100% / 2) - 2px);
+    }
+}
+
+@media (max-width: 500px) {
+    .widget {
+        flex: 0 1 calc(100% - 2px); 
+    }
+}
+
+.footer-widget-container .widget:not(:last-child) {
+    position: relative; 
+}
+
+.footer-widget-container .widget:not(:last-child):after {
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: -5px; 
+    width: 1px; 
+    height: 100%; 
+    background: linear-gradient(to bottom, #8A8A8A, rgba(138, 138, 138, 0)); 
+}
+
+
+.widget-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #abababbb;
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+    font-weight: 100;
+    height: 15%;
+}
+.widget-body{
+    width: 100%;
+    gap: 5px;
+    height: 85%;
+    & .pomodoro-cont{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}

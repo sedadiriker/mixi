@@ -1,0 +1,80 @@
+.finance-info {
+    text-align: center;
+  }
+  
+
+
+  .modal-overlay-finance {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #C8C6C6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+    /* border: 1px solid red; */
+  }
+
+  .logo-modal{
+    filter: brightness(15) contrast(0) saturate(10);
+    transition: all 0.3s;
+  }
+  .modal-content-finance {
+    background: black;
+    /* border-radius: 10px; */
+    padding:30px 20px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+    height: 100vh;
+  }
+  
+.close-button {
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    width: 30px;
+  }
+
+  .finance-info .modal-content-finance button:hover{
+    opacity: 0.8;
+  }
+  .settings-icon-finance {
+    position: absolute;
+    top: -25px; 
+    right: -5px; 
+    font-size: 12px; 
+    color: transparent;
+    transition: color 0.3s;
+    cursor: pointer;
+  }
+  
+  .finance-info:hover .settings-icon-finance {
+    color:#808080; 
+  }
+  
+
+.overflow-hidden {
+  overflow: hidden;
+  width: 100%; 
+}
+
+.flex {
+  display: flex;
+}
+
+.transition-transform {
+  transition: transform 0.3s ease-in-out;
+}
+.finance-info .favorites-list {
+  overflow-y: auto; 
+  padding: 0 20px 10px 10px;
+  background-color: #171c23;
+}
+
+
+

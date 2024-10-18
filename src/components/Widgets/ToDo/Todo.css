@@ -1,0 +1,63 @@
+.todo-options {
+    position: relative;
+    padding: 12px 10px;
+    height: 100%;
+  }
+  
+  .settings-icon {
+    position: absolute;
+    top: -25px; 
+    right: -5px; 
+    font-size: 12px; 
+    color: transparent; 
+    transition: color 0.3s; 
+    cursor: pointer;
+  }
+  
+  .todo-options:hover .settings-icon {
+    color:#808080; 
+  }
+  
+
+  .custom-checkbox {
+    width: 15px;
+    height: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.542);
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    margin-right: 8px;
+    background-color: transparent;
+  }
+  
+  .custom-checkbox i {
+    color: white; 
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    opacity: 0; 
+    font-size: 18px;
+  }
+  
+  .custom-checkbox.checked i {
+    opacity: 1; 
+  }
+  
+  
+  .custom-checkbox.checked {
+    background-color: gray;
+  }
+  
+  
+  
+  input[type="checkbox"]:checked + .custom-checkbox:after {
+    opacity: 1; 
+  }
+
+  .todo-list-container {
+    max-height: 300px; 
+    overflow-y: auto; 
+  }
+  

@@ -1,0 +1,82 @@
+.settings-icon-reminder {
+    position: absolute;
+    top: -20px; 
+    right: -5px; 
+    font-size: 12px; 
+    color: transparent;
+    cursor: pointer;
+    transition: color 0.3s; 
+    z-index: 300;
+  }
+  
+  .reminder-widget:hover .settings-icon-reminder {
+    color: #808080; 
+  }
+  .reminder-widget {
+    position: relative;
+  }
+  
+  
+  
+  .reminder-widget  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    z-index: 1000;
+  }
+  
+  .reminder-widget  .modal-content {
+    background: black;
+    padding:10px;
+    border-radius: 8px;
+    text-align: center;
+    width: 50%;
+    height: 75vh;
+    border: 1px solid white;
+    margin-bottom: 3rem;
+  }
+  
+  .reminder-widget  .close {
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+  }
+  
+  .reminder-widget  .quotes-list {
+    max-height: 100px; 
+    overflow-y: auto;
+    border: 1px solid #cccccc49; 
+    background-color: black;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 5px;
+  }
+  
+  .reminder-widget .quote-item {
+    margin-bottom: 5px; 
+  }
+  .reminder-widget  .fixed-textarea {
+    width: 90%; 
+    height: 60px;
+    max-height: 100px;
+    resize: none; 
+    outline: none;
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  #timerText{
+    color: white;
+  }
+  
+
+
+
+
+  
