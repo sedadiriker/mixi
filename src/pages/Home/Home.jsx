@@ -7,6 +7,7 @@ import Chatbot from "../../components/Chatbot/Chatbot";
 import Loading from "../../components/Loading";
 import { updateArrowPosition } from "../../utils/util";
 import KonusanChatbot from "../../components/KonusanChatbot/KonusanChatbot";
+import axios from "axios";
 
 const Home = () => {
   const [selectedEngine, setSelectedEngine] = useState("google-gpt4");
@@ -29,10 +30,80 @@ const Home = () => {
   const [result, setResult] = useState("");
   const [width, setWidth] = useState(512);
   const [height, setHeight] = useState(512);
-  
+  const [searchInput, setSearchInput] = useState("");
+  const [researchResults, setResearchResults] = useState([]);
+  const [aiSummary, setAiSummary] = useState("");
+  const [error, setError] = useState("");
+
   console.log(isVisible, "visi");
   // console.log(cachedResults,"cache");
   // console.log(loading)
+
+  const PUBMED_API = '5a12ae096b15066d78371c2ba162efb54908';
+    const GEMINI_API = 'AIzaSyAHGw2gMyt2a9LjTrLGCnDIWuofCabOEoI';
+
+    const startResearch = async () => {
+        if (!searchInput) return;
+
+        setLoading(true);
+        setResearchResults([]);
+        setAiSummary('');
+
+        try {
+            // 1. Search PubMed
+            const searchResults = await searchPubMed(searchInput);
+            const pubmedIds = extractPubMedIds(searchResults);
+
+            if (pubmedIds.length === 0) {
+                throw new Error('No results found');
+            }
+
+            // 2. Fetch details for each article
+            const articleDetails = await fetchArticleDetails(pubmedIds.slice(0, 20));
+
+            if (!articleDetails.articles || articleDetails.articles.length === 0) {
+                throw new Error('Failed to fetch article details');
+            }
+
+            // 3. Display collected data
+            setResearchResults(articleDetails.articles);
+
+            // 4. Generate AI Summary
+            const summary = await generateAISummary(articleDetails.articles);
+            setAiSummary(summary);
+        } catch (error) {
+            console.error('Research error:', error);
+            alert(error.message || 'An error occurred during research. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const searchPubMed = async (query) => {
+        const response = await axios.get(`https://your-proxy-url/proxy.php?action=search&query=${encodeURIComponent(query)}`);
+        return response.data;
+    };
+
+    const fetchArticleDetails = async (ids) => {
+        const response = await axios.get(`https://your-proxy-url/proxy.php?action=fetch&ids=${ids.join(',')}`);
+        return response.data;
+    };
+
+    const generateAISummary = async (articles) => {
+        const prompt = articles.map(article => 
+            `Article Title: ${article.title}\n` +
+            `Authors: ${article.authors}\n` +
+            `Published: ${article.pubDate}\n` +
+            `Abstract: ${article.abstract}\n\n`
+        ).join('---\n\n');
+
+        const response = await axios.post('https://your-proxy-url/proxy.php?action=gemini', { prompt });
+        return response.data;
+    };
+
+    const extractPubMedIds = (searchResults) => {
+        return searchResults?.esearchresult?.idlist || [];
+    };
 
   const handlePageChange = async (newPage) => {
     if (newPage < 1 || newPage > 10) return;
@@ -318,7 +389,7 @@ const Home = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const imageApi = process.env.REACT_APP_ImageApi
+  const imageApi = process.env.REACT_APP_ImageApi;
   const query = async (data) => {
     const response = await fetch(
       `https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev`,
@@ -342,9 +413,9 @@ const Home = () => {
   const generateImage = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setResult(""); 
-    setIsVisible(true)
-  
+    setResult("");
+    setIsVisible(true);
+
     try {
       const blob = await query({
         inputs: searchTerm,
@@ -355,18 +426,18 @@ const Home = () => {
           num_inference_steps: 50,
         },
       });
-  
+
       const imageUrl = URL.createObjectURL(blob);
-      console.log("Generated Image URL:", imageUrl); 
-      setResult(imageUrl); 
+      console.log("Generated Image URL:", imageUrl);
+      setResult(imageUrl);
     } catch (error) {
-      console.error("Image generation failed:", error); 
+      console.error("Image generation failed:", error);
       setResult(`Error: ${error.message}`);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
-  
+
   return (
     <div className="flex flex-col bg-white w-[100%] mx-auto  home">
       <Header showLogo={isVisible} onLogoClick={handleLogoClick} />
@@ -625,18 +696,18 @@ const Home = () => {
                   <div className="search-results mx-auto flex justify-center mt-16">
                     {result && (
                       <img
-                      className="w-[30vw] h-[50vh] object-cover"
+                        className="w-[30vw] h-[50vh] object-cover"
                         src={result}
                         alt="Generated result"
-                        
                       />
                     )}
-{loading && (
-                <div className="loading-flux flex items-center gap-5">
-                    <p>Generating image...</p>
-                    <div className="spinner"></div>
-                </div>
-            )}                  </div>
+                    {loading && (
+                      <div className="loading-flux flex items-center gap-5">
+                        <p>Generating image...</p>
+                        <div className="spinner"></div>
+                      </div>
+                    )}{" "}
+                  </div>
                 )}
               </div>
             ) : selectedEngine === "mixi-doctor" ? (
@@ -657,7 +728,7 @@ const Home = () => {
                 }}
               >
                 <div className="gcse-search relative"></div>
-                <form onSubmit={handleSearchSubmit}>
+                <form onSubmit={startResearch}>
                   <input
                     type="text"
                     className={` global-input absolute top-[15%] 2xl:top-[5%] ${
@@ -665,10 +736,10 @@ const Home = () => {
                     } left-0 z-20 mt-[-3px] ${
                       isVisible ? "py-1 px-2" : "py-1 px-2"
                     }`}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                   />
-                  <button type="submit"></button>
+                  <button type="submit" disabled={loading}></button>
                 </form>
                 <div
                   onClick={handleSearchSubmit}
@@ -688,23 +759,72 @@ const Home = () => {
                 )}
                 {selectedEngine === "mixi-flux" && isVisible && (
                   <div className="search-results mx-auto">
-                    <div className="tabs flex gap-3 text-[#666666] text-[13px]">
-                      <button
-                        className={`tab-button ${
-                          activeTab === "web" ? "active" : ""
-                        }`}
-                        onClick={() => setActiveTab("web")}
+                    {loading && (
+                      <div
+                        style={{
+                          color: "#007bff",
+                          fontWeight: "bold",
+                          textAlign: "center",
+                          padding: "20px",
+                        }}
                       >
-                        Web
-                      </button>
-                      <button
-                        className={`tab-button ${
-                          activeTab === "images" ? "active" : ""
-                        }`}
-                        onClick={() => setActiveTab("images")}
+                        Processing... Please wait...
+                      </div>
+                    )}
+                    <h2>Collected Research Data</h2>
+                    {researchResults.map((article) => (
+                      <div
+                        key={article.id}
+                        style={{
+                          marginBottom: "20px",
+                          padding: "15px",
+                          borderBottom: "1px solid #eee",
+                          background: "#f9f9f9",
+                        }}
                       >
-                        Görsel
-                      </button>
+                        <h3 style={{ color: "#2c3e50", marginTop: "0" }}>
+                          {article.title}
+                        </h3>
+                        <div
+                          style={{
+                            fontSize: "0.9em",
+                            color: "#666",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          <strong>Authors:</strong> {article.authors}
+                          <br />
+                          <strong>Published:</strong> {article.pubDate}
+                        </div>
+                        <p>{article.abstract}</p>
+                        <a
+                          href={`https://pubmed.ncbi.nlm.nih.gov/${article.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Read on PubMed
+                        </a>
+                      </div>
+                    ))}
+                    <div
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "20px",
+                        borderRadius: "4px",
+                        background: "white",
+                        marginTop: "20px",
+                      }}
+                    >
+                      <h2>AI Summary</h2>
+                      <div
+                        style={{
+                          whiteSpace: "pre-wrap",
+                          lineHeight: "1.8",
+                          fontSize: "16px",
+                        }}
+                      >
+                        {aiSummary}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -755,7 +875,7 @@ const Home = () => {
 
         <div>
           <Chatbot isVisible={isVisible} />
-          <KonusanChatbot isVisible={isVisible}  />
+          <KonusanChatbot isVisible={isVisible} />
         </div>
       </main>
       <Footer hasSearchResults={isVisible} />

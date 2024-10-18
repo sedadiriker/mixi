@@ -9,11 +9,37 @@ const Weather = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [currentCityIndex, setCurrentCityIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
+  const [forecastData, setForecastData] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
 
-  useEffect(() => {
-    console.log(weatherData);
-  }, [weatherData]);
+  console.log(forecastData);
+  // useEffect(() => {
+  //   console.log(weatherData);
+  // }, [weatherData]);
   const apiKey = "44df26f596aedf257812c7a8beefd005";
+
+  const fetchForecastWeather = async (city) => {
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`
+      );
+      const data = await response.json();
+      if (data.cod === "200") {
+        setForecastData(data.list); // 5 günlük tahmin verilerini al
+      } else {
+        console.error("Error fetching forecast data:", data);
+      }
+    } catch (error) {
+      console.error("Error fetching forecast data:", error);
+    }
+  };
+
+  const handleCityClick = (city) => {
+    fetchForecastWeather(city);
+    setShowDetail(!showDetail);
+    setSelectedCity(city)
+  };
 
   const fetchFavoriteCitiesWeather = async () => {
     const favorites = JSON.parse(localStorage.getItem("favorite_cities")) || [];
@@ -36,7 +62,6 @@ const Weather = () => {
           );
           console.log(response);
           const weatherData = await response.json();
-
           if (weatherData.cod === 200) {
             localStorage.setItem(
               `weather_${city}`,
@@ -135,28 +160,61 @@ const Weather = () => {
   const displayFavoriteCitiesInModal = () => {
     const favorites = JSON.parse(localStorage.getItem("favorite_cities")) || [];
     return favorites.map((city) => (
-      <div
-        className="favorite-item flex justify-between items-center w-[95%] m-auto py-2 border border-gray-800 px-3 mb-1"
-        key={city}
-      >
-        <span>{city}</span>
-        <button
-          className="text-[10px]"
-          onClick={() => {
-            let favorites =
-              JSON.parse(localStorage.getItem("favorite_cities")) || [];
-            favorites = favorites.filter((favCity) => favCity !== city);
-            localStorage.setItem("favorite_cities", JSON.stringify(favorites));
-            localStorage.removeItem(`weather_${city}`);
-            toastSuccessNotify(`${city} removed from favorites!`);
-            fetchFavoriteCitiesWeather();
-          }}
+      <div className="w-[75%] mx-auto" key={city}>
+        <div
+          className="favorite-item flex justify-between items-center w-full m-auto py-2 border border-gray-800 px-3 mb-1"
+          onClick={() => handleCityClick(city)} // Tıklanan şehri ayarla
         >
-          🗑️
-        </button>
+          <div>{city}</div>
+  
+          <button
+            className="text-[10px]"
+            onClick={(e) => {
+              e.stopPropagation(); // Butona tıklanınca şehrin detayını açmayı engelle
+              let favorites =
+                JSON.parse(localStorage.getItem("favorite_cities")) || [];
+              favorites = favorites.filter((favCity) => favCity !== city);
+              localStorage.setItem("favorite_cities", JSON.stringify(favorites));
+              localStorage.removeItem(`weather_${city}`);
+              toastSuccessNotify(`${city} removed from favorites!`);
+              fetchFavoriteCitiesWeather();
+            }}
+          >
+            🗑️
+          </button>
+        </div>
+  
+        {/* Eğer tıklanan şehir bu şehir ise detayları göster */}
+        {selectedCity === city && (
+          <div className="w-full">
+            {showDetail && (
+              <div>
+                {forecastData.length > 0 && (
+                  <div className="forecast-container">
+                    <h3 className="text-center text-white py-4">5-Day Forecast</h3>
+                    <div className="forecast-list flex justify-center gap-5">
+                      {forecastData.filter((item, index) => index % 8 === 0).map((item) => (
+                        <div key={item.dt} className="forecast-item border border-gray-700 rounded w-[125px] px-2 py-4">
+                          <span>{new Date(item.dt * 1000).toLocaleDateString()}</span>
+                          <img
+                            src={`https://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                            alt="Weather icon"
+                          />
+                          <span>{item.main.temp.toFixed(1)}°C</span>
+                          <span>{item.weather[0].description}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     ));
   };
+  
 
   const handleWheel = (event) => {
     event.preventDefault();
@@ -249,7 +307,10 @@ const Weather = () => {
                     alt=""
                   />
                 </div>
-                <span className="close-button text-white" onClick={handleCloseModal}>
+                <span
+                  className="close-button text-white"
+                  onClick={handleCloseModal}
+                >
                   &times;
                 </span>
                 <h2
@@ -259,33 +320,39 @@ const Weather = () => {
                   weather settings
                 </h2>
                 <hr className=" opacity-25 my-1" />
-                <h2
-                  className="text-center uppercase text-gray-500"
-                  style={{ letterSpacing: "2px", wordSpacing: "2px" }}
-                >
-                  Favorite Cities
-                </h2>
-               
-                <div className="favorite-cities-list">
-                  {displayFavoriteCitiesInModal()}
-                </div>
-                <form
-                  className="flex justify-between mt-5 mb-3 px-2 py-1"
-                  onSubmit={(e) => addFavoriteCity(e, e.target.city.value)}
-                >
-                  <input
-                    type="text"
-                    name="city"
-                    placeholder="Enter city name"
-                    className="p-2 w-[75%] text-black rounded outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-gray-500 text-black rounded p-1"
+
+                <div className="w-[50%] mx-auto">
+                  <form
+                    className="flex justify-between mt-5 mb-3 px-2 py-1"
+                    onSubmit={(e) => addFavoriteCity(e, e.target.city.value)}
                   >
-                    Add
-                  </button>
-                </form>
+                    <input
+                      type="text"
+                      name="city"
+                      placeholder="Enter city name"
+                      className="p-2 w-[75%] text-black rounded outline-none"
+                    />
+                    <button
+                      type="submit"
+                      className="bg-[#1F2937] text-white rounded p-1 px-2 w-20"
+                    >
+                      Add
+                    </button>
+                  </form>
+                </div>
+
+                <div className=" max-h-[50vh] mt-16">
+                  <h3
+                    className="text-center uppercase text-white text-[13px] 2xl:txt-[18px] py-3"
+                    style={{ letterSpacing: "2px", wordSpacing: "2px" }}
+                  >
+                    Favorite Cities
+                  </h3>
+
+                  <div className="favorite-cities-list">
+                    {displayFavoriteCitiesInModal()}
+                  </div>
+                </div>
               </div>
             </div>
           )}
