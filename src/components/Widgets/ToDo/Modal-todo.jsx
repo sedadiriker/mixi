@@ -19,14 +19,13 @@ const Modal = ({ isOpen, onClose, onSubmit, tasks, onDelete, onEdit }) => {
     e.preventDefault();
     if (taskInput.trim()) {
       if (editingTaskId) {
-        // Düzenleme modundaysa
         const updatedTask = {
           id: editingTaskId,
           text: taskInput,
         };
-        onEdit(updatedTask); // Düzenlenen görevi onEdit'e gönder
-        toastSuccessNotify('Task updated successfully!'); // Başarılı güncelleme bildirimi
-        setEditingTaskId(null); // Düzenleme modunu sıfırla
+        onEdit(updatedTask); 
+        toastSuccessNotify('Task updated successfully!');
+        setEditingTaskId(null); 
       } else {
         // Yeni görev ekleme
         const newTask = {
