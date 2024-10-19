@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './Modal.css';
-import { toastSuccessNotify, toastErrorNotify, toastWarnNotify } from '../../../helper/ToastNotify'; // Toast bildirimlerini içe aktar
+import { toastSuccessNotify, toastErrorNotify, toastWarnNotify } from '../../../helper/ToastNotify'; 
 
 const Modal = ({ isOpen, onClose, onSubmit, tasks, onDelete, onEdit }) => {
   const [taskInput, setTaskInput] = useState('');
-  const [editingTaskId, setEditingTaskId] = useState(null); // Düzenlenen görev
+  const [editingTaskId, setEditingTaskId] = useState(null);
 
   useEffect(() => {
     if (editingTaskId) {
       const taskToEdit = tasks.find((task) => task.id === editingTaskId);
       if (taskToEdit) {
-        setTaskInput(taskToEdit.text); // Görevin mevcut metnini inputa koy
+        setTaskInput(taskToEdit.text); 
       }
     }
   }, [editingTaskId, tasks]);
