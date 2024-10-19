@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../components/Chatbot/Chatbot.css";
+import "./Chatbot.css";
 
 const OPENAI_API_KEY = process.env.REACT_APP_openapikey;
 const ELEVENLABS_API_KEY = process.env.REACT_APP_elevenlab;
@@ -28,9 +28,18 @@ const Chatbot = ({isVisible}) => {
   const [botImage, setBotImage] = useState(
     localStorage.getItem("botImage") || "images/character/chatbot.png"
   );
-  const [selectedCharacter, setSelectedCharacter] = useState(
-    JSON.parse(localStorage.getItem("selectedCharacter")) || characters[0]
-  );
+  const [selectedCharacter, setSelectedCharacter] = useState(() => {
+    const savedCharacter = localStorage.getItem("selectedCharacter");
+    if (savedCharacter) {
+      try {
+        return JSON.parse(savedCharacter);
+      } catch (error) {
+        console.error("Error parsing selectedCharacter from localStorage:", error);
+      }
+    }
+    return characters[0]; // Varsayılan değer
+  });
+  
   const [characterSettings, setCharacterSettings] = useState(false);
 
 

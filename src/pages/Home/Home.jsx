@@ -3,7 +3,7 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import "./Home.css";
 import SettingsComponent from "../../components/SettingsComponent";
-import Chatbot from "../../components/Chatbot";
+import Chatbot from "../../components/Chatbot/Chatbot";
 import Loading from "../../components/Loading";
 import { updateArrowPosition } from "../../utils/util";
 import KonusanChatbot from "../../components/KonusanChatbot/KonusanChatbot";
