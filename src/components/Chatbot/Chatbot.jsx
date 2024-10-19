@@ -263,11 +263,10 @@ const Chatbot = ({isVisible}) => {
   }, [isOpen]);
 
 
-  // console.log(isVisible,"ch")
   return (
     <div
-      className={`${isVisible ? "top-[83%]" : "top-[60%]"} chatbot right-[60px] 2xl:right-[100px]  2xl:top-[58%] ${
-        isOpen ? "open top-[200px] 2xl:top-[25%]" : ""
+      className={`${isVisible ? "top-[83%]" : ""} chatbot right-[60px] 2xl:right-[100px]  2xl:top-[58%] ${
+        isOpen ? "open top-[200px] 2xl:top-[25%]" : "top-[60%]"
       } ${settings ? "2xl:top-[23%]" : ""}`}
     >
       <span
