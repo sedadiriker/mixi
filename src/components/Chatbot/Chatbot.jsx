@@ -28,18 +28,9 @@ const Chatbot = ({isVisible}) => {
   const [botImage, setBotImage] = useState(
     localStorage.getItem("botImage") || "images/character/chatbot.png"
   );
-  const [selectedCharacter, setSelectedCharacter] = useState(() => {
-    const savedCharacter = localStorage.getItem("selectedCharacter");
-    if (savedCharacter) {
-      try {
-        return JSON.parse(savedCharacter);
-      } catch (error) {
-        console.error("Error parsing selectedCharacter from localStorage:", error);
-      }
-    }
-    return characters[0]; // Varsayılan değer
-  });
-  
+  const [selectedCharacter, setSelectedCharacter] = useState(
+    {}
+  );
   const [characterSettings, setCharacterSettings] = useState(false);
 
 
