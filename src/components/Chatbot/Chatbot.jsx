@@ -29,7 +29,7 @@ const Chatbot = ({isVisible}) => {
     localStorage.getItem("botImage") || "images/character/chatbot.png"
   );
   const [selectedCharacter, setSelectedCharacter] = useState(
-    {}
+    JSON.parse(localStorage.getItem("selectedCharacter"))
   );
   const [characterSettings, setCharacterSettings] = useState(false);
 
