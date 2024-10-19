@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Chatbot.css";
+import "../components/Chatbot/Chatbot.css";
 
 const OPENAI_API_KEY = process.env.REACT_APP_openapikey;
 const ELEVENLABS_API_KEY = process.env.REACT_APP_elevenlab;
@@ -149,6 +149,8 @@ const Chatbot = ({isVisible}) => {
       setInputValue("");
       await synthesizeSpeech(response);
     }
+    conversationHistory.push({ role: "user", content: message });
+
   };
 
   const handleKeyPress = (e) => {
@@ -261,7 +263,7 @@ const Chatbot = ({isVisible}) => {
   }, [isOpen]);
 
 
-  console.log(isVisible,"ch")
+  // console.log(isVisible,"ch")
   return (
     <div
       className={`${isVisible ? "top-[83%]" : "top-[60%]"} chatbot right-[60px] 2xl:right-[100px]  2xl:top-[58%] ${
