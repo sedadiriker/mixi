@@ -35,9 +35,7 @@
 }
 
 .favorite-cities-list {
-  max-height: 100%; 
   overflow-y: auto; 
-  background-color: black;
 }
 .favorite-cities-list::-webkit-scrollbar {
   width: 8px; 

@@ -27,9 +27,8 @@ const Weather = () => {
     );
     const data = await response.json();
 
-    // Verileri 3 saatlik dilimler halinde döndür
     if (data.cod === "200") {
-      return data.list; // forecast API'den gelen 3 saatlik veri
+      return data.list;
     } else {
       console.error("Error fetching forecast data:", data);
       return [];
@@ -184,7 +183,7 @@ const Weather = () => {
     return favorites.map((city) => (
       <div className="w-[75%] 2xl:w-[50%] mx-auto" key={city}>
         <div
-          className="favorite-item flex justify-between items-center w-full m-auto py-2 border border-gray-800 px-3 mb-1 2xl:mb-2 cursor-pointer"
+          className={`favorite-item flex justify-between items-center w-full m-auto py-2 border border-gray-800 px-3 mb-1 2xl:mb-2 cursor-pointer `}
           onClick={() => handleCityClick(city)}
         >
           <div>{city}</div>
@@ -210,13 +209,13 @@ const Weather = () => {
         </div>
 
         {selectedCity === city && (
-          <div className="w-full">
+          <div className="w-full bg-gray-800">
             {showDetail && (
-              <>
+              <div className="py-10">
                 <div>
                   {forecastData && forecastData.length > 0 && (
                     <div className="forecast-container">
-                      <h3 className="text-center text-white py-4">
+                      <h3 className="text-center text-white py-4 text-[14px] bg-slate-600 mb-2 w-[50%] mx-auto">
                         5-Day Forecast
                       </h3>
                       <div className="forecast-list flex justify-center gap-5">
@@ -243,32 +242,37 @@ const Weather = () => {
                   )}
                 </div>
                 <div>
-                {hourlyData && hourlyData.length > 0 && (
-  <div className="hourly-forecast-container">
-    <h3 className="text-center text-white py-4">Hourly Forecast</h3>
-    <div className="hourly-forecast-list flex justify-center gap-3">
-      {hourlyData.slice(0, 12).map((hour, index) => (
-        <div
-          key={index}
-          className="hourly-item border border-gray-700 rounded w-[75px] px-2 py-3"
-        >
-          <span>{new Date(hour.dt * 1000).getHours()}:00</span>
-          <img
-            src={`https://openweathermap.org/img/wn/${hour.weather[0]?.icon}.png`}
-            alt="Weather icon"
-          />
-          <span>
-            {hour.main.temp !== undefined ? `${hour.main.temp.toFixed(1)}°C` : 'N/A'}
-          </span>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
-
-
+                  {hourlyData && hourlyData.length > 0 && (
+                    <div className="hourly-forecast-container">
+                      <h3 className="text-center text-white py-4 text-[14px] bg-slate-600 my-2 w-[50%] mx-auto">
+                        {" "}
+                        Hourly Forecast
+                      </h3>
+                      <div className="hourly-forecast-list flex justify-center gap-3">
+                        {hourlyData.slice(0, 12).map((hour, index) => (
+                          <div
+                            key={index}
+                            className="hourly-item border border-gray-700 rounded w-[75px] px-2 py-3"
+                          >
+                            <span>
+                              {new Date(hour.dt * 1000).getHours()}:00
+                            </span>
+                            <img
+                              src={`https://openweathermap.org/img/wn/${hour.weather[0]?.icon}.png`}
+                              alt="Weather icon"
+                            />
+                            <span>
+                              {hour.main.temp !== undefined
+                                ? `${hour.main.temp.toFixed(1)}°C`
+                                : "N/A"}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </>
+              </div>
             )}
           </div>
         )}
@@ -401,15 +405,15 @@ const Weather = () => {
                   </form>
                 </div>
 
-                <div className=" max-h-[50vh] mt-16">
+                <div className=" max-h-[50vh] mt-16 2xl:mt-36">
                   <h3
-                    className="text-center uppercase text-white text-[13px] 2xl:txt-[18px] py-3"
+                    className="text-center uppercase text-white text-[15px] py-3 2xl:text-[20px] 2xl:py-10"
                     style={{ letterSpacing: "2px", wordSpacing: "2px" }}
                   >
                     Favorite Cities
                   </h3>
 
-                  <div className="favorite-cities-list">
+                  <div className="favorite-cities-list  max-h-[60vh] overflow-y-scroll ">
                     {displayFavoriteCitiesInModal()}
                   </div>
                 </div>
