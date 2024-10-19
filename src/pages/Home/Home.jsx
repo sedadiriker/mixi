@@ -872,10 +872,10 @@ const Home = () => {
             </div>
           )}
         </div>
-       {/*  <div>
+      <div>
           <Chatbot isVisible={isVisible} />
-          <KonusanChatbot isVisible={isVisible} />
-        </div>*/}
+          {/*   <KonusanChatbot isVisible={isVisible} />*/}
+        </div>
       </main>
       <Footer hasSearchResults={isVisible} />
     </div>
