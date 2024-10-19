@@ -12,14 +12,70 @@ const Weather = () => {
   const [showDetail, setShowDetail] = useState(false);
   const [forecastData, setForecastData] = useState([]);
   const [hourlyData, setHourlyData] = useState([]);
-
   const [selectedCity, setSelectedCity] = useState(null);
+  const [airQuality, setAirQuality] = useState(null);
 
   console.log(hourlyData);
   // useEffect(() => {
   //   console.log(weatherData);
   // }, [weatherData]);
   const apiKey = "44df26f596aedf257812c7a8beefd005";
+
+  async function getAirQualityData(lat, lon) {
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`
+      );
+      const data = await response.json();
+      if (data) {
+        setAirQuality(data.list[0]); // State'i güncelle
+      } else {
+        console.error("Error fetching air quality data");
+      }
+    } catch (error) {
+      console.error("Error fetching air quality data:", error);
+      setAirQuality(null); // Hata durumunda state'i sıfırlayın
+    }
+  }
+
+  function displayAirQuality(data) {
+    if (!data) return null;
+
+    const aqi = data.main.aqi;
+    const components = data.components;
+    const aqiLabels = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
+    const aqiLabel = aqiLabels[aqi - 1];
+
+    return (
+      <div className="weather-card flex flex-col gap-2">
+        <p>AQI: {aqi}</p>
+        <p>CO: {components.co} μg/m³</p>
+        <p>NO: {components.no} μg/m³</p>
+        <p>NO2: {components.no2} μg/m³</p>
+        <p>O3: {components.o3} μg/m³</p>
+        <p>SO2: {components.so2} μg/m³</p>
+        <p>PM2.5: {components.pm2_5} μg/m³</p>
+        <p>PM10: {components.pm10} μg/m³</p>
+      </div>
+    );
+  }
+
+  async function getWeatherData(city) {
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
+          city
+        )}&appid=${apiKey}&units=metric`
+      );
+      const data = await response.json();
+      if (data.cod === 200) {
+        getAirQualityData(data.coord.lat, data.coord.lon); // Hava kalitesi verilerini almak için enlem ve boylam gönderiyoruz
+      } else {
+      }
+    } catch (error) {
+      console.error("Error fetching current weather:", error);
+    }
+  }
 
   const fetchHourlyForecast = async (lat, lon) => {
     const response = await fetch(
@@ -51,6 +107,7 @@ const Weather = () => {
   };
 
   const handleCityClick = async (city) => {
+    getWeatherData(city);
     fetchForecastWeather(city);
     setShowDetail(!showDetail);
     setSelectedCity(city);
@@ -209,7 +266,7 @@ const Weather = () => {
         </div>
 
         {selectedCity === city && (
-          <div className="w-full bg-gray-800">
+          <div className="w-full bg-gray-900">
             {showDetail && (
               <div className="py-10">
                 <div>
@@ -270,6 +327,18 @@ const Weather = () => {
                         ))}
                       </div>
                     </div>
+                  )}
+                </div>
+                <div id="airQuality">
+                  {airQuality ? (
+                    <div className="my-1 flex flex-col items-center">
+                      {" "}
+                      <h3 className="text-center text-white py-4 text-[14px] bg-slate-600 my-2 w-[50%] mx-auto">
+Air Quality: Fair</h3>
+                      {displayAirQuality(airQuality)}
+                    </div>
+                  ) : (
+                    <p>Loading air quality...</p>
                   )}
                 </div>
               </div>
