@@ -80,10 +80,10 @@ const form_flux = document.getElementById("flux-form")
           searchArrow.style.top = "35%"; 
           searchArrow.style.right = "20%"; 
         } else if (width >= 768 && width < 1500) { 
-          searchArrow.style.top = "41.5%"; 
+          searchArrow.style.top = "44%"; 
           searchArrow.style.right = "28%";
         } else { 
-          searchArrow.style.top = "42%"; 
+          searchArrow.style.top = "43.5%"; 
           searchArrow.style.right = "27%"; 
         }
       } else {
@@ -91,10 +91,10 @@ const form_flux = document.getElementById("flux-form")
           searchArrow.style.top = "35%"; 
           searchArrow.style.right = "20%"; 
         } else if (width >= 768 && width < 1500) { 
-          searchArrow.style.top = "41.5%"; 
+          searchArrow.style.top = "44%"; 
           searchArrow.style.right = "28%";
         } else { 
-          searchArrow.style.top = "42%"; 
+          searchArrow.style.top = "43.5%"; 
           searchArrow.style.right = "27%"; 
         }
       }

@@ -507,10 +507,8 @@ const Home = () => {
                   <input
                     type="text"
                     className={` global-input absolute top-[15%] 2xl:top-[5%] ${
-                      isVisible ? "fixed top-28  left-0" : ""
-                    } left-0 z-20 mt-[-3px] ${
-                      isVisible ? "py-1 px-2" : "py-1 px-2"
-                    }`}
+                      isVisible ? "fixed top-[-1%] 2xl:top-[-10%] left-0" : ""
+                    } left-0 z-20 mt-[-3px] py-1 px-2`}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -533,7 +531,7 @@ const Home = () => {
                   />
                 )}
                 {selectedEngine === "global-search" && isVisible && (
-                  <div className="search-results mx-auto">
+                  <div className="search-results mx-auto mt-[-3%]">
                     <div className="tabs flex gap-3 text-[#666666] text-[13px]">
                       <button
                         className={`tab-button ${
