@@ -29,22 +29,23 @@ const Chatbot = ({isVisible}) => {
     localStorage.getItem("botImage") || "images/character/chatbot.png"
   );
   const [selectedCharacter, setSelectedCharacter] = useState(
-    JSON.parse(localStorage.getItem("selectedCharacter"))
+    JSON.parse(localStorage.getItem("selectedCharacter")) || { id: 1, name: "Alice", image: "images/character/chatbot.png" }
   );
   const [characterSettings, setCharacterSettings] = useState(false);
 
 
   const changeCharacter = () => {
     const currentIndex = characters.findIndex(
-      (character) => character.id === selectedCharacter.id
+      (character) => character.name === selectedCharacter
     );
     const nextIndex = (currentIndex + 1) % characters.length;
     const newCharacter = characters[nextIndex];
-
-    setSelectedCharacter(newCharacter);
+  
+    setSelectedCharacter(newCharacter.name);
     localStorage.setItem("selectedCharacter", JSON.stringify(newCharacter));
     setBotImage(newCharacter.image);
   };
+  
 
   const characters = [
     { id: 1, name: "Alice", image: "images/character/chatbot.png" },
@@ -59,15 +60,15 @@ const Chatbot = ({isVisible}) => {
     localStorage.setItem("botImage", character.image);
     setCharacterSettings(true);
   };
+  
   useEffect(() => {
-    const savedCharacter = JSON.parse(
-      localStorage.getItem("selectedCharacter")
-    );
-    if (savedCharacter) {
+    const savedCharacter = JSON.parse(localStorage.getItem("selectedCharacter"));
+    if (savedCharacter && savedCharacter.name) {
       setSelectedCharacter(savedCharacter.name);
       setBotImage(savedCharacter.image);
     }
   }, []);
+  
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
