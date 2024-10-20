@@ -34,11 +34,11 @@ const Home = () => {
   const [researchResults, setResearchResults] = useState([]);
   const [aiSummary, setAiSummary] = useState("");
   const [error, setError] = useState("");
+  let previousSearchTerm = ""; // üst kısımda tanımlayın
 
-  console.log(isVisible, "visi");
   // console.log(cachedResults,"cache");
   // console.log(loading)
-
+  const apikey = process.env.REACT_APP_openapikey;
   const PUBMED_API = '5a12ae096b15066d78371c2ba162efb54908';
     const GEMINI_API = 'AIzaSyAHGw2gMyt2a9LjTrLGCnDIWuofCabOEoI';
 
@@ -151,12 +151,11 @@ const Home = () => {
         }
 
         const search = document.getElementById("gsc-i-id1");
-        if (search) {
+        if (search && search.value !== previousSearchTerm) {
           const searchTerm = search.value;
-          if (searchTerm !== searchTerm) {
-            setSearchTerm(searchTerm);
-            fetchGptResponse(searchTerm);
-          }
+          setSearchTerm(searchTerm);
+          previousSearchTerm = searchTerm; 
+          fetchGptResponse(searchTerm);
         }
       }
     });
@@ -187,7 +186,6 @@ const Home = () => {
     };
   }, []);
 
-  const apikey = process.env.REACT_APP_openapikey;
   const fetchGptResponse = async (term) => {
     if (term) {
       try {
@@ -206,13 +204,27 @@ const Home = () => {
             }),
           }
         );
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+  
         const data = await response.json();
-        setGptResponse(data.choices[0].message.content);
+        
+        console.log("API Response:", data);
+  
+        if (data.choices && data.choices.length > 0) {
+          setGptResponse(data.choices[0].message.content);
+          console.log(data.choices[0].message.content, "sonuç");
+        } else {
+          console.error("No choices found in the response");
+        }
       } catch (error) {
         console.error("Error:", error);
       }
     }
   };
+  
 
   useEffect(() => {
     fetchGptResponse("Merhaba");
@@ -275,6 +287,7 @@ const Home = () => {
     e.preventDefault();
     setShowSettings(false);
     setIsVisible(true);
+    console.log("çalıştı")
 
     const initialPage = 1;
 
@@ -288,7 +301,7 @@ const Home = () => {
         console.error("Çeviri başarısız, arama yapılmadı.");
       }
     }
-    console.log("çalıştı-handle");
+    // console.log("çalıştı-handle");
   };
 
   window.addEventListener("resize", updateArrowPosition);
@@ -866,7 +879,7 @@ const Home = () => {
 
           {/* GPT Response - only show if selectedEngine is not global-search */}
           {selectedEngine == "google-gpt4" && (
-            <div className="gpt-response">
+            <div className="gpt-response fixed top-[7rem] right-[3rem] 2xl:right-[6rem] w-[20%]">
               <h3 className="py-4">GPT Answer</h3>
               <p className="text-justify">{gptResponse}</p>
             </div>
@@ -874,7 +887,7 @@ const Home = () => {
         </div>
       <div>
           <Chatbot isVisible={isVisible} />
-         <KonusanChatbot isVisible={isVisible} />
+         {/* <KonusanChatbot isVisible={isVisible} /> */}
         </div>
       </main>
       <Footer hasSearchResults={isVisible} />

@@ -17,8 +17,8 @@ import News from "../Widgets/News/News";
 const Footer = ({ hasSearchResults }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [currentGroupIndex, setCurrentGroupIndex] = useState(1); 
-  console.log("hasSearchResults:", hasSearchResults);
-  console.log("isCollapsed:", isCollapsed);
+  // console.log("hasSearchResults:", hasSearchResults);
+  // console.log("isCollapsed:", isCollapsed);
     const widgetGroups = [
     [
       { id: "advertisement", title: "SPONSORED", image: "./images/sponsored.png" },

@@ -104,10 +104,6 @@
   transition: margin-top 0.3s ease;
 }
 .gpt-response {
-  position: fixed;
-  top: 7rem;
-  right: 1rem;
-  width: 25%;
   background-color: #F9F9F9;
   font-size: 12px;
   line-height: 1.5rem;
